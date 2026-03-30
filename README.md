@@ -94,6 +94,16 @@ taskflow-pro/
 └── package.json          # Root package.json
 ```
 
+## Features
+
+- Task management with drag and drop
+- Real-time collaboration
+- Team workspaces
+- User authentication
+- Project boards and columns
+- Task assignments
+- Comments and notifications
+
 ## License
 
 MIT

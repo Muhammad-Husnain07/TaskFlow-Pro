@@ -3,6 +3,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const config = require('./config/config');
+const connectDB = require('./config/db');
+const errorHandler = require('./middleware/errorHandler');
 
 dotenv.config();
 
@@ -10,26 +13,32 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: config.CLIENT_URL,
   credentials: true
 }));
-app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+if (config.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+connectDB();
+
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'TaskFlow Pro API is running' });
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
-});
+app.use('/api/auth', (req, res) => res.json({ message: 'Auth routes stub' }));
+app.use('/api/projects', (req, res) => res.json({ message: 'Projects routes stub' }));
+app.use('/api/tasks', (req, res) => res.json({ message: 'Tasks routes stub' }));
 
-const PORT = process.env.PORT || 5000;
+app.use(errorHandler);
+
+const PORT = config.PORT;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running in ${config.NODE_ENV} mode on port ${PORT}`);
 });
 
 module.exports = app;

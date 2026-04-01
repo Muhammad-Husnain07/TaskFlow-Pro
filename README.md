@@ -96,13 +96,27 @@ taskflow-pro/
 
 ## Features
 
+- User registration and login with JWT
 - Task management with drag and drop
 - Real-time collaboration
 - Team workspaces
-- User authentication
 - Project boards and columns
 - Task assignments
 - Comments and notifications
+
+## API Endpoints
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user (protected)
+- `PUT /api/auth/profile` - Update profile (protected)
+- `PUT /api/auth/password` - Change password (protected)
+
+### Health Check
+- `GET /api/health` - API health status
 
 ## License
 

@@ -7,6 +7,7 @@ const config = require('./config/config');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/projectRoutes');
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/projects', (req, res) => res.json({ message: 'Projects routes stub' }));
+app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', (req, res) => res.json({ message: 'Tasks routes stub' }));
 
 app.use(errorHandler);

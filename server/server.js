@@ -3,15 +3,19 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const path = require('path');
 const config = require('./config/config');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 dotenv.config();
 
 const app = express();
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(helmet());
 app.use(cors({
@@ -33,7 +37,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/tasks', (req, res) => res.json({ message: 'Tasks routes stub' }));
+app.use('/api', taskRoutes);
 
 app.use(errorHandler);
 

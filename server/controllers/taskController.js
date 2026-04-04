@@ -1,6 +1,8 @@
 const Task = require('../models/Task');
 const Project = require('../models/Project');
 const asyncHandler = require('../middleware/asyncHandler');
+const ApiResponse = require('../utils/ApiResponse');
+const queryBuilder = require('../utils/queryBuilder');
 
 const createTask = asyncHandler(async (req, res, next) => {
   const { title, description, assignees, priority, dueDate, labels, status } = req.body;
@@ -8,11 +10,11 @@ const createTask = asyncHandler(async (req, res, next) => {
 
   const project = await Project.findById(projectId);
   if (!project) {
-    return res.status(404).json({ success: false, message: 'Project not found' });
+    return ApiResponse.notFound(res, 'Project not found');
   }
 
   if (!project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not a member of this project' });
+    return ApiResponse.forbidden(res, 'Not a member of this project');
   }
 
   const maxPosition = await Task.findOne({ project: projectId, status: status || 'todo' })
@@ -35,10 +37,7 @@ const createTask = asyncHandler(async (req, res, next) => {
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
 
-  res.status(201).json({
-    success: true,
-    task
-  });
+  return ApiResponse.created(res, task, 'Task created successfully');
 });
 
 const getTasks = asyncHandler(async (req, res, next) => {
@@ -47,28 +46,26 @@ const getTasks = asyncHandler(async (req, res, next) => {
 
   const project = await Project.findById(projectId);
   if (!project) {
-    return res.status(404).json({ success: false, message: 'Project not found' });
+    return ApiResponse.notFound(res, 'Project not found');
   }
 
   if (!project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not a member of this project' });
+    return ApiResponse.forbidden(res, 'Not a member of this project');
   }
 
-  const query = { project: projectId };
-  if (status) query.status = status;
-  if (priority) query.priority = priority;
-  if (assignee) query.assignees = assignee;
+  const qb = queryBuilder(Task, req.query, ['title', 'description']);
+  qb.query.project = projectId;
+  if (status) qb.query.status = status;
+  if (priority) qb.query.priority = priority;
+  if (assignee) qb.query.assignees = assignee;
 
-  const tasks = await Task.find(query)
-    .populate('assignees', 'name email avatar')
-    .populate('createdBy', 'name email')
-    .sort({ position: 1 });
+  const result = await qb.runQuery();
+  result.data = await Task.populate(result.data, [
+    { path: 'assignees', select: 'name email avatar' },
+    { path: 'createdBy', select: 'name email' }
+  ]);
 
-  res.json({
-    success: true,
-    count: tasks.length,
-    tasks
-  });
+  return ApiResponse.paginated(res, result.data, result.pagination, 'Tasks retrieved successfully');
 });
 
 const getTask = asyncHandler(async (req, res, next) => {
@@ -79,30 +76,27 @@ const getTask = asyncHandler(async (req, res, next) => {
     .populate('attachments.uploadedBy', 'name email');
 
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized to view this task' });
+    return ApiResponse.forbidden(res, 'Not authorized to view this task');
   }
 
-  res.json({
-    success: true,
-    task
-  });
+  return ApiResponse.success(res, task, 'Task retrieved successfully');
 });
 
 const updateTask = asyncHandler(async (req, res, next) => {
   let task = await Task.findById(req.params.id);
 
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized to update this task' });
+    return ApiResponse.forbidden(res, 'Not authorized to update this task');
   }
 
   const { title, description, assignees, priority, dueDate, labels, status, position } = req.body;
@@ -115,31 +109,25 @@ const updateTask = asyncHandler(async (req, res, next) => {
     .populate('assignees', 'name email avatar')
     .populate('createdBy', 'name email');
 
-  res.json({
-    success: true,
-    task
-  });
+  return ApiResponse.success(res, task, 'Task updated successfully');
 });
 
 const deleteTask = asyncHandler(async (req, res, next) => {
   const task = await Task.findById(req.params.id);
 
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isAdmin(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Only owner or admin can delete tasks' });
+    return ApiResponse.forbidden(res, 'Only owner or admin can delete tasks');
   }
 
   await Task.deleteMany({ parentTask: req.params.id });
   await task.deleteOne();
 
-  res.json({
-    success: true,
-    message: 'Task deleted'
-  });
+  return ApiResponse.success(res, null, 'Task deleted successfully');
 });
 
 const updateStatus = asyncHandler(async (req, res, next) => {
@@ -148,12 +136,12 @@ const updateStatus = asyncHandler(async (req, res, next) => {
   let task = await Task.findById(req.params.id);
 
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized' });
+    return ApiResponse.forbidden(res, 'Not authorized');
   }
 
   task.status = status;
@@ -165,17 +153,14 @@ const updateStatus = asyncHandler(async (req, res, next) => {
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
 
-  res.json({
-    success: true,
-    task
-  });
+  return ApiResponse.success(res, task, 'Task status updated successfully');
 });
 
 const reorderTasks = asyncHandler(async (req, res, next) => {
   const { tasks } = req.body;
 
   if (!Array.isArray(tasks)) {
-    return res.status(400).json({ success: false, message: 'Tasks must be an array' });
+    return ApiResponse.error(res, 'Tasks must be an array', 400);
   }
 
   const bulkOps = tasks.map(taskUpdate => ({
@@ -187,10 +172,7 @@ const reorderTasks = asyncHandler(async (req, res, next) => {
 
   await Task.bulkWrite(bulkOps);
 
-  res.json({
-    success: true,
-    message: 'Tasks reordered successfully'
-  });
+  return ApiResponse.success(res, null, 'Tasks reordered successfully');
 });
 
 const addComment = asyncHandler(async (req, res, next) => {
@@ -198,12 +180,12 @@ const addComment = asyncHandler(async (req, res, next) => {
 
   const task = await Task.findById(req.params.id);
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized' });
+    return ApiResponse.forbidden(res, 'Not authorized');
   }
 
   task.comments.push({
@@ -217,54 +199,48 @@ const addComment = asyncHandler(async (req, res, next) => {
   const updatedTask = await Task.findById(req.params.id)
     .populate('comments.user', 'name email avatar');
 
-  res.json({
-    success: true,
-    comments: updatedTask.comments
-  });
+  return ApiResponse.success(res, updatedTask.comments, 'Comment added successfully');
 });
 
 const deleteComment = asyncHandler(async (req, res, next) => {
   const task = await Task.findById(req.params.id);
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized' });
+    return ApiResponse.forbidden(res, 'Not authorized');
   }
 
   const comment = task.comments.id(req.params.commentId);
   if (!comment) {
-    return res.status(404).json({ success: false, message: 'Comment not found' });
+    return ApiResponse.notFound(res, 'Comment not found');
   }
 
   if (comment.user.toString() !== req.user.id && !project.isAdmin(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized to delete this comment' });
+    return ApiResponse.forbidden(res, 'Not authorized to delete this comment');
   }
 
   comment.deleteOne();
   await task.save();
 
-  res.json({
-    success: true,
-    message: 'Comment deleted'
-  });
+  return ApiResponse.success(res, null, 'Comment deleted successfully');
 });
 
 const uploadAttachment = asyncHandler(async (req, res, next) => {
   if (!req.file) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
+    return ApiResponse.error(res, 'No file uploaded', 400);
   }
 
   const task = await Task.findById(req.params.id);
   if (!task) {
-    return res.status(404).json({ success: false, message: 'Task not found' });
+    return ApiResponse.notFound(res, 'Task not found');
   }
 
   const project = await Project.findById(task.project);
   if (!project || !project.isMember(req.user.id)) {
-    return res.status(403).json({ success: false, message: 'Not authorized' });
+    return ApiResponse.forbidden(res, 'Not authorized');
   }
 
   const fileUrl = `/uploads/${req.file.filename}`;
@@ -281,10 +257,7 @@ const uploadAttachment = asyncHandler(async (req, res, next) => {
   const updatedTask = await Task.findById(req.params.id)
     .populate('attachments.uploadedBy', 'name email');
 
-  res.json({
-    success: true,
-    attachments: updatedTask.attachments
-  });
+  return ApiResponse.success(res, updatedTask.attachments, 'File uploaded successfully');
 });
 
 module.exports = {
@@ -299,58 +272,3 @@ module.exports = {
   deleteComment,
   uploadAttachment
 };
-
-/*
-Test curl commands:
-
-# Create Task
-curl -X POST http://localhost:5000/api/projects/PROJECT_ID/tasks \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"title":"Fix bug","description":"Fix login bug","priority":"high","assignees":["USER_ID"]}'
-
-# Get Tasks
-curl -X GET http://localhost:5000/api/projects/PROJECT_ID/tasks \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Get Single Task
-curl -X GET http://localhost:5000/api/tasks/TASK_ID \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Update Task
-curl -X PUT http://localhost:5000/api/tasks/TASK_ID \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"title":"Updated title","status":"in_progress"}'
-
-# Delete Task
-curl -X DELETE http://localhost:5000/api/tasks/TASK_ID \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Update Status
-curl -X PATCH http://localhost:5000/api/tasks/TASK_ID/status \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"status":"done","position":0}'
-
-# Reorder Tasks
-curl -X PATCH http://localhost:5000/api/tasks/reorder \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"tasks":[{"id":"TASK_ID","status":"todo","position":0}]}'
-
-# Add Comment
-curl -X POST http://localhost:5000/api/tasks/TASK_ID/comments \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{"content":"This is a comment"}'
-
-# Delete Comment
-curl -X DELETE http://localhost:5000/api/tasks/TASK_ID/comments/COMMENT_ID \
-  -H "Authorization: Bearer YOUR_TOKEN"
-
-# Upload Attachment
-curl -X POST http://localhost:5000/api/tasks/TASK_ID/attachments \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -F "file=@/path/to/file.jpg"
-*/

@@ -7,6 +7,7 @@ const path = require('path');
 const config = require('./config/config');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
+const { generalLimiter, authLimiter } = require('./config/rateLimit');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
@@ -31,11 +32,13 @@ if (config.NODE_ENV === 'development') {
 
 connectDB();
 
+app.use('/api', generalLimiter);
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api', taskRoutes);
 

@@ -9,6 +9,7 @@ import Register from './pages/auth/Register';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProjectList from './pages/projects/ProjectList';
 import Settings from './pages/settings/Settings';
+import UIDemo from './pages/dev/UIDemo';
 
 function App() {
   const { token, fetchUser } = useAuthStore();
@@ -52,6 +53,8 @@ function App() {
             <Settings />
           </ProtectedRoute>
         } />
+        
+        <Route path="/dev/ui" element={<UIDemo />} />
       </Routes>
     </BrowserRouter>
   );

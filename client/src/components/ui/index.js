@@ -10,3 +10,4 @@ export { default as Spinner } from './Spinner';
 export { default as Skeleton, SkeletonText, SkeletonCard } from './Skeleton';
 export { default as EmptyState } from './EmptyState';
 export { default as ThemeToggle } from './ThemeToggle';
+export { default as Checkbox } from './Checkbox';

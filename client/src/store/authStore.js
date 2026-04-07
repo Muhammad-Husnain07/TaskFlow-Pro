@@ -8,19 +8,32 @@ export const useAuthStore = create(
       user: null,
       token: null,
       isLoading: false,
+      isAuthenticated: false,
       error: null,
 
-      setUser: (user) => set({ user }),
+      setUser: (user) => set({ user, isAuthenticated: !!user }),
       
+      setLoading: (isLoading) => set({ isLoading }),
+      
+      setError: (error) => set({ error }),
+      
+      clearError: () => set({ error: null }),
+
       login: async (credentials) => {
         set({ isLoading: true, error: null });
         try {
           const { data } = await authAPI.login(credentials);
           localStorage.setItem('token', data.data.token);
-          set({ user: data.data.user, token: data.data.token, isLoading: false });
+          set({ 
+            user: data.data.user, 
+            token: data.data.token, 
+            isAuthenticated: true,
+            isLoading: false 
+          });
           return data;
         } catch (error) {
-          set({ error: error.response?.data?.message || 'Login failed', isLoading: false });
+          const message = error.response?.data?.message || 'Login failed';
+          set({ error: message, isLoading: false });
           throw error;
         }
       },
@@ -30,34 +43,71 @@ export const useAuthStore = create(
         try {
           const { data } = await authAPI.register(userData);
           localStorage.setItem('token', data.data.token);
-          set({ user: data.data.user, token: data.data.token, isLoading: false });
+          set({ 
+            user: data.data.user, 
+            token: data.data.token,
+            isAuthenticated: true,
+            isLoading: false 
+          });
           return data;
         } catch (error) {
-          set({ error: error.response?.data?.message || 'Registration failed', isLoading: false });
+          const message = error.response?.data?.message || 'Registration failed';
+          set({ error: message, isLoading: false });
           throw error;
         }
       },
 
       logout: () => {
         localStorage.removeItem('token');
-        set({ user: null, token: null });
+        set({ user: null, token: null, isAuthenticated: false, error: null });
       },
 
-      fetchUser: async () => {
+      loadUser: async () => {
         const token = localStorage.getItem('token');
-        if (!token) return;
+        if (!token) {
+          set({ isLoading: false });
+          return;
+        }
         
+        set({ isLoading: true });
         try {
           const { data } = await authAPI.getMe();
-          set({ user: data.data });
+          set({ user: data.data, isAuthenticated: true, isLoading: false });
         } catch (error) {
           get().logout();
+          set({ isLoading: false });
+        }
+      },
+
+      updateProfile: async (profileData) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { data } = await authAPI.updateProfile(profileData);
+          set({ user: data.data, isLoading: false });
+          return data;
+        } catch (error) {
+          const message = error.response?.data?.message || 'Update failed';
+          set({ error: message, isLoading: false });
+          throw error;
+        }
+      },
+
+      changePassword: async (passwordData) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { data } = await authAPI.changePassword(passwordData);
+          set({ isLoading: false });
+          return data;
+        } catch (error) {
+          const message = error.response?.data?.message || 'Password change failed';
+          set({ error: message, isLoading: false });
+          throw error;
         }
       },
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ user: state.user, token: state.token }),
+      partialize: (state) => ({ token: state.token }),
     }
   )
 );

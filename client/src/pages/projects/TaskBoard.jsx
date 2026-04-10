@@ -16,9 +16,9 @@ import {
 import { useTasks, useUpdateTaskStatus, useReorderTasks } from '../../hooks/useTasks';
 import { TaskCard } from '../tasks/TaskCard';
 import TaskQuickAdd from '../tasks/TaskQuickAdd';
+import TaskDetailModal from '../tasks/TaskDetailModal';
 import { Skeleton } from '../ui';
 import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants';
-import { Plus } from 'lucide-react';
 
 const COLUMN_CONFIG = [
   { id: TASK_STATUS.TODO, label: 'To Do', color: 'bg-gray-500' },
@@ -64,6 +64,7 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
   const reorderTasks = useReorderTasks();
   
   const [activeId, setActiveId] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -127,6 +128,15 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
     }
   };
 
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+    onTaskClick?.(task);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTask(null);
+  };
+
   if (isLoading) {
     return (
       <div className="flex gap-4 overflow-x-auto pb-4">
@@ -148,12 +158,12 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
         onDragEnd={handleDragEnd}
       >
         {COLUMN_CONFIG.map(column => (
-          <TaskColumn
-            key={column.id}
-            column={column}
-            tasks={tasksByStatus[column.id] || []}
-            onTaskClick={onTaskClick}
-          />
+<TaskColumn
+              key={column.id}
+              column={column}
+              tasks={tasksByStatus[column.id] || []}
+              onTaskClick={handleTaskClick}
+            />
         ))}
         
         <DragOverlay>
@@ -164,6 +174,13 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
           )}
         </DragOverlay>
       </DndContext>
+
+      <TaskDetailModal
+        isOpen={!!selectedTask}
+        onClose={handleCloseModal}
+        task={selectedTask}
+        projectId={projectId}
+      />
     </div>
   );
 };

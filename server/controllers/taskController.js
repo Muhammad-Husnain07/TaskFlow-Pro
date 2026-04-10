@@ -99,15 +99,47 @@ const updateTask = asyncHandler(async (req, res, next) => {
     return ApiResponse.forbidden(res, 'Not authorized to update this task');
   }
 
-  const { title, description, assignees, priority, dueDate, labels, status, position } = req.body;
+  const { title, description, assignees, priority, dueDate, labels, status, position, subtasks } = req.body;
+
+  const activity = [];
+  if (status && status !== task.status) {
+    activity.push({
+      user: req.user.id,
+      action: 'changed',
+      field: 'status',
+      oldValue: task.status,
+      newValue: status
+    });
+  }
+  if (priority && priority !== task.priority) {
+    activity.push({
+      user: req.user.id,
+      action: 'changed',
+      field: 'priority',
+      oldValue: task.priority,
+      newValue: priority
+    });
+  }
 
   task = await Task.findByIdAndUpdate(
     req.params.id,
-    { title, description, assignees, priority, dueDate, labels, status, position },
+    { 
+      title, 
+      description, 
+      assignees, 
+      priority, 
+      dueDate, 
+      labels, 
+      status, 
+      position,
+      subtasks,
+      $push: { activity: { $each: activity } }
+    },
     { new: true, runValidators: true }
   )
     .populate('assignees', 'name email avatar')
-    .populate('createdBy', 'name email');
+    .populate('createdBy', 'name email')
+    .populate('activity.user', 'name email');
 
   return ApiResponse.success(res, task, 'Task updated successfully');
 });

@@ -9,6 +9,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/dashboard/Dashboard';
 import ProjectList from './pages/projects/ProjectList';
+import ProjectDetail from './pages/projects/ProjectDetail';
 import Settings from './pages/settings/Settings';
 import UIDemo from './pages/dev/UIDemo';
 
@@ -55,7 +56,7 @@ function App() {
         
         <Route path="/projects/:id" element={
           <ProtectedRoute>
-            <ProjectList />
+            <ProjectDetail />
           </ProtectedRoute>
         } />
         

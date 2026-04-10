@@ -74,6 +74,27 @@ const taskSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     }
+  }],
+  subtasks: [{
+    title: String,
+    completed: {
+      type: Boolean,
+      default: false
+    }
+  }],
+  activity: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    action: String,
+    field: String,
+    oldValue: String,
+    newValue: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
   }]
 }, {
   timestamps: true

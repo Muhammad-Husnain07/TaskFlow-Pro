@@ -11,7 +11,7 @@ import {
   Settings, Users, Layout, List, Info, Plus, Mail, Trash2, 
   Shield, ChevronDown, Calendar, ArrowLeft, MoreHorizontal
 } from 'lucide-react';
-import { MEMBER_ROLES } from '../../constants';
+import TaskBoard from './TaskBoard';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: Info },
@@ -432,7 +432,7 @@ const ProjectDetail = () => {
 
       <div className="mt-6">
         {activeTab === 'overview' && <OverviewTab project={project} tasks={tasks} />}
-        {activeTab === 'board' && <div className="text-center py-12 text-gray-500">Board view coming soon</div>}
+        {activeTab === 'board' && <TaskBoard projectId={id} onTaskClick={(task) => console.log(task)} />}
         {activeTab === 'list' && <div className="text-center py-12 text-gray-500">List view coming soon</div>}
         {activeTab === 'members' && <MembersTab project={project} currentUserRole={currentUserRole} />}
         {activeTab === 'settings' && <SettingsTab project={project} onUpdate={refetch} />}

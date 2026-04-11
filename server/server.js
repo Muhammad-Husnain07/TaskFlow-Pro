@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 const config = require('./config/config');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -15,6 +17,15 @@ const taskRoutes = require('./routes/taskRoutes');
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: config.CLIENT_URL,
+    credentials: true
+  }
+});
+
+app.set('io', io);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -32,6 +43,10 @@ if (config.NODE_ENV === 'development') {
 
 connectDB();
 
+const socketHandler = require('./socket/socketHandler');
+io.use(socketHandler.authSocket);
+io.on('connection', (socket) => socketHandler.handleConnection(socket, io));
+
 app.use('/api', generalLimiter);
 
 app.get('/api/health', (req, res) => {
@@ -46,7 +61,7 @@ app.use(errorHandler);
 
 const PORT = config.PORT;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running in ${config.NODE_ENV} mode on port ${PORT}`);
 });
 

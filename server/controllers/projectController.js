@@ -3,6 +3,7 @@ const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
 const queryBuilder = require('../utils/queryBuilder');
+const { emitUserJoined } = require('../utils/socketEmit');
 
 const createProject = asyncHandler(async (req, res, next) => {
   const { name, description, color, tags, dueDate } = req.body;
@@ -115,6 +116,9 @@ const addMember = asyncHandler(async (req, res, next) => {
 
   const updatedProject = await Project.findById(req.params.id)
     .populate('members.user', 'name email avatar');
+
+  const io = req.app.get('io');
+  emitUserJoined(io, req.params.id, user, project.name);
 
   return ApiResponse.success(res, updatedProject, 'Member added successfully');
 });

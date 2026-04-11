@@ -3,6 +3,7 @@ const Project = require('../models/Project');
 const asyncHandler = require('../middleware/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
 const queryBuilder = require('../utils/queryBuilder');
+const { emitTaskCreated, emitTaskUpdated, emitTaskDeleted, emitTaskStatusChanged, emitCommentAdded } = require('../utils/socketEmit');
 
 const createTask = asyncHandler(async (req, res, next) => {
   const { title, description, assignees, priority, dueDate, labels, status } = req.body;
@@ -36,6 +37,9 @@ const createTask = asyncHandler(async (req, res, next) => {
 
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
+
+  const io = req.app.get('io');
+  emitTaskCreated(io, req, task);
 
   return ApiResponse.created(res, task, 'Task created successfully');
 });
@@ -141,6 +145,9 @@ const updateTask = asyncHandler(async (req, res, next) => {
     .populate('createdBy', 'name email')
     .populate('activity.user', 'name email');
 
+  const io = req.app.get('io');
+  emitTaskUpdated(io, req, task);
+
   return ApiResponse.success(res, task, 'Task updated successfully');
 });
 
@@ -156,8 +163,14 @@ const deleteTask = asyncHandler(async (req, res, next) => {
     return ApiResponse.forbidden(res, 'Only owner or admin can delete tasks');
   }
 
+  const projectId = task.project.toString();
+  const taskId = task._id;
+
   await Task.deleteMany({ parentTask: req.params.id });
   await task.deleteOne();
+
+  const io = req.app.get('io');
+  emitTaskDeleted(io, req, taskId, projectId);
 
   return ApiResponse.success(res, null, 'Task deleted successfully');
 });
@@ -184,6 +197,9 @@ const updateStatus = asyncHandler(async (req, res, next) => {
 
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
+
+  const io = req.app.get('io');
+  emitTaskStatusChanged(io, req, task, req.user.id);
 
   return ApiResponse.success(res, task, 'Task status updated successfully');
 });
@@ -220,16 +236,20 @@ const addComment = asyncHandler(async (req, res, next) => {
     return ApiResponse.forbidden(res, 'Not authorized');
   }
 
-  task.comments.push({
+  const newComment = {
     user: req.user.id,
     content,
     createdAt: new Date()
-  });
-
+  };
+  task.comments.push(newComment);
   await task.save();
 
   const updatedTask = await Task.findById(req.params.id)
     .populate('comments.user', 'name email avatar');
+
+  const comment = updatedTask.comments.find(c => c.createdAt.toString() === newComment.createdAt.toString());
+  const io = req.app.get('io');
+  emitCommentAdded(io, req, task, comment);
 
   return ApiResponse.success(res, updatedTask.comments, 'Comment added successfully');
 });

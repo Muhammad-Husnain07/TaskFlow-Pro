@@ -1,9 +1,10 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Avatar, AvatarGroup, Badge } from '../ui';
 import { MessageSquare, Paperclip, Calendar } from 'lucide-react';
 import { TASK_STATUS, TASK_PRIORITY } from '../constants';
+import { getSocket } from '../socket/socket';
 
 const PRIORITY_COLORS = {
   [TASK_PRIORITY.URGENT]: 'bg-danger-500',
@@ -12,7 +13,8 @@ const PRIORITY_COLORS = {
   [TASK_PRIORITY.LOW]: 'bg-gray-400',
 };
 
-const TaskCard = ({ task, onClick, isDragging }) => {
+const TaskCard = ({ task, onClick, isDragging, viewers = [] }) => {
+  const [viewingUsers, setViewingUsers] = useState([]);
   const {
     attributes,
     listeners,
@@ -29,6 +31,33 @@ const TaskCard = ({ task, onClick, isDragging }) => {
 
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== TASK_STATUS.DONE;
 
+  useEffect(() => {
+    const socket = getSocket();
+    if (!socket) return;
+
+    const handleUserViewing = ({ taskId, userId, userName }) => {
+      if (taskId === task._id) {
+        setViewingUsers(prev => [...prev.filter(u => u.userId !== userId), { userId, userName }]);
+      }
+    };
+
+    const handleUserStopViewing = ({ taskId, userId }) => {
+      if (taskId === task._id) {
+        setViewingUsers(prev => prev.filter(u => u.userId !== userId));
+      }
+    };
+
+    socket.on('task:user-viewing', handleUserViewing);
+    socket.on('task:user-stop-viewing', handleUserStopViewing);
+
+    return () => {
+      socket.off('task:user-viewing', handleUserViewing);
+      socket.off('task:user-stop-viewing', handleUserStopViewing);
+    };
+  }, [task._id]);
+
+  const hasViewers = viewingUsers.length > 0 || viewers.length > 0;
+
   return (
     <div
       ref={setNodeRef}
@@ -43,7 +72,15 @@ const TaskCard = ({ task, onClick, isDragging }) => {
       <div className="flex gap-2">
         <div className={`w-1 rounded-full self-stretch ${PRIORITY_COLORS[task.priority] || PRIORITY_COLORS[TASK_PRIORITY.MEDIUM]}`} />
         <div className="flex-1 min-w-0">
-          <h4 className="font-medium text-sm truncate">{task.title}</h4>
+          <div className="flex items-center gap-1">
+            <h4 className="font-medium text-sm truncate">{task.title}</h4>
+            {hasViewers && (
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+            )}
+          </div>
           
           {task.labels?.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">

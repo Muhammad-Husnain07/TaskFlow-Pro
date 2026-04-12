@@ -4,6 +4,7 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
 const queryBuilder = require('../utils/queryBuilder');
 const { emitUserJoined } = require('../utils/socketEmit');
+const { notifyMemberInvited } = require('../utils/notificationService');
 
 const createProject = asyncHandler(async (req, res, next) => {
   const { name, description, color, tags, dueDate } = req.body;
@@ -119,6 +120,7 @@ const addMember = asyncHandler(async (req, res, next) => {
 
   const io = req.app.get('io');
   emitUserJoined(io, req.params.id, user, project.name);
+  await notifyMemberInvited(project, req.user.id, user._id);
 
   return ApiResponse.success(res, updatedProject, 'Member added successfully');
 });

@@ -4,6 +4,8 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
 const queryBuilder = require('../utils/queryBuilder');
 const { emitTaskCreated, emitTaskUpdated, emitTaskDeleted, emitTaskStatusChanged, emitCommentAdded } = require('../utils/socketEmit');
+const { notifyTaskAssigned, notifyTaskStatusChanged } = require('../utils/notificationService');
+const { notifyCommentAdded } = require('../utils/notificationService');
 
 const createTask = asyncHandler(async (req, res, next) => {
   const { title, description, assignees, priority, dueDate, labels, status } = req.body;
@@ -37,6 +39,12 @@ const createTask = asyncHandler(async (req, res, next) => {
 
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
+
+  if (assignees && assignees.length > 0) {
+    for (const assigneeId of assignees) {
+      await notifyTaskAssigned(task, req.user.id, assigneeId);
+    }
+  }
 
   const io = req.app.get('io');
   emitTaskCreated(io, req, task);
@@ -189,6 +197,7 @@ const updateStatus = asyncHandler(async (req, res, next) => {
     return ApiResponse.forbidden(res, 'Not authorized');
   }
 
+  const previousStatus = task.status;
   task.status = status;
   if (position !== undefined) {
     task.position = position;
@@ -197,6 +206,12 @@ const updateStatus = asyncHandler(async (req, res, next) => {
 
   await task.populate('assignees', 'name email avatar');
   await task.populate('createdBy', 'name email');
+
+  if (previousStatus !== status && task.assignees?.length > 0) {
+    for (const assignee of task.assignees) {
+      await notifyTaskStatusChanged(task, req.user.id, previousStatus);
+    }
+  }
 
   const io = req.app.get('io');
   emitTaskStatusChanged(io, req, task, req.user.id);
@@ -250,6 +265,10 @@ const addComment = asyncHandler(async (req, res, next) => {
   const comment = updatedTask.comments.find(c => c.createdAt.toString() === newComment.createdAt.toString());
   const io = req.app.get('io');
   emitCommentAdded(io, req, task, comment);
+
+  if (task.assignees?.length > 0) {
+    await notifyCommentAdded(task, req.user.id, task.assignees);
+  }
 
   return ApiResponse.success(res, updatedTask.comments, 'Comment added successfully');
 });

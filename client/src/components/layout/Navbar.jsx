@@ -1,5 +1,6 @@
-import { Search, Bell, Command } from 'lucide-react';
+import { Search, Command } from 'lucide-react';
 import ThemeToggle from '../ui/ThemeToggle';
+import NotificationBell from './NotificationBell';
 
 const Navbar = ({ title, breadcrumbs }) => {
   return (
@@ -36,10 +37,7 @@ const Navbar = ({ title, breadcrumbs }) => {
 
         <ThemeToggle />
 
-        <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 relative">
-          <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-danger-500 rounded-full"></span>
-        </button>
+        <NotificationBell />
       </div>
     </header>
   );

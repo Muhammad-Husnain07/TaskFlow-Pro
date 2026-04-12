@@ -13,6 +13,7 @@ const { generalLimiter, authLimiter } = require('./config/rateLimit');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api', taskRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.use(errorHandler);
 

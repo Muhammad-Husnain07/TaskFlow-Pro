@@ -100,6 +100,10 @@ const taskSchema = new mongoose.Schema({
   timestamps: true
 });
 
+taskSchema.index({ title: 'text', description: 'text', labels: 'text' });
+taskSchema.index({ project: 1, status: 1 });
+taskSchema.index({ assignees: 1 });
+
 taskSchema.pre('save', function(next) {
   if (this.isModified('status') && this.status === 'done' && !this.completedAt) {
     this.completedAt = new Date();

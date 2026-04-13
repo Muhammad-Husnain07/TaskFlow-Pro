@@ -82,4 +82,8 @@ projectSchema.pre('save', function(next) {
   next();
 });
 
+projectSchema.index({ name: 'text', description: 'text', tags: 'text' });
+projectSchema.index({ 'members.user': 1 });
+projectSchema.index({ status: 1 });
+
 module.exports = mongoose.model('Project', projectSchema);

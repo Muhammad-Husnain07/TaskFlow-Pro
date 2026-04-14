@@ -39,26 +39,41 @@ const getMe = asyncHandler(async (req, res, next) => {
 });
 
 const updateProfile = asyncHandler(async (req, res, next) => {
-  const { name, avatar } = req.body;
+  const { name, bio } = req.body;
 
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { name, avatar },
+    { name, bio },
     { new: true, runValidators: true }
   );
 
   return ApiResponse.success(res, user.fullProfile, 'Profile updated successfully');
 });
 
+const uploadAvatar = asyncHandler(async (req, res, next) => {
+  if (!req.file) {
+    return ApiResponse.error(res, 'No file uploaded', 400);
+  }
+
+  const avatarUrl = `/uploads/${req.file.filename}`;
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { avatar: avatarUrl },
+    { new: true }
+  );
+
+  return ApiResponse.success(res, { avatar: avatarUrl }, 'Avatar uploaded successfully');
+});
+
 const changePassword = asyncHandler(async (req, res, next) => {
-  const { oldPassword, newPassword } = req.body;
+  const { currentPassword, newPassword } = req.body;
 
   const user = await User.findById(req.user.id).select('+password');
   if (!user) {
     return ApiResponse.unauthorized(res, 'User not found');
   }
 
-  const isMatch = await user.matchPassword(oldPassword);
+  const isMatch = await user.matchPassword(currentPassword);
   if (!isMatch) {
     return ApiResponse.error(res, 'Current password is incorrect', 400);
   }
@@ -69,4 +84,29 @@ const changePassword = asyncHandler(async (req, res, next) => {
   return ApiResponse.success(res, null, 'Password updated successfully');
 });
 
-module.exports = { register, login, getMe, updateProfile, changePassword };
+const updateNotificationPreferences = asyncHandler(async (req, res, next) => {
+  const { email, inApp } = req.body;
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { 
+      notificationPreferences: { email, inApp } 
+    },
+    { new: true, runValidators: true }
+  );
+
+  return ApiResponse.success(res, user.notificationPreferences, 'Preferences updated successfully');
+});
+
+const deleteAccount = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return ApiResponse.notFound(res, 'User not found');
+  }
+
+  await user.deleteOne();
+
+  return ApiResponse.success(res, null, 'Account deleted successfully');
+});
+
+module.exports = { register, login, getMe, updateProfile, uploadAvatar, changePassword, updateNotificationPreferences, deleteAccount };

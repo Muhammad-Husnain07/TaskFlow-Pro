@@ -1,8 +1,32 @@
-import { Search, Command } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Command, User, Settings, LogOut } from 'lucide-react';
 import ThemeToggle from '../ui/ThemeToggle';
 import NotificationBell from './NotificationBell';
+import { useAuthStore } from '../../store/authStore';
+import Avatar from '../ui/Avatar';
 
 const Navbar = ({ title, breadcrumbs }) => {
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
       <div>
@@ -38,6 +62,47 @@ const Navbar = ({ title, breadcrumbs }) => {
         <ThemeToggle />
 
         <NotificationBell />
+
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setShowUserMenu(!showUserMenu)}
+            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <Avatar src={user?.avatar} alt={user?.name} size="sm" />
+          </button>
+
+          {showUserMenu && (
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <p className="font-medium text-gray-900 dark:text-white text-sm">{user?.name}</p>
+                <p className="text-xs text-gray-500">{user?.email}</p>
+              </div>
+              <div className="py-1">
+                <button
+                  onClick={() => { navigate(`/profile/${user?.id}`); setShowUserMenu(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <User className="w-4 h-4" />
+                  My Profile
+                </button>
+                <button
+                  onClick={() => { navigate('/settings'); setShowUserMenu(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

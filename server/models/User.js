@@ -28,6 +28,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  bio: {
+    type: String,
+    maxlength: [500, 'Bio cannot exceed 500 characters']
+  },
+  notificationPreferences: {
+    email: {
+      taskAssigned: { type: Boolean, default: true },
+      commentAdded: { type: Boolean, default: true },
+      taskDue: { type: Boolean, default: true },
+    },
+    inApp: {
+      taskAssigned: { type: Boolean, default: true },
+      commentAdded: { type: Boolean, default: true },
+      taskDue: { type: Boolean, default: true },
+      memberInvited: { type: Boolean, default: true },
+    }
+  },
   role: {
     type: String,
     enum: ['user', 'admin'],

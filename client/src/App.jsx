@@ -13,6 +13,7 @@ import ProjectList from './pages/projects/ProjectList';
 import ProjectDetail from './pages/projects/ProjectDetail';
 import Settings from './pages/settings/Settings';
 import SearchPage from './pages/Search';
+import PublicProfile from './pages/profile/PublicProfile';
 import UIDemo from './pages/dev/UIDemo';
 
 function App() {
@@ -84,6 +85,12 @@ function App() {
         <Route path="/search" element={
           <ProtectedRoute>
             <SearchPage />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/profile/:userId" element={
+          <ProtectedRoute>
+            <PublicProfile />
           </ProtectedRoute>
         } />
         

@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense, lazy, useCallback } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import ProtectedRoute from './components/layout/ProtectedRoute';
@@ -13,11 +13,6 @@ const Register = lazy(() => import('./pages/auth/Register'));
 const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'));
 const ProjectList = lazy(() => import('./pages/projects/ProjectList'));
 const ProjectDetail = lazy(() => import('./pages/projects/ProjectDetail'));
-
-const ProjectDetailWithTask = () => {
-  const { projectId, taskId } = useParams();
-  return <ProjectDetail id={projectId} taskId={taskId} />;
-};
 
 const Settings = lazy(() => import('./pages/settings/Settings'));
 const SearchPage = lazy(() => import('./pages/Search'));
@@ -84,14 +79,6 @@ function App() {
               </ErrorBoundary>
             } />
             
-            <Route path="/projects/:id/tasks/:taskId" element={
-              <ErrorBoundary>
-                <ProtectedRoute>
-                  <ProjectDetailWithTask />
-                </ProtectedRoute>
-              </ErrorBoundary>
-            } />
-
             <Route path="/projects/:id" element={
               <ErrorBoundary>
                 <ProtectedRoute>

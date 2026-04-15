@@ -41,7 +41,7 @@ const TaskColumn = ({ column, tasks, onTaskClick, onAddTask }) => {
         </span>
       </div>
       
-      <div className="flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96">
+      <div className="flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96 transition-colors duration-200">
         <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
           {tasks.map((task) => (
             <TaskCard
@@ -68,7 +68,9 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 },
+      activationConstraint: {
+        distance: 5,
+      },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -100,30 +102,25 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
     const activeTask = tasks.find(t => t._id === active.id);
     if (!activeTask) return;
 
-    const overTask = tasks.find(t => t._id === over.id);
-    const overColumn = overTask 
-      ? overTask.status 
-      : COLUMN_CONFIG.find(c => c.id === over.id)?.id;
+    let newStatus = null;
 
-    if (!overColumn) return;
-
-    if (activeTask.status !== overColumn) {
-      await updateStatus.mutateAsync({
-        id: activeTask._id,
-        data: { status: overColumn }
-      });
+    if (over.id && COLUMN_CONFIG.find(c => c.id === over.id)) {
+      newStatus = over.id;
     } else {
-      const columnTasks = tasksByStatus[overColumn];
-      const oldIndex = columnTasks.findIndex(t => t._id === active.id);
-      const newIndex = columnTasks.findIndex(t => t._id === over.id);
+      const overTask = tasks.find(t => t._id === over.id);
+      if (overTask) {
+        newStatus = overTask.status;
+      }
+    }
 
-      if (oldIndex !== newIndex) {
-        const reorderData = columnTasks.map((t, i) => ({
-          id: t._id,
-          status: t.status,
-          position: i
-        }));
-        await reorderTasks.mutateAsync({ tasks: reorderData });
+    if (newStatus && activeTask.status !== newStatus) {
+      try {
+        await updateStatus.mutateAsync({
+          id: activeTask._id,
+          data: { status: newStatus }
+        });
+      } catch (error) {
+        console.error('Failed to update task status:', error);
       }
     }
   };

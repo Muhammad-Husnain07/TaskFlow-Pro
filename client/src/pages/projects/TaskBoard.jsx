@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react';
-import { 
-  DndContext, 
-  DragOverlay, 
+import {
+  DndContext,
+  DragOverlay,
   closestCorners,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
+  useDroppable,
 } from '@dnd-kit/core';
-import { 
-  SortableContext, 
+import {
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
@@ -28,7 +29,9 @@ const COLUMN_CONFIG = [
   { id: TASK_STATUS.CANCELLED, label: 'Cancelled', color: 'bg-gray-300' },
 ];
 
-const TaskColumn = ({ column, tasks, onTaskClick, onAddTask }) => {
+const TaskColumn = ({ column, tasks, onTaskClick }) => {
+  const { setNodeRef, isOver } = useDroppable({ id: column.id });
+
   return (
     <div className="flex flex-col w-72 flex-shrink-0">
       <div className="flex items-center justify-between px-2 py-3">
@@ -40,8 +43,11 @@ const TaskColumn = ({ column, tasks, onTaskClick, onAddTask }) => {
           {tasks.length}
         </span>
       </div>
-      
-      <div className="flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96 transition-colors duration-200">
+
+      <div
+        ref={setNodeRef}
+        className={`flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96 transition-colors duration-200 ${isOver ? 'ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-900/20' : ''}`}
+      >
         <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
           {tasks.map((task) => (
             <TaskCard
@@ -51,7 +57,7 @@ const TaskColumn = ({ column, tasks, onTaskClick, onAddTask }) => {
             />
           ))}
         </SortableContext>
-        
+
         <TaskQuickAdd projectId={tasks[0]?.project || ''} status={column.id} />
       </div>
     </div>
@@ -104,8 +110,9 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
 
     let newStatus = null;
 
-    if (over.id && COLUMN_CONFIG.find(c => c.id === over.id)) {
-      newStatus = over.id;
+    const overColumn = COLUMN_CONFIG.find(c => c.id === over.id);
+    if (overColumn) {
+      newStatus = overColumn.id;
     } else {
       const overTask = tasks.find(t => t._id === over.id);
       if (overTask) {

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useProjects, useMyTasks } from '../../hooks/useProjects';
 import AppLayout from '../../components/layout/AppLayout';
@@ -77,6 +77,7 @@ const TaskItem = ({ task, onClick }) => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
   const { data: projectsData, isLoading: projectsLoading } = useProjects({ limit: 5 });
   const { data: tasksData, isLoading: tasksLoading } = useMyTasks();
@@ -172,7 +173,7 @@ const Dashboard = () => {
                   <TaskItem
                     key={task._id}
                     task={task}
-                    onClick={() => navigate(`/projects/${task.project?._id}`)}
+                    onClick={() => navigate(`/projects/${task.project?._id}`, { state: { selectedTask: task } })}
                   />
                 ))}
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useProject, useUpdateProject, useDeleteProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
 import { useAuthStore } from '../../store/authStore';
 import { useRecentProjectsStore } from '../../store/recentProjectsStore';
@@ -330,6 +330,7 @@ const SettingsTab = ({ project, onUpdate }) => {
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
   const { data, isLoading, refetch } = useProject(id);
   const { data: tasksData } = useTasks(id);
@@ -347,6 +348,15 @@ const ProjectDetail = () => {
       addRecent({ id: project._id, name: project.name, color: project.color });
     }
   }, [project?._id]);
+
+  useEffect(() => {
+    const passedTask = location.state?.selectedTask;
+    if (passedTask) {
+      setSelectedTask(passedTask);
+      setActiveTab('board');
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state?.selectedTask]);
 
   const currentUserMember = project?.members?.find(m => m.user?._id === user?.id || m.user === user?.id);
   const currentUserRole = currentUserMember?.role;

@@ -14,7 +14,7 @@ import {
   Spinner,
   Skeleton,
   EmptyState,
-} from '../ui';
+} from '../../components/ui';
 
 const UIDemo = () => {
   const [showModal, setShowModal] = useState(false);

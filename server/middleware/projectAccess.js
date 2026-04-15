@@ -2,7 +2,8 @@ const Project = require('../models/Project');
 const asyncHandler = require('./asyncHandler');
 
 const checkMember = asyncHandler(async (req, res, next) => {
-  const project = await Project.findById(req.params.id);
+  const projectId = req.params.projectId || req.params.id;
+  const project = await Project.findById(projectId);
 
   if (!project) {
     return res.status(404).json({ success: false, message: 'Project not found' });
@@ -17,7 +18,8 @@ const checkMember = asyncHandler(async (req, res, next) => {
 });
 
 const checkAdmin = asyncHandler(async (req, res, next) => {
-  const project = await Project.findById(req.params.id);
+  const projectId = req.params.projectId || req.params.id;
+  const project = await Project.findById(projectId);
 
   if (!project) {
     return res.status(404).json({ success: false, message: 'Project not found' });

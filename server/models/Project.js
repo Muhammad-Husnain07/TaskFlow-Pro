@@ -52,7 +52,12 @@ const projectSchema = new mongoose.Schema({
 });
 
 projectSchema.methods.isMember = function(userId) {
-  return this.members.some(member => member.user.toString() === userId.toString());
+  const ownerId = this.owner?._id || this.owner;
+  if (ownerId && ownerId.toString() === userId.toString()) return true;
+  return this.members.some(member => {
+    const memberId = member.user?._id || member.user;
+    return memberId && memberId.toString() === userId.toString();
+  });
 };
 
 projectSchema.methods.isAdmin = function(userId) {

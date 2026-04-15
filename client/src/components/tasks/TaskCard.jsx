@@ -3,8 +3,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Avatar, AvatarGroup } from '../ui';
 import { MessageSquare, Paperclip, Calendar } from 'lucide-react';
-import { TASK_STATUS, TASK_PRIORITY } from '../constants';
-import { getSocket } from '../socket/socket';
+import { TASK_STATUS, TASK_PRIORITY } from '../../constants';
+import { getSocket } from '../../socket/socket';
 
 const PRIORITY_COLORS = {
   [TASK_PRIORITY.URGENT]: 'bg-danger-500',
@@ -139,3 +139,6 @@ const TaskCard = memo(forwardRef((props, ref) => (
 )));
 
 TaskCard.displayName = 'TaskCard';
+
+export { TaskCard };
+export default TaskCard;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Bell, Settings, LogOut } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
-import { useNotificationStore } from '../store/notificationStore';
+import { useAuthStore } from '../../store/authStore';
+import { useNotificationStore } from '../../store/notificationStore';
 import NotificationPanel from './NotificationPanel';
 
 const NotificationBell = () => {

@@ -24,9 +24,12 @@ const createProject = asyncHandler(async (req, res, next) => {
 
 const getProjects = asyncHandler(async (req, res, next) => {
   const { page, limit, search, sortBy, order } = req.query;
-  
+
   const qb = queryBuilder(Project, req.query, ['name', 'description']);
-  qb.query['members.user'] = req.user.id;
+  qb.query.$or = [
+    { 'members.user': req.user.id },
+    { owner: req.user.id }
+  ];
   
   const result = await qb.runQuery();
   result.data = await Project.populate(result.data, [

@@ -10,18 +10,8 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['@dnd-kit/core', '@dnd-kit/sortable', 'lucide-react'],
-          'vendor-utils': ['zustand', '@tanstack/react-query', 'axios'],
-        },
-      },
-    },
     chunkSizeWarningLimit: 600,
     sourcemap: false,
-    minify: 'terser',
   },
   server: {
     port: 5173,

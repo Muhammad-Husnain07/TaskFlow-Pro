@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Search, X, Clock, ArrowRight, Plus, Settings, Layout, Folder, CheckSquare } from 'lucide-react';
 import api from '../api/axios';
-import { Spinner } from '../ui';
+import { Spinner } from './ui';
 import { useRecentSearches } from '../hooks/useSearch';
 
 const QUICK_ACTIONS = [

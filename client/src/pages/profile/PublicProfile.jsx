@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import AppLayout from '../components/layout/AppLayout';
-import { Avatar, Spinner, EmptyState } from '../components/ui';
-import { projectApi } from '../api/projectApi';
-import api from '../api/axios';
+import AppLayout from '../../components/layout/AppLayout';
+import { Avatar, Spinner, EmptyState } from '../../components/ui';
+import { projectApi } from '../../api/projectApi';
+import api from '../../api/axios';
 import { Calendar, Folder, CheckSquare } from 'lucide-react';
-import { TASK_STATUS_LABELS } from '../constants';
+import { TASK_STATUS_LABELS } from '../../constants';
 
 const PublicProfile = () => {
   const { userId } = useParams();

@@ -81,20 +81,20 @@ const Dashboard = () => {
   const { data: projectsData, isLoading: projectsLoading } = useProjects({ limit: 5 });
   const { data: tasksData, isLoading: tasksLoading } = useMyTasks();
 
-  const projects = projectsData?.data || [];
-  const myTasks = tasksData?.data || [];
+  const projects = Array.isArray(projectsData?.data) ? projectsData.data : [];
+  const myTasks = Array.isArray(tasksData?.data) ? tasksData.data : [];
 
   const totalProjects = projectsData?.pagination?.total || 0;
-  const completedTasks = myTasks.filter(t => t.status === TASK_STATUS.DONE).length;
-  const openTasks = myTasks.filter(t => t.status !== TASK_STATUS.DONE).length;
-  
-  const thisWeekDue = myTasks.filter(t => {
+  const completedTasks = Array.isArray(myTasks) ? myTasks.filter(t => t.status === TASK_STATUS.DONE).length : 0;
+  const openTasks = Array.isArray(myTasks) ? myTasks.filter(t => t.status !== TASK_STATUS.DONE).length : 0;
+
+  const thisWeekDue = Array.isArray(myTasks) ? myTasks.filter(t => {
     if (!t.dueDate || t.status === TASK_STATUS.DONE) return false;
     const dueDate = new Date(t.dueDate);
     const weekFromNow = new Date();
     weekFromNow.setDate(weekFromNow.getDate() + 7);
     return dueDate <= weekFromNow;
-  }).length;
+  }).length : 0;
 
   const stats = [
     { label: 'Total Projects', value: totalProjects, icon: FolderKanban, color: 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' },

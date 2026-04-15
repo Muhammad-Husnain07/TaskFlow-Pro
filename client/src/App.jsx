@@ -109,7 +109,7 @@ function App() {
                 </ProtectedRoute>
               </ErrorBoundary>
             } />
-            
+
             <Route path="/dev/ui" element={
               <ErrorBoundary>
                 <UIDemo />

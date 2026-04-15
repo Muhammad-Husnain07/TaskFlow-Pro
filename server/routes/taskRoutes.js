@@ -8,6 +8,7 @@ const {
   createTask,
   getTasks,
   getTask,
+  getMyTasks,
   updateTask,
   deleteTask,
   updateStatus,
@@ -34,6 +35,7 @@ router.use(protect);
 router.get('/projects/:projectId/tasks', checkMember, getTasks);
 router.post('/projects/:projectId/tasks', checkMember, validateTask, validateRequest, createTask);
 
+router.get('/tasks/my-tasks', getMyTasks);
 router.get('/tasks/:id', getTask);
 router.put('/tasks/:id', updateTask);
 router.delete('/tasks/:id', deleteTask);

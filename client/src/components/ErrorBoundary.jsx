@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../ui';
+import Button from './ui/Button';
 import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 
 class ErrorBoundary extends Component {

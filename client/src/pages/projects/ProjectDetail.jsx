@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useProject, useUpdateProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
+import { useProject, useUpdateProject, useDeleteProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
 import { useAuthStore } from '../../store/authStore';
 import { useRecentProjectsStore } from '../../store/recentProjectsStore';
 import AppLayout from '../../components/layout/AppLayout';
 import { Button, Badge, Avatar, AvatarGroup, Input, Modal, Skeleton, EmptyState } from '../../components/ui';
 import { Toaster, toast } from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
-import { 
-  Settings, Users, Layout, List, Info, Plus, Mail, Trash2, 
+import {
+  Settings, Users, Layout, List, Info, Plus, Mail, Trash2,
   Shield, ChevronDown, Calendar, ArrowLeft, MoreHorizontal
 } from 'lucide-react';
+import { MEMBER_ROLES } from '../../constants';
 import TaskBoard from './TaskBoard';
 
 const TABS = [
@@ -335,8 +336,8 @@ const ProjectDetail = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [tabFocusIndex, setTabFocusIndex] = useState(0);
 
-  const project = data?.data;
-  const tasks = tasksData?.data || [];
+  const project = data;
+  const tasks = Array.isArray(tasksData?.data) ? tasksData.data : [];
   const { addRecent } = useRecentProjectsStore();
 
   useEffect(() => {
@@ -369,7 +370,7 @@ const ProjectDetail = () => {
     );
   }
 
-  if (!project) {
+  if (!project && !isLoading) {
     return (
       <AppLayout title="Not Found" breadcrumbs={['Projects', 'Not Found']}>
         <EmptyState

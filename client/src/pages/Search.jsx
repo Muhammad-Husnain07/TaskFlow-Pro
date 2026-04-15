@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSearch, useRecentSearches } from '../hooks/useSearch';
 import { Search as SearchIcon, Folder, CheckSquare, Filter } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { Spinner, EmptyState } from '../ui';
+import { Spinner, EmptyState } from '../components/ui';
 import { TASK_STATUS_LABELS } from '../constants';
 
 const SearchPage = () => {

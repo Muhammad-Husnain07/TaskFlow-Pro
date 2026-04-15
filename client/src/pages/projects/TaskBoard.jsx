@@ -14,10 +14,10 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useTasks, useUpdateTaskStatus, useReorderTasks } from '../../hooks/useTasks';
-import { TaskCard } from '../tasks/TaskCard';
-import TaskQuickAdd from '../tasks/TaskQuickAdd';
+import { TaskCard } from '../../components/tasks/TaskCard';
+import TaskQuickAdd from '../../components/tasks/TaskQuickAdd';
 import TaskDetailModal from '../tasks/TaskDetailModal';
-import { Skeleton, TaskBoardSkeleton } from '../ui';
+import { Skeleton, TaskBoardSkeleton } from '../../components/ui';
 import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants';
 
 const COLUMN_CONFIG = [
@@ -75,7 +75,7 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
     })
   );
 
-  const tasks = data?.data || [];
+  const tasks = Array.isArray(data?.data) ? data.data : [];
   
   const tasksByStatus = useMemo(() => {
     const grouped = {};

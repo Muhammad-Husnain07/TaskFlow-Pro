@@ -80,6 +80,52 @@ const getTasks = asyncHandler(async (req, res, next) => {
   return ApiResponse.paginated(res, result.data, result.pagination, 'Tasks retrieved successfully');
 });
 
+const getMyTasks = asyncHandler(async (req, res, next) => {
+  const { status, priority, sortBy, order } = req.query;
+
+  const projects = await Project.find({
+    $or: [
+      { owner: req.user.id },
+      { 'members.user': req.user.id }
+    ]
+  }).select('_id');
+
+  const projectIds = projects.map(p => p._id);
+
+  const query = { project: { $in: projectIds } };
+
+  if (status) query.status = status;
+  if (priority) query.priority = priority;
+  if (req.query.assignee === 'me') {
+    query.assignees = req.user.id;
+  }
+
+  const sort = {};
+  const sortField = sortBy || 'dueDate';
+  const sortOrder = order === 'desc' ? -1 : 1;
+  sort[sortField] = sortOrder;
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 50;
+  const skip = (page - 1) * limit;
+
+  const total = await Task.countDocuments(query);
+  const tasks = await Task.find(query)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .populate('assignees', 'name email avatar')
+    .populate('createdBy', 'name email')
+    .populate('project', 'name color');
+
+  return ApiResponse.paginated(res, tasks, {
+    page,
+    limit,
+    total,
+    pages: Math.ceil(total / limit)
+  }, 'My tasks retrieved successfully');
+});
+
 const getTask = asyncHandler(async (req, res, next) => {
   const task = await Task.findById(req.params.id)
     .populate('assignees', 'name email avatar')
@@ -335,6 +381,7 @@ module.exports = {
   createTask,
   getTasks,
   getTask,
+  getMyTasks,
   updateTask,
   deleteTask,
   updateStatus,

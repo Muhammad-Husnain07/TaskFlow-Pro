@@ -137,7 +137,7 @@ const ProjectList = () => {
     setNewProject({ ...newProject, tags: newProject.tags.filter(t => t !== tag) });
   };
 
-  const projects = data?.data || [];
+  const projects = Array.isArray(data?.data) ? data.data : [];
   const pagination = data?.pagination || {};
 
   const filteredProjects = useMemo(() => {

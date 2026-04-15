@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { notificationApi } from '../api/notificationApi';
-import { useNotificationStore } from '../store/notificationStore';
+import { notificationApi } from '../../api/notificationApi';
+import { useNotificationStore } from '../../store/notificationStore';
 import { Avatar, Spinner, EmptyState } from '../ui';
 import { 
   Bell, 

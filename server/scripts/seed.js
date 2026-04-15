@@ -1,6 +1,5 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Project = require('../models/Project');
 const Task = require('../models/Task');
@@ -90,10 +89,8 @@ async function seed() {
     console.log('Creating users...');
     const users = [];
     for (const userData of SEED_DATA.users) {
-      const password = await bcrypt.hash(userData.password, 12);
       const user = await User.create({
         ...userData,
-        password,
         isVerified: true,
       });
       users.push(user);
@@ -109,14 +106,13 @@ async function seed() {
         ...projectData,
         owner: users[0]._id,
         members: [
-          { user: users[0]._id, role: 'owner' },
           { user: users[1]._id, role: 'admin' },
           { user: users[2]._id, role: 'member' },
         ],
         status: 'active',
       });
       projects.push(project);
-      console.log(`  Created project: ${project.name}`);
+      console.log(`  Created project: ${project.name} (Owner: ${users[0].email})`);
     }
 
     // Create tasks

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi, taskApi } from '../api/projectApi';
+import api from '../api/axios';
 
 const QUERY_KEYS = {
   projects: 'projects',
@@ -12,7 +13,8 @@ export const useProjects = (params = {}) => {
   return useQuery({
     queryKey: [QUERY_KEYS.projects, params],
     queryFn: () => projectApi.getAll(params),
-    select: (res) => res.data,
+    select: (res) => res?.data,
+    placeholderData: (prev) => prev,
   });
 };
 
@@ -20,7 +22,7 @@ export const useProject = (id) => {
   return useQuery({
     queryKey: [QUERY_KEYS.project, id],
     queryFn: () => projectApi.getById(id),
-    select: (res) => res.data,
+    select: (res) => res?.data?.data,
     enabled: !!id,
   });
 };
@@ -80,8 +82,9 @@ export const useTasks = (projectId, params = {}) => {
   return useQuery({
     queryKey: [QUERY_KEYS.tasks, projectId, params],
     queryFn: () => taskApi.getByProject(projectId, params),
-    select: (res) => res.data,
+    select: (res) => res?.data,
     enabled: !!projectId,
+    placeholderData: (prev) => prev,
   });
 };
 
@@ -147,7 +150,7 @@ export const useAddTaskComment = () => {
 export const useMyTasks = () => {
   return useQuery({
     queryKey: ['my-tasks'],
-    queryFn: () => taskApi.getByProject('all', { assignee: 'me', sortBy: 'dueDate', order: 'asc' }),
-    select: (res) => res.data,
+    queryFn: () => api.get('/tasks/my-tasks', { params: { assignee: 'me', sortBy: 'dueDate', order: 'asc' } }),
+    select: (res) => res?.data,
   });
 };

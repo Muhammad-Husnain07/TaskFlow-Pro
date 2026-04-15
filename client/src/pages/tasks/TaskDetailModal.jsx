@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
 import ReactDOM from 'react-dom';
-import { Button, Avatar, Spinner } from '../ui';
+import { Button, Avatar, Spinner } from '../../components/ui';
 import { taskApi } from '../../api/taskApi';
 import { projectApi } from '../../api/projectApi';
 import { useAuthStore } from '../../store/authStore';

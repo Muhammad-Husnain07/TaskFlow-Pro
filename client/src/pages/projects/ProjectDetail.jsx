@@ -327,9 +327,10 @@ const SettingsTab = ({ project, onUpdate }) => {
   );
 };
 
-const ProjectDetail = ({ taskId: initialTaskId }) => {
+const ProjectDetail = (props) => {
   const params = useParams();
-  const projectId = params.id;
+  const projectId = params.id || props.id;
+  const initialTaskId = props.taskId;
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { data, isLoading, refetch } = useProject(projectId);

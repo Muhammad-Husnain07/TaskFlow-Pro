@@ -84,18 +84,18 @@ function App() {
               </ErrorBoundary>
             } />
             
-            <Route path="/projects/:id" element={
-              <ErrorBoundary>
-                <ProtectedRoute>
-                  <ProjectDetail />
-                </ProtectedRoute>
-              </ErrorBoundary>
-            } />
-
             <Route path="/projects/:id/tasks/:taskId" element={
               <ErrorBoundary>
                 <ProtectedRoute>
                   <ProjectDetailWithTask />
+                </ProtectedRoute>
+              </ErrorBoundary>
+            } />
+
+            <Route path="/projects/:id" element={
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <ProjectDetail />
                 </ProtectedRoute>
               </ErrorBoundary>
             } />

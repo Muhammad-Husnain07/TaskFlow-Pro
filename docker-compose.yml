@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: taskflow-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+      MONGO_INITDB_DATABASE: taskflow
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - taskflow-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: taskflow-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/taskflow
+      - MONGO_USER=${MONGO_USER:-admin}
+      - MONGO_PASSWORD=${MONGO_PASSWORD:-password}
+      - JWT_SECRET=${JWT_SECRET}
+      - CLIENT_URL=${CLIENT_URL:-http://localhost:5173}
+      - PORT=5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - taskflow-net
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: taskflow-client
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - taskflow-net
+
+volumes:
+  mongo-data:
+
+networks:
+  taskflow-net:
+    driver: bridge

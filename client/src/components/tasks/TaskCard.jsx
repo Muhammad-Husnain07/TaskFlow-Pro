@@ -1,7 +1,7 @@
-import { forwardRef, useState, useEffect } from 'react';
+import { forwardRef, memo, useCallback, useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Avatar, AvatarGroup, Badge } from '../ui';
+import { Avatar, AvatarGroup } from '../ui';
 import { MessageSquare, Paperclip, Calendar } from 'lucide-react';
 import { TASK_STATUS, TASK_PRIORITY } from '../constants';
 import { getSocket } from '../socket/socket';
@@ -13,7 +13,7 @@ const PRIORITY_COLORS = {
   [TASK_PRIORITY.LOW]: 'bg-gray-400',
 };
 
-const TaskCard = ({ task, onClick, isDragging, viewers = [] }) => {
+const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
   const [viewingUsers, setViewingUsers] = useState([]);
   const {
     attributes,
@@ -56,6 +56,10 @@ const TaskCard = ({ task, onClick, isDragging, viewers = [] }) => {
     };
   }, [task._id]);
 
+  const handleClick = useCallback(() => {
+    onClick?.(task);
+  }, [onClick, task]);
+
   const hasViewers = viewingUsers.length > 0 || viewers.length > 0;
 
   return (
@@ -64,7 +68,7 @@ const TaskCard = ({ task, onClick, isDragging, viewers = [] }) => {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={onClick}
+      onClick={handleClick}
       className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 cursor-pointer hover:shadow-md transition-shadow ${
         isSortableDragging || isDragging ? 'opacity-50' : ''
       }`}
@@ -130,4 +134,8 @@ const TaskCard = ({ task, onClick, isDragging, viewers = [] }) => {
   );
 };
 
-export default forwardRef((props, ref) => <TaskCard {...props} ref={ref} />);
+const TaskCard = memo(forwardRef((props, ref) => (
+  <TaskCardComponent {...props} ref={ref} />
+)));
+
+TaskCard.displayName = 'TaskCard';

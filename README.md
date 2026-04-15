@@ -1,5 +1,8 @@
 # TaskFlow Pro
 
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 A full-stack MERN project management application for teams to collaborate, manage tasks, and track project progress in real-time.
 
 ## Tech Stack
@@ -10,7 +13,7 @@ A full-stack MERN project management application for teams to collaborate, manag
 - **Tailwind CSS v3** - Styling
 - **Zustand** - State management
 - **React Query** - Server state management
-- **React Router DOM** - Routing
+- **React Router DOM v6** - Routing
 - **Socket.io Client** - Real-time communication
 - **@dnd-kit** - Drag and drop
 - **Lucide React** - Icons
@@ -27,6 +30,7 @@ A full-stack MERN project management application for teams to collaborate, manag
 - **Morgan** - HTTP logging
 - **Multer** - File uploads
 - **Express Validator** - Validation
+- **Express Rate Limit** - Rate limiting
 
 ## Getting Started
 

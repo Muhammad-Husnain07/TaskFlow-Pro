@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2026-04-15
+
+### Fixed
+
+- Button loading prop (isLoading instead of loading)
+- Navigation from Dashboard tasks now opens project with task modal
+- Project route properly uses useParams()
+- Improved drag and drop with droppable columns
+- Added visual feedback on column hover during drag
+
+### Added
+
+- Task detail modal opens when clicking task from Dashboard
+
 ## [1.0.1] - 2026-04-15
 
 ### Fixed

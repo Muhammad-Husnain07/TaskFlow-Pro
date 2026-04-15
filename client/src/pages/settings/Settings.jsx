@@ -130,9 +130,9 @@ const ProfileTab = ({ user, onUpdate }) => {
               placeholder="Tell us about yourself..."
             />
           </div>
-          <Button 
-            onClick={handleSave} 
-            loading={updateMutation.isPending}
+          <Button
+            onClick={handleSave}
+            isLoading={updateMutation.isPending}
           >
             Save Changes
           </Button>
@@ -191,9 +191,9 @@ const AccountTab = ({ user }) => {
             onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
             error={passwords.confirm && passwords.new !== passwords.confirm ? 'Passwords do not match' : undefined}
           />
-          <Button 
+          <Button
             onClick={handlePasswordChange}
-            loading={updatePasswordMutation.isPending}
+            isLoading={updatePasswordMutation.isPending}
             disabled={!passwords.current || !passwords.new || passwords.new !== passwords.confirm}
           >
             Update Password

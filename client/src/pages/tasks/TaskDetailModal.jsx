@@ -6,6 +6,7 @@ import { Button, Avatar, Spinner } from '../ui';
 import { taskApi } from '../../api/taskApi';
 import { projectApi } from '../../api/projectApi';
 import { useAuthStore } from '../../store/authStore';
+import { useSocket } from '../../hooks/useSocket';
 import { TASK_STATUS, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, STATUS_COLORS, PRIORITY_COLORS } from '../../constants';
 import { 
   Calendar, 

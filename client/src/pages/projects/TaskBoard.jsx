@@ -17,7 +17,7 @@ import { useTasks, useUpdateTaskStatus, useReorderTasks } from '../../hooks/useT
 import { TaskCard } from '../tasks/TaskCard';
 import TaskQuickAdd from '../tasks/TaskQuickAdd';
 import TaskDetailModal from '../tasks/TaskDetailModal';
-import { Skeleton } from '../ui';
+import { Skeleton, TaskBoardSkeleton } from '../ui';
 import { TASK_STATUS, TASK_STATUS_LABELS } from '../../constants';
 
 const COLUMN_CONFIG = [
@@ -138,15 +138,7 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex gap-4 overflow-x-auto pb-4">
-        {COLUMN_CONFIG.map(col => (
-          <div key={col.id} className="w-72 flex-shrink-0">
-            <Skeleton className="h-96" />
-          </div>
-        ))}
-      </div>
-    );
+    return <TaskBoardSkeleton />;
   }
 
   return (

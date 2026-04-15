@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjects, useCreateProject } from '../../hooks/useProjects';
 import AppLayout from '../../components/layout/AppLayout';
-import { Button, Badge, Avatar, AvatarGroup, Skeleton, EmptyState, Input, Modal } from '../../components/ui';
+import { Button, Badge, Avatar, AvatarGroup, Skeleton, EmptyState, Input, Modal, ProjectListSkeleton } from '../../components/ui';
 import { Toaster, toast } from 'react-hot-toast';
 import { Plus, Search, FolderKanban, Grid, List, SlidersHorizontal, Calendar, X } from 'lucide-react';
 import { PROJECT_STATUS } from '../../constants';
@@ -237,11 +237,7 @@ const ProjectList = () => {
         </div>
 
         {isLoading ? (
-          <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <Skeleton key={i} className="h-40" />
-            ))}
-          </div>
+          <ProjectListSkeleton count={6} />
         ) : filteredProjects.length > 0 ? (
           <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {filteredProjects.map((project) => (

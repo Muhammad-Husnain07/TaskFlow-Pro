@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { MEMBER_ROLES } from '../../constants';
 import TaskBoard from './TaskBoard';
+import TaskDetailModal from '../tasks/TaskDetailModal';
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: Info },
@@ -326,15 +327,17 @@ const SettingsTab = ({ project, onUpdate }) => {
   );
 };
 
-const ProjectDetail = () => {
-  const { id } = useParams();
+const ProjectDetail = ({ taskId: initialTaskId }) => {
+  const params = useParams();
+  const projectId = params.id;
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { data, isLoading, refetch } = useProject(id);
-  const { data: tasksData } = useTasks(id);
+  const { data, isLoading, refetch } = useProject(projectId);
+  const { data: tasksData } = useTasks(projectId);
 
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(initialTaskId ? 'board' : 'overview');
   const [tabFocusIndex, setTabFocusIndex] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const project = data;
   const tasks = Array.isArray(tasksData?.data) ? tasksData.data : [];
@@ -345,6 +348,16 @@ const ProjectDetail = () => {
       addRecent({ id: project._id, name: project.name, color: project.color });
     }
   }, [project?._id]);
+
+  useEffect(() => {
+    if (initialTaskId && tasks.length > 0) {
+      const task = tasks.find(t => t._id === initialTaskId);
+      if (task) {
+        setSelectedTask(task);
+        setActiveTab('board');
+      }
+    }
+  }, [initialTaskId, tasks]);
 
   const currentUserMember = project?.members?.find(m => m.user?._id === user?.id || m.user === user?.id);
   const currentUserRole = currentUserMember?.role;
@@ -433,11 +446,20 @@ const ProjectDetail = () => {
 
       <div className="mt-6">
         {activeTab === 'overview' && <OverviewTab project={project} tasks={tasks} />}
-        {activeTab === 'board' && <TaskBoard projectId={id} onTaskClick={(task) => console.log(task)} />}
+        {activeTab === 'board' && <TaskBoard projectId={id} onTaskClick={setSelectedTask} />}
         {activeTab === 'list' && <div className="text-center py-12 text-gray-500">List view coming soon</div>}
         {activeTab === 'members' && <MembersTab project={project} currentUserRole={currentUserRole} />}
         {activeTab === 'settings' && <SettingsTab project={project} onUpdate={refetch} />}
       </div>
+
+      {selectedTask && (
+        <TaskDetailModal
+          isOpen={!!selectedTask}
+          onClose={() => setSelectedTask(null)}
+          task={selectedTask}
+          projectId={id}
+        />
+      )}
     </AppLayout>
   );
 };

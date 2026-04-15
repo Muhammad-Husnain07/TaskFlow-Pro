@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2026-04-15
+
+### Fixed
+
+- Login 401 error (double password hashing in seed script)
+- Project access denied for owner (isMember function not checking owner)
+- Data not showing on frontend (Array.isArray checks missing)
+- Missing imports (MEMBER_ROLES, useDeleteProject)
+- Import path errors in components
+- AppLayout using Outlet instead of children prop
+- Axios interceptor redirecting on login endpoint
+- Route order issue (my-tasks vs :id)
+- Vite build config issues
+- Dotenv config path
+
+### Added
+
+- getMyTasks route and controller for user's tasks
+- server/uploads to gitignore
+- E2E test checklist documentation
+
 ## [1.0.0] - 2026-04-15
 
 ### Added

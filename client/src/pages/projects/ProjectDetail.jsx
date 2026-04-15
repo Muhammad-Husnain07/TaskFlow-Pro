@@ -327,16 +327,14 @@ const SettingsTab = ({ project, onUpdate }) => {
   );
 };
 
-const ProjectDetail = (props) => {
-  const params = useParams();
-  const projectId = params.id || props.id;
-  const initialTaskId = props.taskId;
+const ProjectDetail = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { data, isLoading, refetch } = useProject(projectId);
-  const { data: tasksData } = useTasks(projectId);
+  const { data, isLoading, refetch } = useProject(id);
+  const { data: tasksData } = useTasks(id);
 
-  const [activeTab, setActiveTab] = useState(initialTaskId ? 'board' : 'overview');
+  const [activeTab, setActiveTab] = useState('overview');
   const [tabFocusIndex, setTabFocusIndex] = useState(0);
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -349,16 +347,6 @@ const ProjectDetail = (props) => {
       addRecent({ id: project._id, name: project.name, color: project.color });
     }
   }, [project?._id]);
-
-  useEffect(() => {
-    if (initialTaskId && tasks.length > 0) {
-      const task = tasks.find(t => t._id === initialTaskId);
-      if (task) {
-        setSelectedTask(task);
-        setActiveTab('board');
-      }
-    }
-  }, [initialTaskId, tasks]);
 
   const currentUserMember = project?.members?.find(m => m.user?._id === user?.id || m.user === user?.id);
   const currentUserRole = currentUserMember?.role;

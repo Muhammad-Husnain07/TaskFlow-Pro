@@ -172,7 +172,7 @@ const Dashboard = () => {
                   <TaskItem
                     key={task._id}
                     task={task}
-                    onClick={() => navigate(`/projects/${task.project?._id}/tasks`)}
+                    onClick={() => navigate(`/projects/${task.project?._id}`)}
                   />
                 ))}
               </div>

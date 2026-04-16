@@ -15,6 +15,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -47,5 +48,40 @@ h1, h2, h3, h4, h5, h6 {
   
   .card {
     @apply bg-white rounded-xl shadow-soft p-6 dark:bg-gray-800;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 20px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+  }
+
+  .dark .custom-scrollbar {
+    scrollbar-color: #475569 transparent;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #475569;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #64748b;
   }
 }

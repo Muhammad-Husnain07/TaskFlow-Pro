@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useProject, useUpdateProject, useDeleteProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
+import { useProject, useUpdateProject, useDeleteProject, useArchiveProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
 import { useAuthStore } from '../../store/authStore';
 import { useRecentProjectsStore } from '../../store/recentProjectsStore';
 import AppLayout from '../../components/layout/AppLayout';
@@ -9,7 +9,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import {
   Settings, Users, Layout, List, Info, Plus, Mail, Trash2,
-  Shield, ChevronDown, Calendar, ArrowLeft, MoreHorizontal
+  Shield, ChevronDown, Calendar, ArrowLeft, MoreHorizontal, Archive
 } from 'lucide-react';
 import { MEMBER_ROLES } from '../../constants';
 import TaskBoard from './TaskBoard';
@@ -227,7 +227,7 @@ const MembersTab = ({ project, currentUserRole }) => {
   );
 };
 
-const SettingsTab = ({ project, onUpdate }) => {
+const SettingsTab = ({ project, onUpdate, onDelete, onArchive }) => {
   const [formData, setFormData] = useState({
     name: project.name,
     description: project.description || '',
@@ -236,8 +236,9 @@ const SettingsTab = ({ project, onUpdate }) => {
     dueDate: project.dueDate ? project.dueDate.split('T')[0] : '',
   });
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [archiving, setArchiving] = useState(false);
   const updateProject = useUpdateProject();
-  const deleteProject = useDeleteProject?.();
 
   const handleSave = async () => {
     setSaving(true);
@@ -249,6 +250,34 @@ const SettingsTab = ({ project, onUpdate }) => {
       toast.error('Failed to update project');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleArchive = async () => {
+    if (!confirm(project.status === 'archived' ? 'Unarchive this project?' : 'Archive this project?')) return;
+    setArchiving(true);
+    try {
+      await onArchive.mutateAsync(project._id);
+      toast.success(project.status === 'archived' ? 'Project unarchived!' : 'Project archived!');
+      onUpdate?.();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to archive project');
+    } finally {
+      setArchiving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
+    setDeleting(true);
+    try {
+      await onDelete.mutateAsync(project._id);
+      toast.success('Project deleted!');
+      navigate('/projects');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete project');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -319,8 +348,24 @@ const SettingsTab = ({ project, onUpdate }) => {
           These actions are irreversible. Please be careful.
         </p>
         <div className="flex gap-3">
-          <Button variant="secondary">Archive Project</Button>
-          <Button variant="danger">Delete Project</Button>
+          <Button 
+            variant="secondary" 
+            onClick={handleArchive}
+            isLoading={archiving}
+            disabled={archiving || deleting}
+          >
+            <Archive className="w-4 h-4 mr-1" />
+            {project.status === 'archived' ? 'Unarchive Project' : 'Archive Project'}
+          </Button>
+          <Button 
+            variant="danger" 
+            onClick={handleDelete}
+            isLoading={deleting}
+            disabled={archiving || deleting}
+          >
+            <Trash2 className="w-4 h-4 mr-1" />
+            Delete Project
+          </Button>
         </div>
       </div>
     </div>
@@ -334,6 +379,8 @@ const ProjectDetail = () => {
   const { user } = useAuthStore();
   const { data, isLoading, refetch } = useProject(id);
   const { data: tasksData } = useTasks(id);
+  const deleteProject = useDeleteProject();
+  const archiveProject = useArchiveProject();
 
   const [activeTab, setActiveTab] = useState('overview');
   const [tabFocusIndex, setTabFocusIndex] = useState(0);
@@ -448,7 +495,14 @@ const ProjectDetail = () => {
         {activeTab === 'board' && <TaskBoard projectId={id} onTaskClick={setSelectedTask} />}
         {activeTab === 'list' && <div className="text-center py-12 text-gray-500">List view coming soon</div>}
         {activeTab === 'members' && <MembersTab project={project} currentUserRole={currentUserRole} />}
-        {activeTab === 'settings' && <SettingsTab project={project} onUpdate={refetch} />}
+        {activeTab === 'settings' && (
+          <SettingsTab 
+            project={project} 
+            onUpdate={refetch} 
+            onDelete={deleteProject}
+            onArchive={archiveProject}
+          />
+        )}
       </div>
 
       {selectedTask && (

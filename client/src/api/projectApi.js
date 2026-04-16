@@ -9,6 +9,7 @@ export const projectApi = {
   addMember: (id, data) => api.post(`/projects/${id}/members`, data),
   removeMember: (id, userId) => api.delete(`/projects/${id}/members/${userId}`),
   updateMemberRole: (id, userId, data) => api.patch(`/projects/${id}/members/${userId}`, data),
+  archive: (id) => api.patch(`/projects/${id}/archive`),
 };
 
 export const taskApi = {

@@ -189,6 +189,23 @@ const updateMemberRole = asyncHandler(async (req, res, next) => {
   return ApiResponse.success(res, updatedProject, 'Member role updated successfully');
 });
 
+const archiveProject = asyncHandler(async (req, res, next) => {
+  const project = await Project.findById(req.params.id);
+
+  if (!project) {
+    return ApiResponse.notFound(res, 'Project not found');
+  }
+
+  if (!project.isAdmin(req.user.id)) {
+    return ApiResponse.forbidden(res, 'Only owner or admin can archive project');
+  }
+
+  project.status = project.status === 'archived' ? 'active' : 'archived';
+  await project.save();
+
+  return ApiResponse.success(res, project, project.status === 'archived' ? 'Project archived successfully' : 'Project unarchived successfully');
+});
+
 module.exports = {
   createProject,
   getProjects,
@@ -197,5 +214,6 @@ module.exports = {
   deleteProject,
   addMember,
   removeMember,
-  updateMemberRole
+  updateMemberRole,
+  archiveProject
 };

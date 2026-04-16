@@ -58,6 +58,17 @@ export const useDeleteProject = () => {
   });
 };
 
+export const useArchiveProject = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => projectApi.archive(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.projects] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.project, id] });
+    },
+  });
+};
+
 export const useAddProjectMember = () => {
   const queryClient = useQueryClient();
   return useMutation({

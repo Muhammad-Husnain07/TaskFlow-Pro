@@ -11,7 +11,8 @@ const {
   deleteProject,
   addMember,
   removeMember,
-  updateMemberRole
+  updateMemberRole,
+  archiveProject
 } = require('../controllers/projectController');
 
 const validateRequest = (req, res, next) => {
@@ -40,5 +41,6 @@ router.route('/:id')
 router.post('/:id/members', checkAdmin, addMember);
 router.delete('/:id/members/:userId', checkAdmin, removeMember);
 router.patch('/:id/members/:userId', checkAdmin, updateMemberRole);
+router.patch('/:id/archive', checkAdmin, archiveProject);
 
 module.exports = router;

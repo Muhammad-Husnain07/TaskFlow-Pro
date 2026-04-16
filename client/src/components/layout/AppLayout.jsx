@@ -5,9 +5,9 @@ const AppLayout = ({ title, breadcrumbs, children }) => {
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
-      <div className="flex-1 ml-60">
+      <div className="flex-1 flex flex-col ml-60">
         <Navbar title={title} breadcrumbs={breadcrumbs} />
-        <main className="p-6">
+        <main className="flex-1 p-6 overflow-hidden">
           {children}
         </main>
       </div>

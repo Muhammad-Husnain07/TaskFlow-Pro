@@ -28,7 +28,7 @@ const Navbar = ({ title, breadcrumbs }) => {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
+    <header className="sticky top-0 z-40 h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
       <div>
         {breadcrumbs && (
           <nav className="flex items-center gap-2 text-sm text-gray-500 mb-1">

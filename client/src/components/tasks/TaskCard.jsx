@@ -69,8 +69,10 @@ const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
       {...attributes}
       {...listeners}
       onClick={handleClick}
-      className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 cursor-pointer hover:shadow-md transition-shadow ${
-        isSortableDragging || isDragging ? 'opacity-50' : ''
+      className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 cursor-grab active:cursor-grabbing hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-200 group ${
+        isSortableDragging || isDragging
+          ? 'opacity-60 scale-105 shadow-2xl ring-2 ring-primary-500 rotate-1 z-50'
+          : 'hover:-translate-y-0.5'
       }`}
     >
       <div className="flex gap-2">

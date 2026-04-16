@@ -46,7 +46,11 @@ const TaskColumn = ({ column, tasks, onTaskClick }) => {
 
       <div
         ref={setNodeRef}
-        className={`flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96 transition-colors duration-200 ${isOver ? 'ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-900/20' : ''}`}
+        className={`flex-1 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-2 space-y-2 min-h-96 transition-all duration-200 ${
+          isOver
+            ? 'ring-2 ring-primary-500 bg-primary-50/50 dark:bg-primary-900/20 shadow-inner scale-[1.02]'
+            : 'hover:bg-gray-200/50 dark:hover:bg-gray-800'
+        }`}
       >
         <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>
           {tasks.map((task) => (
@@ -164,7 +168,7 @@ const TaskBoard = ({ projectId, onTaskClick }) => {
         
         <DragOverlay>
           {activeTask && (
-            <div className="opacity-80">
+            <div className="opacity-90 scale-105 rotate-2 shadow-2xl z-50">
               <TaskCard task={activeTask} isDragging />
             </div>
           )}

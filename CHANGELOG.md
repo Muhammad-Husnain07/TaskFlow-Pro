@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-04-18
+
+### Fixed
+
+- Danger Zone Archive/Delete buttons now working properly
+- Backend archiveProject controller added
+- Frontend archive hook and handlers implemented
+- Navigation to projects page after delete
+- Loading states on archive/delete buttons
+
+### Added
+
+- Archive Project toggle functionality (archived/active)
+- Delete Project with confirmation
+- Project status badge in navbar
+
+### UI/UX Enhanced
+
+- Custom scrollbar styling for board
+- Improved task column visual design with better spacing
+- Enhanced task cards with shadows and hover lift effects
+- Sidebar gradient logo with shadow
+- Sticky navbar with backdrop blur
+- Smooth scroll behavior
+- Semi-transparent backgrounds
+- Better dark mode contrast
+
 ## [1.0.2] - 2026-04-15
 
 ### Fixed

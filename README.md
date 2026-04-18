@@ -1,6 +1,6 @@
 # TaskFlow Pro
 
-![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Version](https://img.shields.io/badge/version-1.0.3-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 A full-stack MERN project management application for teams to collaborate, manage tasks, and track project progress in real-time.
@@ -147,6 +147,12 @@ See [API Docs](server/docs/api.md) for complete API endpoint reference.
 - Profile and settings management
 - Dark/Light theme
 - Responsive design
+- **Project archive/unarchive functionality**
+- **Delete project with confirmation**
+- **Task card hover effects and smooth animations**
+- **Custom scrollbar styling**
+- **Sticky navbar with backdrop blur**
+- **Sidebar gradient logo**
 
 ## Project Structure
 

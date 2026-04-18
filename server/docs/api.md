@@ -96,9 +96,17 @@ Response: { _id, name, ... }
 #### Delete Project
 ```
 DELETE /projects/:id
-Auth: Required (owner/admin only)
+Auth: Required (owner only)
 Response: { message }
 ```
+
+#### Archive Project
+```
+PATCH /projects/:id/archive
+Auth: Required (admin only)
+Response: { message }
+```
+Toggles project status between 'archived' and 'active'.
 
 #### Add Member
 ```

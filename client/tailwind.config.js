@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -9,17 +9,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#7c6af7',
-          50: '#f0eeff',
-          100: '#e4dffe',
-          200: '#c9bffd',
-          300: '#ae9ffd',
-          400: '#937ffc',
-          500: '#7c6af7',
-          600: '#5a48c5',
-          700: '#433593',
-          800: '#2c2361',
-          900: '#151130',
+          DEFAULT: 'var(--color-accent)',
+          50: 'var(--color-accent-50)',
+          100: 'color-mix(in srgb, var(--color-accent) 10%, white)',
+          200: 'color-mix(in srgb, var(--color-accent) 20%, white)',
+          300: 'color-mix(in srgb, var(--color-accent) 30%, white)',
+          400: 'color-mix(in srgb, var(--color-accent) 40%, white)',
+          500: 'var(--color-accent)',
+          600: 'var(--color-accent-dark)',
+          700: 'color-mix(in srgb, var(--color-acent-700) 20%, black)',
+          800: 'color-mix(in srgb, var(--color-accent-700) 30%, black)',
+          900: 'color-mix(in srgb, var(--color-acent-700) 40%, black)',
         },
         secondary: {
           DEFAULT: '#5ee7bf',
@@ -41,16 +41,16 @@ export default {
           200: '#fad0d0',
           300: '#f7b5b5',
           400: '#f76c6c',
-          500: '#f44343',
+          500: '#f44b43',
           600: '#e32b2b',
-          700: '#b32121',
-          800: '#841818',
+          700: '#b32 121',
+          800: '#84 18 18',
           900: '#550f0f',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Syne', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system- ui', 'sans- serif'],
+        heading: ['Syne', 'system- ui', 'sans- serif'],
       },
       borderRadius: {
         'xl': '12px',
@@ -65,4 +65,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

@@ -1,6 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
+function generateColorShades(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return {
+    50: `rgb(${Math.min(255, r + 200)}, ${Math.min(255, g + 200)}, ${Math.min(255, b + 200)})`,
+    100: `rgb(${Math.min(255, r + 170)}, ${Math.min(255, g + 170)}, ${Math.min(255, b + 170)})`,
+    200: `rgb(${Math.min(255, r + 120)}, ${Math.min(255, g + 120)}, ${Math.min(255, b + 120)})`,
+    300: `rgb(${Math.min(255, r + 70)}, ${Math.min(255, g + 70)}, ${Math.min(255, b + 70)})`,
+    400: `rgb(${Math.min(255, r + 30)}, ${Math.min(255, g + 30)}, ${Math.min(255, b + 30)})`,
+    500: hex,
+    600: `rgb(${Math.max(0, r - 30)}, ${Math.max(0, g - 30)}, ${Math.max(0, b - 30)})`,
+    700: `rgb(${Math.max(0, r - 50)}, ${Math.max(0, g - 50)}, ${Math.max(0, b - 50)})`,
+    800: `rgb(${Math.max(0, r - 70)}, ${Math.max(0, g - 70)}, ${Math.max(0, b - 70)})`,
+    900: `rgb(${Math.max(0, r - 90)}, ${Math.max(0, g - 90)}, ${Math.max(0, b - 90)})`,
+  };
+}
 export const useThemeStore = create(
   persist(
     (set) => ({
@@ -19,6 +35,10 @@ export const useThemeStore = create(
       },
       setAccentColor: (color) => {
         set({ accentColor: color });
+        const shades = generateColorShades(color);
+        Object.entries(shades).forEach(([key, value]) => {
+          document.documentElement.style.setProperty('--color-primary-' + key, value);
+        });
         document.documentElement.style.setProperty('--color-primary', color);
       },
       toggleTheme: () => {

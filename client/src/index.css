@@ -16,6 +16,9 @@
   line-height: 1.5;
   font-weight: 400;
   scroll-behavior: smooth;
+  --color-accent: #7c6af7;
+  --color-accent-light: #f0eeff;
+  --color-accent-dark: #5a48c5;
 }
 
 body {

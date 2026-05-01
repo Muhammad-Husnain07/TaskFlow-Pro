@@ -338,8 +338,31 @@ const AppearanceTab = () => {
     { id: 'system', label: 'System', icon: Monitor },
   ];
 
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 124, g: 106, b: 247 };
+  };
+
+  const rgbToHex = (r, g, b) => {
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  };
+
+  const adjustBrightness = (hex, percent) => {
+    const rgb = hexToRgb(hex);
+    const adjust = (val) => Math.min(255, Math.max(0, Math.round(val + (255 - val) * percent / 100)));
+    return rgbToHex(adjust(rgb.r), adjust(rgb.g), adjust(rgb.b));
+  };
+
   useEffect(() => {
-    document.documentElement.style.setProperty('--color-primary', accentColor);
+    const lighterColor = adjustBrightness(accentColor, 85);
+    const darkerColor = adjustBrightness(accentColor, -25);
+    document.documentElement.style.setProperty('--color-accent', accentColor);
+    document.documentElement.style.setProperty('--color-accent-50', lighterColor);
+    document.documentElement.style.setProperty('--color-accent-dark', darkerColor);
   }, [accentColor]);
 
   return (

@@ -233,3 +233,16 @@ h1, h2, h3, h4, h5, h6 {
 .dark .text-gray-400 {
   color: #64748b !important;
 }
+
+/* Dark mode primary colors */
+.dark .bg-primary-100 {
+  background-color: rgba(124, 106, 247, 0.15) !important;
+}
+
+.dark .text-primary-600 {
+  color: #a5b4fc !important;
+}
+
+.dark .text-primary-700 {
+  color: #c7d2fe !important;
+}

@@ -207,19 +207,19 @@ const TaskColumn = ({ column, tasks, onTaskClick }) => {
       <div className="flex items-center justify-between px-3 py-3 mb-2">
         <div className="flex items-center gap-2">
           <div className={`w-2.5 h-2.5 rounded-full ${column.color}`} />
-          <span className="font-semibold text-sm text-gray-700 dark:text-gray-200">{column.label}</span>
+          <span className="font-semibold text-sm text-gray-700 dark:text-slate-200">{column.label}</span>
         </div>
-        <span className="text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+        <span className="text-xs font-medium text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded-full">
           {tasks.length}
         </span>
       </div>
 
       <div
         ref={setNodeRef}
-        className={`flex-1 bg-gray-100/80 dark:bg-gray-800/60 rounded-xl p-3 space-y-3 min-h-80 transition-all duration-300 ${
+        className={`flex-1 bg-gray-100/80 dark:bg-slate-800/80 rounded-xl p-3 space-y-3 min-h-80 transition-all duration-300 ${
           isOver
-            ? 'ring-2 ring-primary-500 bg-primary-50/50 dark:bg-primary-900/20 shadow-inner scale-[1.02]'
-            : 'hover:bg-gray-200/50 dark:hover:bg-gray-800/80'
+            ? 'ring-2 ring-primary-500 bg-primary-50/50 dark:bg-primary-900/30 shadow-inner scale-[1.02]'
+            : 'hover:bg-gray-200/50 dark:hover:bg-slate-700/50'
         }`}
       >
         <SortableContext items={tasks.map(t => t._id)} strategy={verticalListSortingStrategy}>

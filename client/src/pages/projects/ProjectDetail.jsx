@@ -227,7 +227,7 @@ const MembersTab = ({ project, currentUserRole }) => {
   );
 };
 
-const SettingsTab = ({ project, onUpdate, onDelete, onArchive }) => {
+const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
   const [formData, setFormData] = useState({
     name: project.name,
     description: project.description || '',
@@ -501,6 +501,7 @@ const ProjectDetail = () => {
             onUpdate={refetch} 
             onDelete={deleteProject}
             onArchive={archiveProject}
+            navigate={navigate}
           />
         )}
       </div>

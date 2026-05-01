@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-05-02
+
+### Added
+
+#### Task Board Enhancements
+- **Comprehensive filter toolbar** with search, assignee, reporter, and priority filters
+- **Quick filters** - My Tasks, Created by Me options in assignee dropdown
+- **Active filter badges** showing current filters with clear option
+- Separate assignee and reporter dropdowns for better filtering
+
+#### Task Card Improvements
+- **Compact UI design** with better spacing
+- Priority indicators with colored icons (!, ↑, -, ↓)
+- Labels with color coding (cycling through 10 colors)
+- Assignee display with avatar
+- Due date with Today/Tomorrow/overdue highlighting
+- Comments and attachments count indicators
+- Subtask progress indicator
+
+#### Task Detail Modal
+- **Improved modal UI** with sliding panel design (600px width)
+- Colored labels (non-gradient) cycling through blue, green, purple, orange, pink
+- **Mention highlighting** - @username displayed with blue badge styling
+- **Enhanced Activity Log** with action icons and proper formatting
+- Empty state for activity when no actions recorded
+- Better section organization with card-like containers
+
+#### Mention System
+- **MentionInput component** with user dropdown
+- Shows avatar, name, email when selecting user
+- Displays @username preview in dropdown
+- Styled mentions in description and comments preview
+
+#### Notifications
+- Fixed notification messages showing "undefined"
+- Toast notifications for real-time alerts
+- Proper user data population (sender name)
+
+#### Backend Updates
+- Task model: Added reporter field, changed assignees to single field
+- Default assignee/reporter set to task creator on creation
+- Proper population of assignees and reporter in API responses
+
+### Fixed
+
+- Avatar export issues in components
+- Duplicate code in TaskCard component
+- Syntax errors in various components
+- Modal reopening issue after close
+- Task details modal showing twice
+- Filter logic for assignee/reporter
+
+### UI/UX Enhanced
+
+- Modern dark mode support with slate colors
+- Better section organization in task detail modal
+- Priority dropdown with improved styling
+- Status pills with inline color styling
+- Assignee/Reporter select with full member list (name + email)
+- Labels with gradient pill styling in older code (now fixed to solid colors)
+- Improved mentions dropdown styling
+- Custom scrollbar styling
+- Better hover effects on task cards
+
+---
+
 ## [1.0.3] - 2026-04-18
 
 ### Fixed
@@ -29,6 +95,8 @@ All notable changes to this project will be documented in this file.
 - Semi-transparent backgrounds
 - Better dark mode contrast
 
+---
+
 ## [1.0.2] - 2026-04-15
 
 ### Fixed
@@ -42,6 +110,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Task detail modal opens when clicking task from Dashboard
+
+---
 
 ## [1.0.1] - 2026-04-15
 
@@ -63,6 +133,8 @@ All notable changes to this project will be documented in this file.
 - getMyTasks route and controller for user's tasks
 - server/uploads to gitignore
 - E2E test checklist documentation
+
+---
 
 ## [1.0.0] - 2026-04-15
 
@@ -159,4 +231,8 @@ All notable changes to this project will be documented in this file.
 
 ## Version History
 
-- **v1.0.0** - Initial production release with full feature set
+- **v1.1.0** - Task board UI/UX improvements, filters, mentions, notifications
+- **v1.0.3** - Archive/delete project functionality
+- **v1.0.2** - Dashboard task navigation fix
+- **v1.0.1** - Authentication and project fixes
+- **v1.0.0** - Initial production release

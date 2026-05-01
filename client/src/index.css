@@ -63,7 +63,7 @@
 }
 
 body {
-  @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+  @apply bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100;
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .btn-secondary {
-    @apply bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+    @apply bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors hover:bg-gray-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600;
   }
   
   .btn-danger {
@@ -88,12 +88,12 @@ h1, h2, h3, h4, h5, h6 {
   
   .input-field {
     @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent;
-    @apply dark:bg-gray-800 dark:border-gray-600 dark:text-white;
+    @apply dark:bg-slate-800 dark:border-slate-600 dark:text-white;
   }
   
   .card {
     @apply bg-white rounded-xl shadow-soft p-6;
-    @apply dark:bg-gray-800 dark:border dark:border-gray-700;
+    @apply dark:bg-slate-900 dark:border dark:border-slate-700;
   }
   
   .card-elevated {
@@ -165,59 +165,71 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Global dark mode overrides for better consistency */
 .dark {
-  --color-bg-primary: #0f172a;
-  --color-bg-secondary: #1e293b;
-  --color-bg-tertiary: #334155;
+  --color-bg-primary: #020617;
+  --color-bg-secondary: #0f172a;
+  --color-bg-tertiary: #1e293b;
 }
 
 /* Ensure proper dark mode backgrounds */
 .dark body {
-  background-color: #0f172a;
+  background-color: #020617;
 }
 
 .dark .bg-white,
 .dark [class*="bg-white"] {
-  background-color: #1e293b !important;
-}
-
-.dark .bg-gray-50 {
   background-color: #0f172a !important;
 }
 
+.dark .bg-gray-50 {
+  background-color: #020617 !important;
+}
+
 .dark .bg-gray-100 {
-  background-color: #1e293b !important;
+  background-color: #0f172a !important;
 }
 
 .dark .bg-gray-200 {
-  background-color: #334155 !important;
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-800 {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-gray-900 {
+  background-color: #020617 !important;
 }
 
 /* Dark mode borders */
 .dark .border-gray-200 {
-  border-color: #334155 !important;
+  border-color: #1e293b !important;
 }
 
 .dark .border-gray-300 {
-  border-color: #475569 !important;
+  border-color: #334155 !important;
 }
 
 /* Dark mode text colors */
 .dark .text-gray-900 {
-  color: #f1f5f9 !important;
+  color: #f8fafc !important;
 }
 
 .dark .text-gray-800 {
-  color: #e2e8f0 !important;
+  color: #f1f5f9 !important;
 }
 
 .dark .text-gray-700 {
-  color: #cbd5e1 !important;
+  color: #e2e8f0 !important;
 }
 
 .dark .text-gray-600 {
-  color: #94a3b8 !important;
+  color: #cbd5e1 !important;
 }
 
 .dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-400 {
   color: #64748b !important;
 }

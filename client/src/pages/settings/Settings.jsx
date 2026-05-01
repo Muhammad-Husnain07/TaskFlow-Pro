@@ -369,12 +369,12 @@ const hexToRgb = (hex) => {
               onClick={() => setTheme(t.id)}
               className={`flex items-center gap-2 p-3 rounded-lg border transition-colors ${
                 theme === t.id
-                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
+                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
-              <t.icon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{t.label}</span>
+              <t.icon className={`w-5 h-5 ${theme === t.id ? 'text-primary-500' : 'text-gray-500 dark:text-gray-400'}`} />
+              <span className={`text-sm font-medium ${theme === t.id ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400'}`}>{t.label}</span>
             </button>
           ))}
         </div>
@@ -388,7 +388,7 @@ const hexToRgb = (hex) => {
               key={color.value}
               onClick={() => setAccentColor(color.value)}
               className={`w-10 h-10 rounded-full transition-transform hover:scale-110 ${
-                accentColor === color.value ? 'ring-2 ring-offset-2 ring-gray-400' : ''
+                accentColor === color.value ? 'ring-2 ring-offset-2 dark:ring-offset-gray-800 ring-white dark:ring-gray-300' : ''
               }`}
               style={{ backgroundColor: color.value }}
               title={color.name}

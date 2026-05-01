@@ -17,8 +17,16 @@
   font-weight: 400;
   scroll-behavior: smooth;
   --color-accent: #7c6af7;
-  --color-accent-light: #f0eeff;
-  --color-accent-dark: #5a48c5;
+  --color-accent-50: #f3f0ff;
+  --color-accent-100: #e5dffc;
+  --color-accent-200: #d0c4fa;
+  --color-accent-300: #b5a5f5;
+  --color-accent-400: #9b86f0;
+  --color-accent-500: #7c6af7;
+  --color-accent-600: #5a48c5;
+  --color-accent-700: #483694;
+  --color-accent-800: #362463;
+  --color-accent-900: #241232;
 }
 
 body {

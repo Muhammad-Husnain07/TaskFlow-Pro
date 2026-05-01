@@ -16,10 +16,14 @@ const taskSchema = new mongoose.Schema({
     ref: 'Project',
     required: true
   },
-  assignees: [{
+  assignees: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }],
+  },
+  reporter: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

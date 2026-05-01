@@ -4,11 +4,10 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ApiResponse = require('../utils/ApiResponse');
 const queryBuilder = require('../utils/queryBuilder');
 const { emitTaskCreated, emitTaskUpdated, emitTaskDeleted, emitTaskStatusChanged, emitCommentAdded } = require('../utils/socketEmit');
-const { notifyTaskAssigned, notifyTaskStatusChanged } = require('../utils/notificationService');
-const { notifyCommentAdded } = require('../utils/notificationService');
+const { notifyTaskAssigned, notifyTaskStatusChanged, notifyCommentAdded, notifyMentionedUsers } = require('../utils/notificationService');
 
 const createTask = asyncHandler(async (req, res, next) => {
-  const { title, description, assignees, priority, dueDate, labels, status } = req.body;
+  const { title, description, assignee, reporter, priority, dueDate, labels, status } = req.body;
   const projectId = req.params.projectId;
 
   const project = await Project.findById(projectId);
@@ -28,7 +27,8 @@ const createTask = asyncHandler(async (req, res, next) => {
     title,
     description,
     project: projectId,
-    assignees,
+    assignees: assignee || req.user.id,
+    reporter: reporter || req.user.id,
     createdBy: req.user.id,
     priority,
     dueDate,
@@ -38,11 +38,24 @@ const createTask = asyncHandler(async (req, res, next) => {
   });
 
   await task.populate('assignees', 'name email avatar');
+  await task.populate('reporter', 'name email avatar');
   await task.populate('createdBy', 'name email');
 
-  if (assignees && assignees.length > 0) {
-    for (const assigneeId of assignees) {
-      await notifyTaskAssigned(task, req.user.id, assigneeId);
+  const assigneeId = assignee || req.user.id;
+
+  if (assigneeId && assigneeId !== req.user.id) {
+    try {
+      await notifyTaskAssigned(task, req.user, assigneeId);
+    } catch (err) {
+      console.error('Error in notifyTaskAssigned:', err);
+    }
+  }
+
+  if (description) {
+    try {
+      await notifyMentionedUsers(description, req.user, task, 'task');
+    } catch (err) {
+      console.error('Error in notifyMentionedUsers:', err);
     }
   }
 
@@ -74,6 +87,7 @@ const getTasks = asyncHandler(async (req, res, next) => {
   const result = await qb.runQuery();
   result.data = await Task.populate(result.data, [
     { path: 'assignees', select: 'name email avatar' },
+    { path: 'reporter', select: 'name email avatar' },
     { path: 'createdBy', select: 'name email' }
   ]);
 
@@ -129,6 +143,7 @@ const getMyTasks = asyncHandler(async (req, res, next) => {
 const getTask = asyncHandler(async (req, res, next) => {
   const task = await Task.findById(req.params.id)
     .populate('assignees', 'name email avatar')
+    .populate('reporter', 'name email avatar')
     .populate('createdBy', 'name email')
     .populate('comments.user', 'name email avatar')
     .populate('attachments.uploadedBy', 'name email');
@@ -157,7 +172,7 @@ const updateTask = asyncHandler(async (req, res, next) => {
     return ApiResponse.forbidden(res, 'Not authorized to update this task');
   }
 
-  const { title, description, assignees, priority, dueDate, labels, status, position, subtasks } = req.body;
+  const { title, description, assignee, reporter, priority, dueDate, labels, status, position, subtasks } = req.body;
 
   const activity = [];
   if (status && status !== task.status) {
@@ -184,7 +199,8 @@ const updateTask = asyncHandler(async (req, res, next) => {
     { 
       title, 
       description, 
-      assignees, 
+      assignees: assignee || null, 
+      reporter: reporter || null,
       priority, 
       dueDate, 
       labels, 
@@ -196,11 +212,16 @@ const updateTask = asyncHandler(async (req, res, next) => {
     { new: true, runValidators: true }
   )
     .populate('assignees', 'name email avatar')
+    .populate('reporter', 'name email avatar')
     .populate('createdBy', 'name email')
     .populate('activity.user', 'name email');
 
   const io = req.app.get('io');
   emitTaskUpdated(io, req, task);
+
+  if (description && description !== task.description) {
+    await notifyMentionedUsers(description, req.user, task, 'task');
+  }
 
   return ApiResponse.success(res, task, 'Task updated successfully');
 });
@@ -251,12 +272,11 @@ const updateStatus = asyncHandler(async (req, res, next) => {
   await task.save();
 
   await task.populate('assignees', 'name email avatar');
+  await task.populate('reporter', 'name email avatar');
   await task.populate('createdBy', 'name email');
 
-  if (previousStatus !== status && task.assignees?.length > 0) {
-    for (const assignee of task.assignees) {
-      await notifyTaskStatusChanged(task, req.user.id, previousStatus);
-    }
+  if (previousStatus !== status && task.assignees) {
+    await notifyTaskStatusChanged(task, req.user, previousStatus);
   }
 
   const io = req.app.get('io');
@@ -312,8 +332,10 @@ const addComment = asyncHandler(async (req, res, next) => {
   const io = req.app.get('io');
   emitCommentAdded(io, req, task, comment);
 
-  if (task.assignees?.length > 0) {
-    await notifyCommentAdded(task, req.user.id, task.assignees);
+  try {
+    await notifyCommentAdded(task, req.user, task.assignees, content);
+  } catch (err) {
+    console.error('Error in notifyCommentAdded:', err);
   }
 
   return ApiResponse.success(res, updatedTask.comments, 'Comment added successfully');

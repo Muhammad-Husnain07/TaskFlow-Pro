@@ -1,4 +1,4 @@
-const Avatar = ({ src, alt, size = 'md', className = '' }) => {
+export default function Avatar({ src, alt, size = 'md', className = '', user }) {
   const sizes = {
     xs: 'w-6 h-6 text-xs',
     sm: 'w-8 h-8 text-xs',
@@ -7,12 +7,16 @@ const Avatar = ({ src, alt, size = 'md', className = '' }) => {
     xl: 'w-16 h-16 text-lg',
   };
 
-  const initials = alt ? alt.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : '?';
+  const userObj = user || {};
+  const imageSrc = src || userObj.avatar;
+  const name = alt || userObj.name || '';
 
-  return src ? (
+  const initials = name ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : '?';
+
+  return imageSrc ? (
     <img
-      src={src}
-      alt={alt}
+      src={imageSrc}
+      alt={name}
       className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-gray-800 ${className}`}
     />
   ) : (
@@ -20,7 +24,7 @@ const Avatar = ({ src, alt, size = 'md', className = '' }) => {
       {initials}
     </div>
   );
-};
+}
 
 export const AvatarGroup = ({ children, max = 4, size = 'md' }) => {
   const childArray = Array.isArray(children) ? children : [children];
@@ -46,5 +50,3 @@ export const AvatarGroup = ({ children, max = 4, size = 'md' }) => {
     </div>
   );
 };
-
-export default Avatar;

@@ -2,11 +2,14 @@ import { useEffect, useState, Suspense, lazy, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
+import { useNotificationStore } from './store/notificationStore';
+import { initSocket, getSocket } from './socket/socket';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import { Spinner } from './components/ui';
 import CommandPalette from './components/CommandPalette';
 import ErrorBoundary from './components/ErrorBoundary';
 import NotFoundPage from './pages/NotFound';
+import { Toaster, toast } from 'react-hot-toast';
 
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
@@ -27,14 +30,36 @@ const PageLoader = () => (
 
 function App() {
   const { isAuthenticated, loadUser, isLoading: authLoading } = useAuthStore();
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme, accentColor, setAccentColor } = useThemeStore();
+  const { initSocketListeners, removeSocketListeners } = useNotificationStore();
   const [appLoading, setAppLoading] = useState(true);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   useEffect(() => {
     setTheme(theme);
+    setAccentColor(accentColor);
     loadUser().finally(() => setAppLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && !authLoading && !appLoading) {
+      const socket = initSocket();
+      if (socket) {
+        if (socket.connected) {
+          console.log('Socket already connected, initializing listeners');
+          initSocketListeners();
+        } else {
+          socket.on('connect', () => {
+            console.log('Socket connected, initializing listeners');
+            initSocketListeners();
+          });
+        }
+      }
+    }
+    return () => {
+      removeSocketListeners();
+    };
+  }, [isAuthenticated, authLoading, appLoading]);
 
   const handleKeyDown = useCallback((e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -54,6 +79,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Toaster position="bottom-right" />
       <ErrorBoundary>
         <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
         <Suspense fallback={<PageLoader />}>
@@ -79,6 +105,13 @@ function App() {
               </ErrorBoundary>
             } />
             
+            <Route path="/projects/:id/tasks/:taskId" element={
+              <ErrorBoundary>
+                <ProtectedRoute>
+                  <ProjectDetail showTask />
+                </ProtectedRoute>
+              </ErrorBoundary>
+            } />
             <Route path="/projects/:id" element={
               <ErrorBoundary>
                 <ProtectedRoute>

@@ -123,7 +123,7 @@ const addMember = asyncHandler(async (req, res, next) => {
 
   const io = req.app.get('io');
   emitUserJoined(io, req.params.id, user, project.name);
-  await notifyMemberInvited(project, req.user.id, user._id);
+  await notifyMemberInvited(project, req.user, user._id);
 
   return ApiResponse.success(res, updatedProject, 'Member added successfully');
 });

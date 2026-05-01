@@ -65,6 +65,7 @@ userSchema.virtual('fullProfile').get(function() {
     id: this._id,
     name: this.name,
     email: this.email,
+    bio: this.bio,
     avatar: this.avatar,
     role: this.role,
     isVerified: this.isVerified,

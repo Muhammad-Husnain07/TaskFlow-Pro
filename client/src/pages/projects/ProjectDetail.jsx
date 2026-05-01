@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { useProject, useUpdateProject, useDeleteProject, useArchiveProject, useAddProjectMember, useRemoveProjectMember, useTasks } from '../../hooks/useProjects';
 import { useAuthStore } from '../../store/authStore';
 import { useRecentProjectsStore } from '../../store/recentProjectsStore';
@@ -373,18 +374,19 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
 };
 
 const ProjectDetail = () => {
-  const { id } = useParams();
+  const { id: projectId, taskId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const { user } = useAuthStore();
-  const { data, isLoading, refetch } = useProject(id);
-  const { data: tasksData } = useTasks(id);
+  const { data, isLoading, isError, error, refetch } = useProject(projectId);
+  const { data: tasksData, refetch: refetchTasks } = useTasks(projectId);
   const deleteProject = useDeleteProject();
   const archiveProject = useArchiveProject();
 
   const [activeTab, setActiveTab] = useState('overview');
   const [tabFocusIndex, setTabFocusIndex] = useState(0);
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   const project = data;
   const tasks = Array.isArray(tasksData?.data) ? tasksData.data : [];
@@ -397,13 +399,16 @@ const ProjectDetail = () => {
   }, [project?._id]);
 
   useEffect(() => {
-    const passedTask = location.state?.selectedTask;
-    if (passedTask) {
-      setSelectedTask(passedTask);
-      setActiveTab('board');
-      navigate(location.pathname, { replace: true, state: {} });
+    if (taskId && tasks.length > 0) {
+      const task = tasks.find(t => t._id === taskId);
+      if (task) {
+        setSelectedTaskId(task._id);
+        setActiveTab('board');
+      }
     }
-  }, [location.state?.selectedTask]);
+  }, [taskId]);
+
+  const selectedTask = tasks.find(t => t._id === selectedTaskId);
 
   const currentUserMember = project?.members?.find(m => m.user?._id === user?.id || m.user === user?.id);
   const currentUserRole = currentUserMember?.role;
@@ -430,11 +435,12 @@ const ProjectDetail = () => {
   }
 
   if (!project && !isLoading) {
+    const errorMessage = isError ? (error?.message || error?.response?.data?.message || 'API Error') : 'No project data';
     return (
       <AppLayout title="Not Found" breadcrumbs={['Projects', 'Not Found']}>
         <EmptyState
           title="Project not found"
-          description="This project doesn't exist or you don't have access"
+          description={`This project doesn't exist or you don't have access (${errorMessage})`}
           action={<Button onClick={() => navigate('/projects')}>Back to Projects</Button>}
         />
       </AppLayout>
@@ -492,7 +498,7 @@ const ProjectDetail = () => {
 
       <div className="mt-6">
         {activeTab === 'overview' && <OverviewTab project={project} tasks={tasks} />}
-        {activeTab === 'board' && <TaskBoard projectId={id} onTaskClick={setSelectedTask} />}
+        {activeTab === 'board' && <TaskBoard projectId={projectId} projectMembers={project?.members} onTaskClick={(task) => setSelectedTaskId(task._id)} />}
         {activeTab === 'list' && <div className="text-center py-12 text-gray-500">List view coming soon</div>}
         {activeTab === 'members' && <MembersTab project={project} currentUserRole={currentUserRole} />}
         {activeTab === 'settings' && (
@@ -506,12 +512,16 @@ const ProjectDetail = () => {
         )}
       </div>
 
-      {selectedTask && (
+      {selectedTaskId && (
         <TaskDetailModal
-          isOpen={!!selectedTask}
-          onClose={() => setSelectedTask(null)}
+          key={`modal-${selectedTaskId}`}
+          isOpen={true}
+          onClose={() => {
+            setSelectedTaskId(null);
+            navigate(`/projects/${projectId}`, { replace: true });
+          }}
           task={selectedTask}
-          projectId={id}
+          projectId={projectId}
         />
       )}
     </AppLayout>

@@ -3,7 +3,7 @@ export { default as Input } from './Input';
 export { default as Textarea } from './Textarea';
 export { default as Modal } from './Modal';
 export { default as Badge } from './Badge';
-export { default as Avatar, AvatarGroup } from './Avatar';
+export { default as Avatar, AvatarGroup as AvatarGroup } from './Avatar';
 export { default as Dropdown, DropdownItem, DropdownDivider } from './Dropdown';
 export { default as Tooltip } from './Tooltip';
 export { default as Spinner } from './Spinner';
@@ -11,3 +11,4 @@ export { default as Skeleton, SkeletonText, SkeletonCard, ProjectListSkeleton, T
 export { default as EmptyState } from './EmptyState';
 export { default as ThemeToggle } from './ThemeToggle';
 export { default as Checkbox } from './Checkbox';
+export { default as MentionInput } from './MentionInput';

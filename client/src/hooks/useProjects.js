@@ -24,6 +24,8 @@ export const useProject = (id) => {
     queryFn: () => projectApi.getById(id),
     select: (res) => res?.data?.data,
     enabled: !!id,
+    retry: 1,
+    throwOnError: true,
   });
 };
 

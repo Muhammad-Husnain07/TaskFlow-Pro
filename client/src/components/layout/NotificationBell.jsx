@@ -2,13 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Bell, Settings, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useNotificationStore } from '../../store/notificationStore';
+import { notificationApi } from '../../api/notificationApi';
 import NotificationPanel from './NotificationPanel';
 
 const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { user } = useAuthStore();
-  const { unreadCount } = useNotificationStore();
+  const { unreadCount, setUnreadCount } = useNotificationStore();
+
+  useEffect(() => {
+    notificationApi.getCount().then((res) => {
+      setUnreadCount(res.data?.data?.count || 0);
+    }).catch(console.error);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

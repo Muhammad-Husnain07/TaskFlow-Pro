@@ -25,6 +25,36 @@ const NOTIFICATION_ICONS = {
   mention: <MessageSquare className="w-4 h-4 text-indigo-500" />
 };
 
+const formatNotificationMessage = (notification) => {
+  const senderName = notification.sender?.name || 'Someone';
+  const message = notification.message || '';
+  
+  if (message.includes('undefined')) {
+    if (notification.type === 'task_assigned') {
+      return `${senderName} assigned you to "${notification.relatedTask?.title || 'a task'}"`;
+    }
+    if (notification.type === 'task_status_changed') {
+      const match = message.match(/from (\w+) to (\w+)/);
+      if (match) {
+        return `${senderName} changed status of "${notification.relatedTask?.title || 'a task'}" from ${match[1]} to ${match[2]}`;
+      }
+      return `${senderName} updated a task`;
+    }
+    if (notification.type === 'comment_added') {
+      return `${senderName} commented on "${notification.relatedTask?.title || 'a task'}"`;
+    }
+    if (notification.type === 'member_invited') {
+      return `${senderName} invited you to join "${notification.relatedProject?.name || 'a project'}"`;
+    }
+    if (notification.type === 'mention') {
+      return `${senderName} mentioned you in "${notification.relatedTask?.title || 'a task'}"`;
+    }
+    return `${senderName} ${message.replace('undefined', '').trim()}`;
+  }
+  
+  return message;
+};
+
 const formatTimeAgo = (date) => {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   if (seconds < 60) return 'just now';
@@ -156,7 +186,7 @@ const NotificationPanel = ({ onClose }) => {
                 )}
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm ${notification.read ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'}`}>
-                    {notification.message}
+                    {formatNotificationMessage(notification)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
                     {formatTimeAgo(notification.createdAt)}

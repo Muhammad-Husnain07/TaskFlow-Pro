@@ -1,16 +1,46 @@
 import { forwardRef, memo, useCallback, useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Avatar, AvatarGroup } from '../ui';
-import { MessageSquare, Paperclip, Calendar } from 'lucide-react';
+import { Avatar } from '../ui';
+import { MessageSquare, Paperclip, Calendar, UserPlus } from 'lucide-react';
 import { TASK_STATUS, TASK_PRIORITY } from '../../constants';
 import { getSocket } from '../../socket/socket';
 
-const PRIORITY_COLORS = {
-  [TASK_PRIORITY.URGENT]: 'bg-danger-500',
-  [TASK_PRIORITY.HIGH]: 'bg-orange-500',
-  [TASK_PRIORITY.MEDIUM]: 'bg-blue-500',
-  [TASK_PRIORITY.LOW]: 'bg-gray-400',
+const PRIORITY_CONFIG = {
+  [TASK_PRIORITY.URGENT]: { color: '#ef4444', label: '!' },
+  [TASK_PRIORITY.HIGH]: { color: '#f97316', label: '↑' },
+  [TASK_PRIORITY.MEDIUM]: { color: '#3b82f6', label: '-' },
+  [TASK_PRIORITY.LOW]: { color: '#9ca3af', label: '↓' },
+};
+
+const LABEL_COLORS = [
+  { bg: '#fef2f2', text: '#dc2626', border: '#fecaca' },
+  { bg: '#fff7ed', text: '#ea580c', border: '#fed7aa' },
+  { bg: '#fefce8', text: '#d97706', border: '#fef3c7' },
+  { bg: '#f0fdf4', text: '#16a34a', border: '#bbf7d0' },
+  { bg: '#f0fdfa', text: '#0d9488', border: '#99f6e4' },
+  { bg: '#ecfeff', text: '#0891b2', border: '#a5f3fc' },
+  { bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe' },
+  { bg: '#eef2ff', text: '#4f46e5', border: '#c7d2fe' },
+  { bg: '#faf5ff', text: '#9333ea', border: '#e9d5ff' },
+  { bg: '#fdf2f8', text: '#db2777', border: '#fbcfe8' },
+];
+
+const getLabelColor = (index) => LABEL_COLORS[index % LABEL_COLORS.length];
+
+const formatDueDate = (date) => {
+  if (!date) return null;
+  const d = new Date(date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const taskDate = new Date(d);
+  taskDate.setHours(0, 0, 0, 0);
+
+  if (taskDate.getTime() === today.getTime()) return 'Today';
+  if (taskDate.getTime() === tomorrow.getTime()) return 'Tmrrw';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
 const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
@@ -30,6 +60,8 @@ const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
   };
 
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== TASK_STATUS.DONE;
+  const isDueToday = task.dueDate && new Date(task.dueDate).toDateString() === new Date().toDateString();
+  const priorityConfig = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG[TASK_PRIORITY.MEDIUM];
 
   useEffect(() => {
     const socket = getSocket();
@@ -69,66 +101,91 @@ const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
       {...attributes}
       {...listeners}
       onClick={handleClick}
-      className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200/60 dark:border-gray-700/60 p-3.5 cursor-grab active:cursor-grabbing hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-600 hover:-translate-y-1 transition-all duration-200 group ${
+      className={`group bg-white dark:bg-slate-800 rounded-xl border border-gray-200/50 dark:border-slate-700/50 p-3.5 cursor-grab active:cursor-grabbing hover:shadow-md hover:border-blue-300/50 dark:hover:border-blue-600/30 hover:-translate-y-0.5 transition-all duration-150 ${
         isSortableDragging || isDragging
-          ? 'opacity-90 scale-105 shadow-2xl ring-2 ring-primary-500 rotate-2 z-50'
+          ? 'opacity-90 scale-105 shadow-xl ring-2 ring-blue-500 rotate-1 z-50'
           : ''
-      }`}
+      } ${isOverdue ? 'border-l-2 border-l-red-500' : ''}`}
     >
-      <div className="flex gap-2.5">
-        <div className={`w-1.5 rounded-full self-stretch ${PRIORITY_COLORS[task.priority] || PRIORITY_COLORS[TASK_PRIORITY.MEDIUM]}`} />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h4 className="font-medium text-sm text-gray-800 dark:text-gray-100 truncate">{task.title}</h4>
-            {hasViewers && (
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+      <div className="space-y-2.5">
+        <div className="flex items-center gap-2">
+          <span 
+            className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold"
+            style={{ 
+              backgroundColor: `${priorityConfig.color}20`, 
+              color: priorityConfig.color 
+            }}
+          >
+            {priorityConfig.label}
+          </span>
+          <h4 className="font-medium text-[14px] text-gray-800 dark:text-gray-100 leading-tight line-clamp-2 flex-1">
+            {task.title}
+          </h4>
+          {hasViewers && (
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse flex-shrink-0" />
+          )}
+        </div>
+
+        {task.labels?.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {task.labels.slice(0, 3).map((label, i) => {
+              const color = getLabelColor(i);
+              return (
+                <span 
+                  key={i} 
+                  className="px-2 py-0.5 rounded text-[10px] font-medium"
+                  style={{ 
+                    backgroundColor: color.bg, 
+                    color: color.text,
+                  }}
+                >
+                  {label}
+                </span>
+              );
+            })}
+            {task.labels.length > 3 && (
+              <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 dark:bg-slate-700 text-gray-500">
+                +{task.labels.length - 3}
               </span>
             )}
           </div>
-          
-          {task.labels?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-2.5">
-              {task.labels.slice(0, 3).map((label, i) => (
-                <span key={i} className="px-2 py-0.5 bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-300 rounded-md text-xs font-medium">
-                  {label}
-                </span>
-              ))}
+        )}
+
+        <div className="flex items-center justify-between gap-2 pt-1">
+          {task.assignees && (
+            <div className="flex items-center gap-1.5">
+              <Avatar user={task.assignees} size="xs" />
+              <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400">
+                {task.assignees.name?.split(' ')[0]}
+              </span>
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-3.5">
-            <div className="flex items-center gap-2">
-              {task.assignees?.length > 0 && (
-                <AvatarGroup max={3} size="xs">
-                  {task.assignees.map((a, i) => (
-                    <Avatar key={i} alt={a.name} />
-                  ))}
-                </AvatarGroup>
-              )}
-            </div>
-            
-            <div className="flex items-center gap-3 text-gray-400">
-              {task.comments?.length > 0 && (
-                <div className="flex items-center gap-1 text-xs">
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>{task.comments.length}</span>
-                </div>
-              )}
-              {task.attachments?.length > 0 && (
-                <div className="flex items-center gap-1 text-xs">
-                  <Paperclip className="w-3.5 h-3.5" />
-                  <span>{task.attachments.length}</span>
-                </div>
-              )}
-              {task.dueDate && (
-                <div className={`flex items-center gap-1 text-xs ${isOverdue ? 'text-danger-500' : 'text-gray-500'}`}>
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(task.dueDate).toLocaleDateString()}</span>
-                </div>
-              )}
-            </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {task.comments?.length > 0 && (
+              <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <MessageSquare className="w-3.5 h-3.5" />
+                {task.comments.length}
+              </span>
+            )}
+            {task.attachments?.length > 0 && (
+              <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <Paperclip className="w-3.5 h-3.5" />
+                {task.attachments.length}
+              </span>
+            )}
+            {task.dueDate && (
+              <span 
+                className="text-[11px] font-medium px-2 py-1 rounded flex items-center gap-1"
+                style={{
+                  backgroundColor: isOverdue ? '#fef2f2' : isDueToday ? '#fffbeb' : '#f3f4f6',
+                  color: isOverdue ? '#dc2626' : isDueToday ? '#d97706' : '#6b7280'
+                }}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                {formatDueDate(task.dueDate)}
+              </span>
+            )}
           </div>
         </div>
       </div>

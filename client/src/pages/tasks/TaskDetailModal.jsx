@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
 import ReactDOM from 'react-dom';
-import { Button, Avatar, Spinner } from '../../components/ui';
+import { Button, Avatar, Spinner, MentionInput } from '../../components/ui';
 import { taskApi } from '../../api/taskApi';
 import { projectApi } from '../../api/projectApi';
 import { useAuthStore } from '../../store/authStore';
@@ -31,7 +31,61 @@ import {
   Pencil
 } from 'lucide-react';
 
+const MentionRenderer = ({ content }) => {
+  if (!content) return null;
+  
+  const parts = content.split(/(@\w+)/g);
+  
+  return (
+    <span>
+      {parts.map((part, i) => {
+        if (part.startsWith('@')) {
+          return (
+            <span 
+              key={i} 
+              className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-medium text-sm"
+            >
+              {part}
+            </span>
+          );
+        }
+        return part;
+      })}
+    </span>
+  );
+};
+
+const MarkdownWithMentions = ({ content }) => {
+  if (!content) return null;
+  
+  const parts = content.split(/(@\w+)/g);
+  
+  return (
+    <div className="prose dark:prose-invert max-w-none">
+      {parts.map((part, i) => {
+        if (part.startsWith('@')) {
+          return (
+            <span 
+              key={i} 
+              className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-medium text-sm"
+            >
+              {part}
+            </span>
+          );
+        }
+        return part;
+      })}
+    </div>
+  );
+};
+
 const SlidingModal = ({ isOpen, onClose, children, title }) => {
+  const hasOpened = useRef(false);
+  
+  useEffect(() => {
+    if (isOpen) hasOpened.current = true;
+  }, [isOpen]);
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -41,19 +95,22 @@ const SlidingModal = ({ isOpen, onClose, children, title }) => {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !hasOpened.current) return null;
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative w-[520px] h-full bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
-            <X className="w-5 h-5" />
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-[600px] max-w-full h-full bg-white dark:bg-[#0f172a] shadow-2xl transform transition-transform duration-300 overflow-hidden flex flex-col border-l border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50">
+          <div className="flex items-center gap-3">
+            <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
+            <span className="text-xs text-gray-400">Press Esc to close</span>
+          </div>
+          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto">{children}</div>
+        <div className="flex-1 overflow-y-auto custom-scrollbar">{children}</div>
       </div>
     </div>,
     document.body
@@ -62,24 +119,25 @@ const SlidingModal = ({ isOpen, onClose, children, title }) => {
 
 const StatusPills = ({ current, onChange }) => {
   const statuses = [
-    { id: TASK_STATUS.TODO, label: 'To Do', color: 'bg-gray-500' },
-    { id: TASK_STATUS.IN_PROGRESS, label: 'In Progress', color: 'bg-blue-500' },
-    { id: TASK_STATUS.IN_REVIEW, label: 'In Review', color: 'bg-yellow-500' },
-    { id: TASK_STATUS.DONE, label: 'Done', color: 'bg-green-500' },
-    { id: TASK_STATUS.CANCELLED, label: 'Cancelled', color: 'bg-gray-400' },
+    { id: TASK_STATUS.TODO, label: 'To Do', color: '#6b7280', bg: 'bg-gray-100 dark:bg-gray-800' },
+    { id: TASK_STATUS.IN_PROGRESS, label: 'In Progress', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+    { id: TASK_STATUS.IN_REVIEW, label: 'In Review', color: '#eab308', bg: 'bg-yellow-100 dark:bg-yellow-900/30' },
+    { id: TASK_STATUS.DONE, label: 'Done', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30' },
+    { id: TASK_STATUS.CANCELLED, label: 'Cancelled', color: '#9ca3af', bg: 'bg-gray-100 dark:bg-gray-800' },
   ];
 
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-2">
       {statuses.map((s) => (
         <button
           key={s.id}
           onClick={() => onChange(s.id)}
-          className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             current === s.id
-              ? `${s.color} text-white`
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+              ? 'text-white shadow-sm'
+              : `${s.bg} hover:opacity-80`
           }`}
+          style={current === s.id ? { backgroundColor: s.color } : { color: s.color }}
         >
           {s.label}
         </button>
@@ -90,13 +148,14 @@ const StatusPills = ({ current, onChange }) => {
 
 const PriorityDropdown = ({ value, onChange }) => {
   const priorities = [
-    { id: 'low', label: 'Low', color: 'bg-gray-100 text-gray-600' },
-    { id: 'medium', label: 'Medium', color: 'bg-blue-100 text-blue-600' },
-    { id: 'high', label: 'High', color: 'bg-orange-100 text-orange-600' },
-    { id: 'urgent', label: 'Urgent', color: 'bg-red-100 text-red-600' },
+    { id: 'low', label: 'Low', color: '#6b7280' },
+    { id: 'medium', label: 'Medium', color: '#3b82f6' },
+    { id: 'high', label: 'High', color: '#f97316' },
+    { id: 'urgent', label: 'Urgent', color: '#ef4444' },
   ];
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const currentPriority = priorities.find(p => p.id === value) || priorities[1];
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -110,20 +169,23 @@ const PriorityDropdown = ({ value, onChange }) => {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium ${PRIORITY_COLORS[value]}`}
+        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all hover:opacity-90"
+        style={{ backgroundColor: `${currentPriority.color}15`, color: currentPriority.color }}
       >
-        <Flag className="w-3.5 h-3.5" />
+        <Flag className="w-4 h-4" />
         {TASK_PRIORITY_LABELS[value]}
-        <ChevronDown className="w-3 h-3" />
+        <ChevronDown className="w-3.5 h-3.5" />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-32 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-10">
+        <div className="absolute top-full left-0 mt-1 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 z-10 overflow-hidden">
           {priorities.map((p) => (
             <button
               key={p.id}
               onClick={() => { onChange(p.id); setOpen(false); }}
-              className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 first:rounded-t-lg last:rounded-b-lg ${p.color}`}
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center gap-2 ${value === p.id ? 'bg-gray-50 dark:bg-slate-700' : ''}`}
+              style={{ color: p.color }}
             >
+              <Flag className="w-4 h-4" />
               {p.label}
             </button>
           ))}
@@ -133,9 +195,10 @@ const PriorityDropdown = ({ value, onChange }) => {
   );
 };
 
-const AssigneesSelect = ({ value, onChange, projectMembers }) => {
+const AssigneesSelect = ({ value, onChange, projectMembers, label }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const memberId = value || '';
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -145,40 +208,61 @@ const AssigneesSelect = ({ value, onChange, projectMembers }) => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const toggleAssignee = (userId) => {
-    if (value.includes(userId)) {
-      onChange(value.filter((id) => id !== userId));
-    } else {
-      onChange([...value, userId]);
-    }
-  };
+  const selectedMember = projectMembers?.find((m) => m._id === memberId || m.user?._id === memberId);
 
   return (
     <div className="relative" ref={ref}>
       <div className="flex items-center gap-2">
-        <AvatarGroup users={projectMembers?.filter((m) => value.includes(m._id))} size="sm" />
-        <button
-          onClick={() => setOpen(!open)}
-          className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
-        >
-          <Plus className="w-4 h-4" /> Assign
-        </button>
+        {selectedMember ? (
+          <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <Avatar user={selectedMember.user || selectedMember} size="sm" />
+            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{selectedMember.user?.name || selectedMember.name}</span>
+            <button
+              onClick={() => onChange('')}
+              className="text-blue-400 hover:text-blue-600 p-0.5"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
+          >
+            <Plus className="w-4 h-4" /> {label || 'Add'}
+          </button>
+        )}
       </div>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-10 max-h-48 overflow-y-auto">
-          {projectMembers?.map((m) => (
-            <button
-              key={m._id}
-              onClick={() => toggleAssignee(m._id)}
-              className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
-            >
-              <div className={`w-4 h-4 rounded border ${value.includes(m._id) ? 'bg-blue-500 border-blue-500' : 'border-gray-300'} flex items-center justify-center`}>
-                {value.includes(m._id) && <Check className="w-3 h-3 text-white" />}
-              </div>
-              <Avatar user={m} size="xs" />
-              <span className="text-sm text-gray-700 dark:text-gray-300">{m.name}</span>
-            </button>
-          ))}
+        <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-20 max-h-60 overflow-y-auto">
+          <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
+            Select Member
+          </div>
+          {projectMembers?.map((m) => {
+            const mId = m.user?._id || m._id;
+            const isSelected = mId === memberId;
+            return (
+              <button
+                key={m._id}
+                onClick={() => {
+                  onChange(mId);
+                  setOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+              >
+                <Avatar user={m.user || m} size="sm" />
+                <div className="flex-1 text-left">
+                  <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{m.user?.name || m.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{m.user?.email || m.email}</div>
+                </div>
+                {isSelected && (
+                  <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                    <Check className="w-3 h-3 text-white" />
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
@@ -249,8 +333,8 @@ const DescriptionEditor = ({ value, onChange }) => {
         </div>
       )}
       {preview ? (
-        <div className="prose dark:prose-invert max-w-none min-h-[100px] p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
-          <ReactMarkdown>{value || '*No description*'}</ReactMarkdown>
+        <div className="min-h-[100px] p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
+          <MarkdownWithMentions content={value || '*No description*'} />
         </div>
       ) : (
         <textarea
@@ -259,7 +343,7 @@ const DescriptionEditor = ({ value, onChange }) => {
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          placeholder="Add a description... (markdown supported)"
+          placeholder="Add a description... (markdown supported, @mention to notify)"
           className="w-full min-h-[100px] p-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       )}
@@ -342,7 +426,7 @@ const SubtasksSection = ({ subtasks, onChange }) => {
   );
 };
 
-const CommentsSection = ({ comments, onAddComment, onDeleteComment, currentUserId }) => {
+const CommentsSection = ({ comments, onAddComment, onDeleteComment, currentUserId, members = [] }) => {
   const [newComment, setNewComment] = useState('');
 
   const addComment = () => {
@@ -387,20 +471,20 @@ const CommentsSection = ({ comments, onAddComment, onDeleteComment, currentUserI
                   </button>
                 )}
               </div>
-              <div className="prose dark:prose-invert max-w-none text-sm mt-0.5">
-                <ReactMarkdown>{comment.content}</ReactMarkdown>
+              <div className="text-sm mt-0.5">
+                <MarkdownWithMentions content={comment.content} />
               </div>
             </div>
           </div>
         ))}
       </div>
       <div className="space-y-2">
-        <textarea
+        <MentionInput
           value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && e.metaKey && addComment()}
-          placeholder="Write a comment... (Cmd+Enter to post)"
-          className="w-full min-h-[80px] p-2.5 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          onChange={setNewComment}
+          placeholder="Write a comment... (@mention to notify)"
+          rows={3}
+          suggestions={members.map(m => ({ id: m.user?._id || m.user, name: m.user?.name }))}
         />
         <div className="flex justify-end">
           <Button size="sm" onClick={addComment} disabled={!newComment.trim()}>
@@ -476,34 +560,112 @@ const AttachmentsSection = ({ attachments, onUpload, onDelete }) => {
 
 const ActivityLog = ({ activities }) => {
   const [expanded, setExpanded] = useState(true);
+  
   const formatTimeAgo = (date) => {
+    if (!date) return '';
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    if (seconds < 60) return 'just now';
+    if (seconds < 60) return 'Just now';
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m ago`;
     const hours = Math.floor(minutes / 60);
     if (hours < 24) return `${hours}h ago`;
     const days = Math.floor(hours / 24);
     if (days < 7) return `${days}d ago`;
-    return new Date(date).toLocaleDateString();
+    return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
+  const getActivityIcon = (action) => {
+    switch (action) {
+      case 'created':
+        return { icon: '✨', bg: 'bg-purple-100 dark:bg-purple-900/30' };
+      case 'updated':
+        return { icon: '✏️', bg: 'bg-blue-100 dark:bg-blue-900/30' };
+      case 'commented':
+        return { icon: '💬', bg: 'bg-green-100 dark:bg-green-900/30' };
+      case 'assigned':
+        return { icon: '👤', bg: 'bg-orange-100 dark:bg-orange-900/30' };
+      case 'status':
+        return { icon: '📊', bg: 'bg-cyan-100 dark:bg-cyan-900/30' };
+      default:
+        return { icon: '•', bg: 'bg-gray-100 dark:bg-gray-800' };
+    }
+  };
+
+  const getActivityText = (item) => {
+    const fieldLabels = {
+      status: 'status',
+      priority: 'priority',
+      title: 'title',
+      description: 'description',
+      assignee: 'assignee',
+      reporter: 'reporter',
+      dueDate: 'due date',
+      labels: 'labels',
+    };
+    
+    const field = fieldLabels[item.field] || item.field;
+    
+    if (item.action === 'created') {
+      return 'created this task';
+    }
+    if (item.action === 'commented') {
+      return 'added a comment';
+    }
+    if (item.oldValue && item.newValue) {
+      return `changed ${field} from "${item.oldValue}" to "${item.newValue}"`;
+    }
+    if (item.newValue) {
+      return `set ${field} to "${item.newValue}"`;
+    }
+    return `${item.action} ${field}`;
+  };
+
+  if (!activities || activities.length === 0) {
+    return (
+      <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
+        <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+          <Clock className="w-4 h-4" />
+          Activity
+        </button>
+        {expanded && (
+          <div className="mt-4 p-6 text-center bg-gray-50 dark:bg-slate-800/30 rounded-xl">
+            <p className="text-sm text-gray-400">No activity yet</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-      <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+    <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
+      <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
         {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+        <Clock className="w-4 h-4" />
         Activity
+        <span className="text-xs text-gray-400">({activities.length})</span>
       </button>
       {expanded && (
-        <div className="mt-2 space-y-2">
-          {activities?.slice(0, 10).map((item, i) => (
-            <div key={i} className="text-sm text-gray-600 dark:text-gray-400">
-              <span className="font-medium">{item.user?.name}</span>{' '}
-              {item.action} {item.field}
-              {item.oldValue && <span> from {item.oldValue} to {item.newValue}</span>}
-              {' '}· {formatTimeAgo(item.createdAt)}
-            </div>
-          ))}
+        <div className="mt-4 space-y-3">
+          {activities.slice(0, 15).map((item, i) => {
+            const activityType = getActivityIcon(item.action);
+            return (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                <div className={`w-8 h-8 rounded-full ${activityType.bg} flex items-center justify-center text-sm flex-shrink-0`}>
+                  {activityType.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm">
+                    <span className="font-semibold text-gray-800 dark:text-gray-200">{item.user?.name || 'Unknown'}</span>
+                    <span className="text-gray-600 dark:text-gray-400"> {getActivityText(item)}</span>
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {formatTimeAgo(item.createdAt)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -519,7 +681,8 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
     status: 'todo',
     priority: 'medium',
     dueDate: '',
-    assignees: [],
+    assignee: '',
+    reporter: '',
     labels: [],
     subtasks: [],
   });
@@ -548,7 +711,8 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
         status: updatedTask.status || 'todo',
         priority: updatedTask.priority || 'medium',
         dueDate: updatedTask.dueDate?.split('T')[0] || '',
-        assignees: updatedTask.assignees?.map((a) => a._id) || [],
+        assignee: updatedTask.assignees?._id || updatedTask.assignees || '',
+        reporter: updatedTask.reporter?._id || updatedTask.reporter || '',
         labels: updatedTask.labels || [],
         subtasks: updatedTask.subtasks || [],
       });
@@ -627,100 +791,136 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
 
   return (
     <SlidingModal isOpen={isOpen} onClose={onClose} title="Task Details">
-      <div className="p-4 space-y-5">
-        <div className="space-y-3">
+      <div className="p-5 space-y-6">
+        <div className="space-y-4">
           <input
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             onBlur={handleSave}
-            className="w-full text-lg font-semibold bg-transparent border-none focus:outline-none text-gray-900 dark:text-white placeholder-gray-400"
+            className="w-full text-xl font-bold bg-transparent border-none focus:outline-none text-gray-900 dark:text-white placeholder-gray-400"
             placeholder="Task title"
           />
-          <StatusPills
-            current={formData.status}
-            onChange={(status) => {
-              setFormData({ ...formData, status });
-              updateMutation.mutate({ id: task._id, data: { ...formData, status } });
-            }}
-          />
+          <div className="flex items-center gap-3 flex-wrap">
+            <StatusPills
+              current={formData.status}
+              onChange={(status) => {
+                setFormData({ ...formData, status });
+                updateMutation.mutate({ id: task._id, data: { ...formData, status } });
+              }}
+            />
+            <PriorityDropdown
+              value={formData.priority}
+              onChange={(priority) => {
+                setFormData({ ...formData, priority });
+                updateMutation.mutate({ id: task._id, data: { ...formData, priority } });
+              }}
+            />
+            {formData.dueDate && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
+                <Calendar className="w-4 h-4 text-gray-500" />
+                <span className="text-gray-600 dark:text-gray-300">{formatDate(formData.dueDate)}</span>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-xs font-medium text-gray-500 uppercase">Priority</label>
-            <div className="mt-1">
-              <PriorityDropdown
-                value={formData.priority}
-                onChange={(priority) => {
-                  setFormData({ ...formData, priority });
-                  updateMutation.mutate({ id: task._id, data: { ...formData, priority } });
-                }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Due Date</label>
+            <div className="mt-2">
+              <input
+                type="date"
+                value={formData.dueDate}
+                onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                onBlur={handleSave}
+                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800"
               />
             </div>
           </div>
-          <div>
-            <label className="text-xs font-medium text-gray-500 uppercase">Due Date</label>
-            <input
-              type="date"
-              value={formData.dueDate}
-              onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-              onBlur={handleSave}
-              className="mt-1 w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
-            />
+          <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Project</label>
+            <div className="mt-2 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: project?.color || '#6366f1' }} />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{project?.name}</span>
+            </div>
           </div>
         </div>
 
-        <div>
-          <label className="text-xs font-medium text-gray-500 uppercase">Description</label>
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+          <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 block">Description</label>
           <DescriptionEditor
             value={formData.description}
             onChange={(desc) => setFormData({ ...formData, description: desc })}
           />
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-          <label className="text-xs font-medium text-gray-500 uppercase">Assignees</label>
-          <div className="mt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 block">Assignee</label>
             <AssigneesSelect
-              value={formData.assignees}
-              onChange={(assignees) => {
-                setFormData({ ...formData, assignees });
-                updateMutation.mutate({ id: task._id, data: { ...formData, assignees } });
+              value={formData.assignee}
+              onChange={(assignee) => {
+                setFormData({ ...formData, assignee });
+                updateMutation.mutate({ id: task._id, data: { ...formData, assignee } });
               }}
               projectMembers={project?.members}
+              label="+ Add Assignee"
+            />
+          </div>
+          <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+            <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 block">Reporter</label>
+            <AssigneesSelect
+              value={formData.reporter}
+              onChange={(reporter) => {
+                setFormData({ ...formData, reporter });
+                updateMutation.mutate({ id: task._id, data: { ...formData, reporter } });
+              }}
+              projectMembers={project?.members}
+              label="+ Add Reporter"
             />
           </div>
         </div>
 
-        <div>
-          <label className="text-xs font-medium text-gray-500 uppercase">Labels</label>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {formData.labels.map((label) => (
-              <span
-                key={label}
-                className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full flex items-center gap-1"
-              >
-                {label}
-                <button type="button" onClick={() => {
-                  const labels = formData.labels.filter((l) => l !== label);
-                  setFormData({ ...formData, labels });
-                  updateMutation.mutate({ id: task._id, data: { ...formData, labels } });
-                }}>
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            ))}
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
+          <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 block">Labels</label>
+          <div className="flex flex-wrap gap-2">
+            {formData.labels.map((label, idx) => {
+              const colors = [
+                { bg: 'bg-blue-100', text: 'text-blue-700', darkBg: 'dark:bg-blue-900/30', darkText: 'dark:text-blue-300' },
+                { bg: 'bg-green-100', text: 'text-green-700', darkBg: 'dark:bg-green-900/30', darkText: 'dark:text-green-300' },
+                { bg: 'bg-purple-100', text: 'text-purple-700', darkBg: 'dark:bg-purple-900/30', darkText: 'dark:text-purple-300' },
+                { bg: 'bg-orange-100', text: 'text-orange-700', darkBg: 'dark:bg-orange-900/30', darkText: 'dark:text-orange-300' },
+                { bg: 'bg-pink-100', text: 'text-pink-700', darkBg: 'dark:bg-pink-900/30', darkText: 'dark:text-pink-300' },
+                { bg: 'bg-indigo-100', text: 'text-indigo-700', darkBg: 'dark:bg-indigo-900/30', darkText: 'dark:text-indigo-300' },
+              ];
+              const color = colors[idx % colors.length];
+              return (
+                <span
+                  key={label}
+                  className={`px-3 py-1 ${color.bg} ${color.text} ${color.darkBg} ${color.darkText} text-xs rounded-full flex items-center gap-1.5 font-medium`}
+                >
+                  {label}
+                  <button type="button" onClick={() => {
+                    const labels = formData.labels.filter((l) => l !== label);
+                    setFormData({ ...formData, labels });
+                    updateMutation.mutate({ id: task._id, data: { ...formData, labels } });
+                  }} className="hover:opacity-70 rounded-full p-0.5">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              );
+            })}
             <input
               value={newLabel}
               onChange={(e) => setNewLabel(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddLabel()}
               placeholder="Add label..."
-              className="px-2 py-0.5 text-xs border-none bg-transparent focus:outline-none w-20"
+              className="px-3 py-1 text-xs border border-dashed border-gray-300 dark:border-gray-600 rounded-full bg-transparent focus:outline-none w-24 text-gray-600 dark:text-gray-300"
             />
           </div>
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+        <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
           <SubtasksSection
             subtasks={formData.subtasks}
             onChange={(subtasks) => {
@@ -730,17 +930,18 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
           />
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+        <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
           <CommentsSection
             comments={updatedTask?.comments}
             onAddComment={(content) => addCommentMutation.mutate({ id: task._id, content })}
             onDeleteComment={(commentId) => deleteCommentMutation.mutate({ id: task._id, commentId })}
             currentUserId={user?.id}
+            members={project?.members}
           />
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Attachments</h4>
+        <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Attachments</h4>
           <AttachmentsSection
             attachments={updatedTask?.attachments}
             onUpload={(files) => uploadMutation.mutate({ id: task._id, files })}
@@ -748,16 +949,12 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
           />
         </div>
 
-        <ActivityLog activities={updatedTask?.activity} />
-
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 text-xs text-gray-500 space-y-1">
-          <p>
-            Created by {updatedTask?.createdBy?.name} · {formatDate(updatedTask?.createdAt)}
-          </p>
-          <p>
-            Project: <span className="text-blue-600">{project?.name}</span>
-          </p>
-          <p className="text-gray-400">E: edit title · Cmd+Enter: save · Esc: close</p>
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-4">
+            <span>Created by <span className="font-medium text-gray-700 dark:text-gray-300">{updatedTask?.createdBy?.name}</span></span>
+            <span>·</span>
+            <span>{formatDate(updatedTask?.createdAt)}</span>
+          </div>
         </div>
       </div>
     </SlidingModal>

@@ -37,9 +37,9 @@ export const useThemeStore = create(
         set({ accentColor: color });
         const shades = generateColorShades(color);
         Object.entries(shades).forEach(([key, value]) => {
-          document.documentElement.style.setProperty('--color-primary-' + key, value);
+          document.documentElement.style.setProperty(`--color-accent-${key}`, value);
         });
-        document.documentElement.style.setProperty('--color-primary', color);
+        document.documentElement.style.setProperty('--color-accent', color);
       },
       toggleTheme: () => {
         set((state) => {

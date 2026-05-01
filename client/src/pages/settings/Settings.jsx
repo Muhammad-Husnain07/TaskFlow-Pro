@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../../store/authStore';
 import { useThemeStore } from '../../store/themeStore';
@@ -338,7 +338,7 @@ const AppearanceTab = () => {
     { id: 'system', label: 'System', icon: Monitor },
   ];
 
-  const hexToRgb = (hex) => {
+const hexToRgb = (hex) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
       r: parseInt(result[1], 16),
@@ -347,23 +347,16 @@ const AppearanceTab = () => {
     } : { r: 124, g: 106, b: 247 };
   };
 
-  const rgbToHex = (r, g, b) => {
-    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-  };
+  const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
+    const hex = x.toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }).join('');
 
   const adjustBrightness = (hex, percent) => {
     const rgb = hexToRgb(hex);
     const adjust = (val) => Math.min(255, Math.max(0, Math.round(val + (255 - val) * percent / 100)));
     return rgbToHex(adjust(rgb.r), adjust(rgb.g), adjust(rgb.b));
   };
-
-  useEffect(() => {
-    const lighterColor = adjustBrightness(accentColor, 85);
-    const darkerColor = adjustBrightness(accentColor, -25);
-    document.documentElement.style.setProperty('--color-accent', accentColor);
-    document.documentElement.style.setProperty('--color-accent-50', lighterColor);
-    document.documentElement.style.setProperty('--color-accent-dark', darkerColor);
-  }, [accentColor]);
 
   return (
     <div className="space-y-6">

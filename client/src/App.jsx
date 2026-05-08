@@ -46,11 +46,9 @@ function App() {
       const socket = initSocket();
       if (socket) {
         if (socket.connected) {
-          console.log('Socket already connected, initializing listeners');
           initSocketListeners();
         } else {
           socket.on('connect', () => {
-            console.log('Socket connected, initializing listeners');
             initSocketListeners();
           });
         }

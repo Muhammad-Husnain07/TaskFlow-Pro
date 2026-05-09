@@ -119,11 +119,11 @@ const SlidingModal = ({ isOpen, onClose, children, title }) => {
 
 const StatusPills = ({ current, onChange }) => {
   const statuses = [
-    { id: TASK_STATUS.TODO, label: 'To Do', color: '#6b7280', bg: 'bg-gray-100 dark:bg-gray-800' },
+    { id: TASK_STATUS.TODO, label: 'To Do', color: '#6b7280', bg: 'bg-gray-100 dark:bg-slate-800' },
     { id: TASK_STATUS.IN_PROGRESS, label: 'In Progress', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30' },
     { id: TASK_STATUS.IN_REVIEW, label: 'In Review', color: '#eab308', bg: 'bg-yellow-100 dark:bg-yellow-900/30' },
     { id: TASK_STATUS.DONE, label: 'Done', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30' },
-    { id: TASK_STATUS.CANCELLED, label: 'Cancelled', color: '#9ca3af', bg: 'bg-gray-100 dark:bg-gray-800' },
+    { id: TASK_STATUS.CANCELLED, label: 'Cancelled', color: '#9ca3af', bg: 'bg-gray-100 dark:bg-slate-800' },
   ];
 
   return (
@@ -587,7 +587,7 @@ const ActivityLog = ({ activities }) => {
       case 'status':
         return { icon: '📊', bg: 'bg-cyan-100 dark:bg-cyan-900/30' };
       default:
-        return { icon: '•', bg: 'bg-gray-100 dark:bg-gray-800' };
+        return { icon: '•', bg: 'bg-gray-100 dark:bg-slate-800' };
     }
   };
 
@@ -816,7 +816,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
               }}
             />
             {formData.dueDate && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-lg text-sm">
                 <Calendar className="w-4 h-4 text-gray-500" />
                 <span className="text-gray-600 dark:text-gray-300">{formatDate(formData.dueDate)}</span>
               </div>
@@ -833,7 +833,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
                 value={formData.dueDate}
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                 onBlur={handleSave}
-                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800"
+                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800"
               />
             </div>
           </div>

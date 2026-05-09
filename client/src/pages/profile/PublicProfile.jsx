@@ -55,7 +55,7 @@ const PublicProfile = () => {
   return (
     <AppLayout title="Profile" breadcrumbs={['Profile']}>
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
           <div className="flex items-start gap-6">
             <Avatar src={user?.avatar} alt={user?.name} size="2xl" />
             <div className="flex-1">
@@ -86,7 +86,7 @@ const PublicProfile = () => {
                 <a
                   key={project._id}
                   href={`/projects/${project._id}`}
-                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-300 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 transition-colors"
                 >
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: project.color + '20' }}>
                     <Folder className="w-5 h-5" style={{ color: project.color }} />
@@ -120,7 +120,7 @@ const PublicProfile = () => {
                 <a
                   key={task._id}
                   href={`/projects/${task.project?._id}/tasks/${task._id}`}
-                  className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-300 transition-colors"
+                  className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 transition-colors"
                 >
                   <span className="font-medium text-gray-900 dark:text-white">{task.title}</span>
                   <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">

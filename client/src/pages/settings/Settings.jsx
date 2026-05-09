@@ -75,7 +75,7 @@ const ProfileTab = ({ user, onUpdate }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Profile Picture</h3>
         <div className="flex items-center gap-4">
           <div className="relative">
@@ -105,7 +105,7 @@ const ProfileTab = ({ user, onUpdate }) => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Profile Information</h3>
         <div className="space-y-4">
           <Input
@@ -126,7 +126,7 @@ const ProfileTab = ({ user, onUpdate }) => {
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="Tell us about yourself..."
             />
           </div>
@@ -169,7 +169,7 @@ const AccountTab = ({ user }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Change Password</h3>
         <div className="space-y-4 max-w-md">
           <Input
@@ -201,7 +201,7 @@ const AccountTab = ({ user }) => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft border border-red-200 dark:border-red-900/30">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft border border-red-200 dark:border-red-900/30">
         <h3 className="text-lg font-semibold text-red-600 mb-2">Danger Zone</h3>
         <p className="text-sm text-gray-500 mb-4">
           Once you delete your account, there is no going back. Please be certain.
@@ -275,7 +275,7 @@ const NotificationsTab = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Email Notifications</h3>
         <div className="space-y-4">
           {[
@@ -300,7 +300,7 @@ const NotificationsTab = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">In-App Notifications</h3>
         <div className="space-y-4">
           {[
@@ -360,7 +360,7 @@ const hexToRgb = (hex) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Theme</h3>
         <div className="grid grid-cols-3 gap-3">
           {themes.map((t) => (
@@ -370,7 +370,7 @@ const hexToRgb = (hex) => {
               className={`flex items-center gap-2 p-3 rounded-lg border transition-colors ${
                 theme === t.id
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30'
-                  : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                  : 'border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
               <t.icon className={`w-5 h-5 ${theme === t.id ? 'text-primary-500' : 'text-gray-500 dark:text-gray-400'}`} />
@@ -380,7 +380,7 @@ const hexToRgb = (hex) => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
         <h3 className="text-lg font-semibold mb-4">Accent Color</h3>
         <div className="grid grid-cols-6 gap-3">
           {ACCENT_COLORS.map((color) => (

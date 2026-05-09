@@ -7,7 +7,7 @@ import { FolderKanban, CheckSquare, Clock, Users, Plus, Calendar, ArrowRight, Al
 import { TASK_STATUS_LABELS, STATUS_COLORS, TASK_STATUS } from '../../constants';
 
 const StatCard = ({ label, value, icon: Icon, color }) => (
-  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+  <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
     <div className="flex items-center gap-4">
       <div className={`p-3 rounded-lg ${color}`}>
         <Icon className="w-6 h-6" />
@@ -114,7 +114,7 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Recent Projects</h3>
               <button
@@ -155,7 +155,7 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-soft">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-soft">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">My Tasks</h3>
               <Badge variant="primary">{myTasks.length} tasks</Badge>

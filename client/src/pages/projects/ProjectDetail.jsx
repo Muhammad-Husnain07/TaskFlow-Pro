@@ -31,7 +31,7 @@ const MemberCard = ({ member, currentUserRole, onRoleChange, onRemove }) => {
   const canRemove = currentUserRole === MEMBER_ROLES.OWNER && !isOwner;
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+    <div className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700">
       <div className="flex items-center gap-3">
         <Avatar alt={member.user?.name} src={member.user?.avatar} size="md" />
         <div>
@@ -55,7 +55,7 @@ const MemberCard = ({ member, currentUserRole, onRoleChange, onRemove }) => {
               <MoreHorizontal className="w-4 h-4 text-gray-500" />
             </button>
             {showMenu && (
-              <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-10 min-w-32">
+              <div className="absolute right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-10 min-w-32">
                 {Object.values(MEMBER_ROLES).filter(r => r !== MEMBER_ROLES.OWNER).map(role => (
                   <button
                     key={role}
@@ -118,7 +118,7 @@ const InviteMemberForm = ({ projectId, onSuccess }) => {
       <select
         value={role}
         onChange={(e) => setRole(e.target.value)}
-        className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
+        className="px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
       >
         <option value={MEMBER_ROLES.MEMBER}>Member</option>
         <option value={MEMBER_ROLES.ADMIN}>Admin</option>
@@ -150,7 +150,7 @@ const OverviewTab = ({ project, tasks }) => {
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map(stat => (
-          <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
+          <div key={stat.label} className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
             <p className={`text-2xl font-bold ${stat.color || ''}`}>{stat.value}</p>
             <p className="text-sm text-gray-500">{stat.label}</p>
           </div>
@@ -158,7 +158,7 @@ const OverviewTab = ({ project, tasks }) => {
       </div>
 
       {project.description && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700">
           <h3 className="font-semibold mb-3">Description</h3>
           <div className="prose dark:prose-invert max-w-none">
             <ReactMarkdown>{project.description}</ReactMarkdown>
@@ -166,7 +166,7 @@ const OverviewTab = ({ project, tasks }) => {
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700">
         <h3 className="font-semibold mb-3">Team Members</h3>
         <AvatarGroup max={10}>
           {project.members?.map((member, i) => (
@@ -207,7 +207,7 @@ const MembersTab = ({ project, currentUserRole }) => {
   return (
     <div className="space-y-6">
       {currentUserRole === MEMBER_ROLES.OWNER && (
-        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4">
           <h3 className="font-medium mb-3">Invite New Member</h3>
           <InviteMemberForm projectId={project._id} />
         </div>
@@ -286,7 +286,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 space-y-4">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 space-y-4">
         <h3 className="font-semibold">Project Details</h3>
         
         <Input

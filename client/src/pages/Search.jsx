@@ -30,7 +30,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'all' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+              type === 'all' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
             }`}
           >
             All
@@ -38,7 +38,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('project')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'project' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+              type === 'project' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
             }`}
           >
             Projects
@@ -46,7 +46,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('task')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'task' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+              type === 'task' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
             }`}
           >
             Tasks
@@ -74,7 +74,7 @@ const SearchPage = () => {
                   <a
                     key={project._id}
                     href={`/projects/${project._id}`}
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
                   >
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: project.color + '20' }}>
                       <Folder className="w-5 h-5" style={{ color: project.color }} />
@@ -100,16 +100,16 @@ const SearchPage = () => {
                   <a
                     key={task._id}
                     href={`/projects/${task.projectId}/tasks/${task._id}`}
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
                   >
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-slate-700">
                       <CheckSquare className="w-5 h-5 text-gray-500" />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900 dark:text-white">{task.title}</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{task.projectName}</p>
                     </div>
-                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300">
                       {TASK_STATUS_LABELS[task.status]}
                     </span>
                   </a>

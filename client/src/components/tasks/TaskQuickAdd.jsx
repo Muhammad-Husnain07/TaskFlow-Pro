@@ -38,7 +38,7 @@ const TaskQuickAdd = ({ projectId, status, onSuccess }) => {
     return (
       <button
         onClick={() => setIsAdding(true)}
-        className="w-full flex items-center gap-2 px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
+        className="w-full flex items-center gap-2 px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors text-sm"
       >
         <Plus className="w-4 h-4" />
         Add task

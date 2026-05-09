@@ -28,7 +28,7 @@ const Navbar = ({ title, breadcrumbs, rightContent }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 h-16 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-b border-gray-200/80 dark:border-gray-700/80 flex items-center justify-between px-6 transition-all duration-200">
+    <header className="sticky top-0 z-40 h-16 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-gray-200/80 dark:border-slate-700/80 flex items-center justify-between px-6 transition-all duration-200">
       <div className="flex items-center gap-4">
         <div>
           {breadcrumbs && (
@@ -56,9 +56,9 @@ const Navbar = ({ title, breadcrumbs, rightContent }) => {
           <input
             type="text"
             placeholder="Search..."
-            className="w-64 pl-10 pr-12 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-gray-600 transition-all"
+            className="w-64 pl-10 pr-12 py-2 bg-gray-100 dark:bg-slate-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-slate-600 transition-all"
           />
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-gray-400 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-gray-400 bg-gray-200 dark:bg-slate-600 px-1.5 py-0.5 rounded">
             <Command className="w-3 h-3" />
             <span>K</span>
           </div>
@@ -71,13 +71,13 @@ const Navbar = ({ title, breadcrumbs, rightContent }) => {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
           >
             <Avatar src={user?.avatar} alt={user?.name} size="sm" />
           </button>
 
           {showUserMenu && (
-            <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200/80 dark:border-gray-700/80 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
+            <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-200/80 dark:border-slate-700/80 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
               <div className="px-4 py-3 border-b border-gray-200/80 dark:border-gray-700/80">
                 <p className="font-medium text-gray-900 dark:text-white text-sm">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.email}</p>
@@ -85,14 +85,14 @@ const Navbar = ({ title, breadcrumbs, rightContent }) => {
               <div className="py-1.5">
                 <button
                   onClick={() => { navigate(`/profile/${user?.id}`); setShowUserMenu(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors"
                 >
                   <User className="w-4 h-4" />
                   My Profile
                 </button>
                 <button
                   onClick={() => { navigate('/settings'); setShowUserMenu(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors"
                 >
                   <Settings className="w-4 h-4" />
                   Settings

@@ -146,8 +146,8 @@ const NotificationPanel = ({ onClose }) => {
   };
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+    <div className="absolute right-0 top-full mt-2 w-80 md:w-96 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden z-50">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-slate-700">
         <h3 className="font-semibold text-gray-900 dark:text-white">Notifications</h3>
         <button
           onClick={handleMarkAllRead}

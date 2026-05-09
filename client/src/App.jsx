@@ -23,7 +23,7 @@ const PublicProfile = lazy(() => import('./pages/profile/PublicProfile'));
 const UIDemo = lazy(() => import('./pages/dev/UIDemo'));
 
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950">
     <Spinner size="xl" />
   </div>
 );

@@ -4,7 +4,7 @@ import { Home, ArrowLeft } from 'lucide-react';
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 p-4">
       <div className="text-center max-w-md">
         <div className="flex justify-center mb-6">
           <svg 

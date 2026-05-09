@@ -90,7 +90,7 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-900">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 dark:bg-slate-950">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8">
             <div className="flex items-center gap-3 justify-center">
@@ -101,7 +101,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-large p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-large p-8">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">Sign in</h2>
               <p className="text-gray-500 mt-2">Enter your credentials to access your account</p>

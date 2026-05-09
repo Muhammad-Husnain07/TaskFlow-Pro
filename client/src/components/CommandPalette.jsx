@@ -105,8 +105,8 @@ const CommandPalette = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+      <div className="relative w-full max-w-xl bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-slate-700">
           <Search className="w-5 h-5 text-gray-400" />
           <input
             ref={inputRef}
@@ -198,7 +198,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500">
+        <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-slate-700 text-xs text-gray-500">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-300 flex items-center justify-center">↑↓</span>

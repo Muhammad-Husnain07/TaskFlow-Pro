@@ -11,7 +11,7 @@ const Skeleton = ({ className = '', variant = 'text' }) => {
 
   return (
     <div
-      className={`animate-pulse bg-gray-200 dark:bg-gray-700 ${variants[variant]} ${className}`}
+      className={`animate-pulse bg-gray-200 dark:bg-slate-700 ${variants[variant]} ${className}`}
     />
   );
 };
@@ -25,7 +25,7 @@ export const SkeletonText = ({ lines = 3, className = '' }) => (
 );
 
 export const SkeletonCard = ({ className = '' }) => (
-  <div className={`p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 ${className}`}>
+  <div className={`p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 ${className}`}>
     <Skeleton variant="text" className="w-1/3 mb-2" />
     <Skeleton variant="title" />
     <SkeletonText lines={2} className="mt-2" />
@@ -35,7 +35,7 @@ export const SkeletonCard = ({ className = '' }) => (
 export const ProjectListSkeleton = ({ count = 6 }) => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {Array.from({ length: count }).map((_, i) => (
-      <div key={i} className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+      <div key={i} className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
         <div className="flex items-center gap-3 mb-3">
           <Skeleton variant="avatar" className="w-10 h-10" />
           <Skeleton variant="title" className="w-1/2" />
@@ -60,7 +60,7 @@ export const TaskBoardSkeleton = () => (
         </div>
         <div className="space-y-2">
           {Array.from({ length: 3 }).map((_, j) => (
-            <div key={j} className="p-3 bg-gray-100 dark:bg-gray-800/50 rounded-lg">
+            <div key={j} className="p-3 bg-gray-100 dark:bg-slate-800/50 rounded-lg">
               <Skeleton variant="text" className="w-3/4 mb-2" />
               <Skeleton variant="text" className="w-1/2" />
             </div>

@@ -33,7 +33,7 @@ const Tooltip = ({ children, content, position = 'top', delay = 300 }) => {
     <div className="relative inline-block" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
       {children}
       {isVisible && (
-        <div className={`absolute z-50 px-3 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-gray-700 rounded-lg whitespace-nowrap pointer-events-none ${positions[position]}`}>
+        <div className={`absolute z-50 px-3 py-1.5 text-xs font-medium text-white bg-gray-900 dark:bg-slate-700 rounded-lg whitespace-nowrap pointer-events-none ${positions[position]}`}>
           {content}
           <div className={`absolute border-4 border-transparent ${arrows[position]}`} />
         </div>

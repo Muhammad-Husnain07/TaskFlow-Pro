@@ -15,10 +15,10 @@ const Button = forwardRef(({
 
   const variants = {
     primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500',
-    secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 focus:ring-gray-400',
+    secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-gray-600 focus:ring-gray-400',
     danger: 'bg-danger-500 text-white hover:bg-danger-600 focus:ring-danger-500',
     ghost: 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 focus:ring-gray-400',
-    outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 focus:ring-gray-400',
+    outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:text-gray-300 dark:hover:bg-gray-800 focus:ring-gray-400',
   };
 
   const sizes = {

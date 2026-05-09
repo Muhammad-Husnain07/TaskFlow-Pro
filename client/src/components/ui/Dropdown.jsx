@@ -25,7 +25,7 @@ const Dropdown = ({ trigger, children, align = 'left' }) => {
     <div className="relative" ref={dropdownRef}>
       <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
       {isOpen && (
-        <div className={`absolute z-50 mt-2 min-w-48 bg-white dark:bg-gray-800 rounded-xl shadow-large border border-gray-100 dark:border-gray-700 py-1 ${alignClasses[align]} transform transition-all duration-200 origin-top-${align}`}>
+        <div className={`absolute z-50 mt-2 min-w-48 bg-white dark:bg-slate-800 rounded-xl shadow-large border border-gray-100 dark:border-slate-700 py-1 ${alignClasses[align]} transform transition-all duration-200 origin-top-${align}`}>
           {Array.isArray(children) ? (
             children.map((child, index) => (
               <div key={index}>{child}</div>
@@ -51,7 +51,7 @@ export const DropdownItem = ({ children, onClick, className = '', danger = false
 );
 
 export const DropdownDivider = () => (
-  <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
+  <div className="my-1 border-t border-gray-100 dark:border-slate-700" />
 );
 
 export default Dropdown;

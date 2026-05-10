@@ -118,7 +118,7 @@ const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
           >
             {priorityConfig.label}
           </span>
-          <h4 className="font-medium text-[14px] text-gray-800 dark:text-gray-100 leading-tight line-clamp-2 flex-1">
+          <h4 className="font-medium text-[14px] text-gray-800 dark:text-slate-100 leading-tight line-clamp-2 flex-1">
             {task.title}
           </h4>
           {hasViewers && (
@@ -155,7 +155,7 @@ const TaskCardComponent = ({ task, onClick, isDragging, viewers = [] }) => {
           {task.assignees && (
             <div className="flex items-center gap-1.5">
               <Avatar user={task.assignees} size="xs" />
-              <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400">
+              <span className="text-[11px] font-medium text-gray-500 dark:text-slate-400">
                 {task.assignees.name?.split(' ')[0]}
               </span>
             </div>

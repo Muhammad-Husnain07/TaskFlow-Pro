@@ -129,14 +129,14 @@ const CommandPalette = ({ isOpen, onClose }) => {
             </div>
           ) : items.length === 0 ? (
             <div className="p-8 text-center">
-              <p className="text-gray-500 dark:text-gray-400">No results found</p>
+              <p className="text-gray-500 dark:text-slate-400">No results found</p>
               <p className="text-sm text-gray-400 mt-1">Try different keywords</p>
             </div>
           ) : (
             <div className="py-2">
               {!query && recentSearches.length > 0 && (
                 <div className="px-3 py-2">
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                  <p className="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                     Recent Searches
                   </p>
                 </div>
@@ -147,7 +147,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                   key={item._id || item.id || item.query}
                   onClick={() => handleSelect(item)}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
-                    index === selectedIndex ? 'bg-primary-50 dark:bg-primary-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                    index === selectedIndex ? 'bg-primary-50 dark:bg-primary-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'
                   }`}
                 >
                   {item.type === 'project' && (
@@ -189,7 +189,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                   {item.type === 'recent' && (
                     <>
                       <Clock className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600 dark:text-gray-300">{item.query}</span>
+                      <span className="text-sm text-gray-600 dark:text-slate-300">{item.query}</span>
                     </>
                   )}
                 </button>
@@ -201,11 +201,11 @@ const CommandPalette = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-slate-700 text-xs text-gray-500">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
-              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-300 flex items-center justify-center">↑↓</span>
+              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↑↓</span>
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-300 flex items-center justify-center">↵</span>
+              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↵</span>
               Select
             </span>
           </div>

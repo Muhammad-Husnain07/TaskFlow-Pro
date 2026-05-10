@@ -165,7 +165,7 @@ const NotificationPanel = ({ onClose }) => {
         ) : notifications.length === 0 ? (
           <div className="p-8 text-center">
             <Bell className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
-            <p className="text-gray-500 dark:text-gray-400">No notifications yet</p>
+            <p className="text-gray-500 dark:text-slate-400">No notifications yet</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -173,7 +173,7 @@ const NotificationPanel = ({ onClose }) => {
               <button
                 key={notification._id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`w-full flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left transition-colors ${
+                className={`w-full flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 text-left transition-colors ${
                   !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
                 }`}
               >
@@ -185,7 +185,7 @@ const NotificationPanel = ({ onClose }) => {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm ${notification.read ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'}`}>
+                  <p className={`text-sm ${notification.read ? 'text-gray-600 dark:text-slate-400' : 'text-gray-900 dark:text-white'}`}>
                     {formatNotificationMessage(notification)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">

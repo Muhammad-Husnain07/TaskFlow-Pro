@@ -50,7 +50,7 @@ const MemberCard = ({ member, currentUserRole, onRoleChange, onRemove }) => {
           <div className="relative">
             <button 
               onClick={() => setShowMenu(!showMenu)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
             >
               <MoreHorizontal className="w-4 h-4 text-gray-500" />
             </button>
@@ -60,7 +60,7 @@ const MemberCard = ({ member, currentUserRole, onRoleChange, onRemove }) => {
                   <button
                     key={role}
                     onClick={() => { onRoleChange(member.user._id, role); setShowMenu(false); }}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-slate-700"
                   >
                     Make {role}
                   </button>
@@ -296,7 +296,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
         />
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Description</label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -306,7 +306,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Color</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Color</label>
           <div className="flex gap-2">
             {colors.map(color => (
               <button
@@ -321,7 +321,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Status</label>
             <select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value })}
@@ -345,7 +345,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
 
       <div className="bg-danger-50 dark:bg-danger-900/20 rounded-xl p-6 border border-danger-200 dark:border-danger-800">
         <h3 className="font-semibold text-danger-600 mb-2">Danger Zone</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-sm text-gray-600 dark:text-slate-400 mb-4">
           These actions are irreversible. Please be careful.
         </p>
         <div className="flex gap-3">

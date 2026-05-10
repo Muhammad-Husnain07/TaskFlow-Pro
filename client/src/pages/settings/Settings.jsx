@@ -119,7 +119,7 @@ const ProfileTab = ({ user, onUpdate }) => {
             disabled
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
               Bio
             </label>
             <textarea
@@ -216,7 +216,7 @@ const AccountTab = ({ user }) => {
 
       <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Delete Account">
         <div className="space-y-4">
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-slate-400">
             This action cannot be undone. All your data will be permanently deleted.
           </p>
           <p className="text-sm text-gray-500">
@@ -284,7 +284,7 @@ const NotificationsTab = () => {
             { key: 'taskDue', label: 'Task due date reminders' },
           ].map((item) => (
             <label key={item.key} className="flex items-center justify-between">
-              <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
+              <span className="text-gray-700 dark:text-slate-300">{item.label}</span>
               <button
                 onClick={() => handleToggle('email', item.key)}
                 className={`relative w-11 h-6 rounded-full transition-colors ${
@@ -310,7 +310,7 @@ const NotificationsTab = () => {
             { key: 'memberInvited', label: 'Project invitations' },
           ].map((item) => (
             <label key={item.key} className="flex items-center justify-between">
-              <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
+              <span className="text-gray-700 dark:text-slate-300">{item.label}</span>
               <button
                 onClick={() => handleToggle('inApp', item.key)}
                 className={`relative w-11 h-6 rounded-full transition-colors ${
@@ -373,8 +373,8 @@ const hexToRgb = (hex) => {
                   : 'border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`}
             >
-              <t.icon className={`w-5 h-5 ${theme === t.id ? 'text-primary-500' : 'text-gray-500 dark:text-gray-400'}`} />
-              <span className={`text-sm font-medium ${theme === t.id ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400'}`}>{t.label}</span>
+              <t.icon className={`w-5 h-5 ${theme === t.id ? 'text-primary-500' : 'text-gray-500 dark:text-slate-400'}`} />
+              <span className={`text-sm font-medium ${theme === t.id ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-slate-400'}`}>{t.label}</span>
             </button>
           ))}
         </div>
@@ -423,7 +423,7 @@ const Settings = () => {
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                   activeTab === tab.id
                     ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700'
                 }`}
               >
                 <tab.icon className="w-5 h-5" />

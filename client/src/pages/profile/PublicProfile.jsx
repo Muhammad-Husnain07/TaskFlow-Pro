@@ -61,7 +61,7 @@ const PublicProfile = () => {
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.name}</h1>
               {user?.bio && (
-                <p className="text-gray-600 dark:text-gray-400 mt-2">{user.bio}</p>
+                <p className="text-gray-600 dark:text-slate-400 mt-2">{user.bio}</p>
               )}
               <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1">
@@ -123,7 +123,7 @@ const PublicProfile = () => {
                   className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 transition-colors"
                 >
                   <span className="font-medium text-gray-900 dark:text-white">{task.title}</span>
-                  <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                  <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-slate-300">
                     {TASK_STATUS_LABELS[task.status]}
                   </span>
                 </a>

@@ -105,7 +105,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Create New Task</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-gray-500" />
           </button>
@@ -124,7 +124,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Status
               </label>
               <select
@@ -139,7 +139,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Priority
               </label>
               <select
@@ -155,7 +155,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
               Description
             </label>
             <MentionInput
@@ -169,7 +169,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 <Clock className="w-4 h-4 inline mr-1" />
                 Due Date
               </label>
@@ -182,7 +182,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
             </div>
 
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 <Users className="w-4 h-4 inline mr-1" />
                 Assignees
               </label>
@@ -205,7 +205,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
                     availableAssignees.map(member => (
                       <label
                         key={member.user?._id}
-                        className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
                       >
                         <input
                           type="checkbox"
@@ -224,7 +224,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
               <Tag className="w-4 h-4 inline mr-1" />
               Labels
             </label>

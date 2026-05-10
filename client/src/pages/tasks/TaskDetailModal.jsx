@@ -106,7 +106,7 @@ const SlidingModal = ({ isOpen, onClose, children, title }) => {
             <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
             <span className="text-xs text-gray-400">Press Esc to close</span>
           </div>
-          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
@@ -227,7 +227,7 @@ const AssigneesSelect = ({ value, onChange, projectMembers, label }) => {
         ) : (
           <button
             onClick={() => setOpen(!open)}
-            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
+            className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
           >
             <Plus className="w-4 h-4" /> {label || 'Add'}
           </button>
@@ -252,8 +252,8 @@ const AssigneesSelect = ({ value, onChange, projectMembers, label }) => {
               >
                 <Avatar user={m.user || m} size="sm" />
                 <div className="flex-1 text-left">
-                  <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{m.user?.name || m.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{m.user?.email || m.email}</div>
+                  <div className="text-sm font-medium text-gray-800 dark:text-slate-200">{m.user?.name || m.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-slate-400">{m.user?.email || m.email}</div>
                 </div>
                 {isSelected && (
                   <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
@@ -281,7 +281,7 @@ const AvatarGroup = ({ users, size = 'md' }) => {
         <Avatar key={i} user={u} size={size} className="border-2 border-white dark:border-gray-800" />
       ))}
       {extra > 0 && (
-        <div className={`${sizes[size]} rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-xs text-gray-600 dark:text-gray-300 border-2 border-white dark:border-gray-800`}>
+        <div className={`${sizes[size]} rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-xs text-gray-600 dark:text-slate-300 border-2 border-white dark:border-gray-800`}>
           +{extra}
         </div>
       )}
@@ -314,16 +314,16 @@ const DescriptionEditor = ({ value, onChange }) => {
     <div className="space-y-2">
       {(focused || value) && (
         <div className="flex gap-1 border-b border-gray-200 dark:border-gray-600 pb-2">
-          <button type="button" onClick={() => insertMarkdown('**', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <button type="button" onClick={() => insertMarkdown('**', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded">
             <Bold className="w-4 h-4" />
           </button>
-          <button type="button" onClick={() => insertMarkdown('*', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <button type="button" onClick={() => insertMarkdown('*', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded">
             <Italic className="w-4 h-4" />
           </button>
-          <button type="button" onClick={() => insertMarkdown('`', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <button type="button" onClick={() => insertMarkdown('`', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded">
             <Code className="w-4 h-4" />
           </button>
-          <button type="button" onClick={() => insertMarkdown('[](url)')} className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <button type="button" onClick={() => insertMarkdown('[](url)')} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded">
             <Link2 className="w-4 h-4" />
           </button>
           <div className="flex-1" />
@@ -376,7 +376,7 @@ const SubtasksSection = ({ subtasks, onChange }) => {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Subtasks</h4>
+        <h4 className="text-sm font-medium text-gray-700 dark:text-slate-300">Subtasks</h4>
         {subtasks.length > 0 && (
           <span className="text-xs text-gray-500">{completed}/{subtasks.length} done</span>
         )}
@@ -401,10 +401,10 @@ const SubtasksSection = ({ subtasks, onChange }) => {
             >
               {sub.completed && <Check className="w-3 h-3 text-white" />}
             </button>
-            <span className={`flex-1 text-sm ${sub.completed ? 'line-through text-gray-400' : 'text-gray-700 dark:text-gray-300'}`}>
+            <span className={`flex-1 text-sm ${sub.completed ? 'line-through text-gray-400' : 'text-gray-700 dark:text-slate-300'}`}>
               {sub.title}
             </span>
-            <button type="button" onClick={() => deleteSubtask(i)} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
+            <button type="button" onClick={() => deleteSubtask(i)} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-slate-600 rounded">
               <Trash2 className="w-3.5 h-3.5 text-gray-400" />
             </button>
           </div>
@@ -450,7 +450,7 @@ const CommentsSection = ({ comments, onAddComment, onDeleteComment, currentUserI
 
   return (
     <div className="space-y-4">
-      <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+      <h4 className="text-sm font-medium text-gray-700 dark:text-slate-300">
         Comments ({comments?.length || 0})
       </h4>
       <div className="space-y-3">
@@ -465,7 +465,7 @@ const CommentsSection = ({ comments, onAddComment, onDeleteComment, currentUserI
                   <button
                     type="button"
                     onClick={() => onDeleteComment(comment._id)}
-                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded"
+                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 dark:hover:bg-slate-600 rounded"
                   >
                     <Trash2 className="w-3.5 h-3.5 text-gray-400" />
                   </button>
@@ -542,13 +542,13 @@ const AttachmentsSection = ({ attachments, onUpload, onDelete }) => {
           <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
             {getFileIcon(file.filename)}
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-gray-700 dark:text-gray-300 truncate">{file.filename}</p>
+              <p className="text-sm text-gray-700 dark:text-slate-300 truncate">{file.filename}</p>
               <p className="text-xs text-gray-500">{file.size ? formatSize(file.size) : ''}</p>
             </div>
-            <a href={file.url} download className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
+            <a href={file.url} download className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-600 rounded">
               <Download className="w-4 h-4 text-gray-500" />
             </a>
-            <button type="button" onClick={() => onDelete(file.filename)} className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
+            <button type="button" onClick={() => onDelete(file.filename)} className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-600 rounded">
               <Trash2 className="w-4 h-4 text-gray-500" />
             </button>
           </div>
@@ -656,8 +656,8 @@ const ActivityLog = ({ activities }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm">
-                    <span className="font-semibold text-gray-800 dark:text-gray-200">{item.user?.name || 'Unknown'}</span>
-                    <span className="text-gray-600 dark:text-gray-400"> {getActivityText(item)}</span>
+                    <span className="font-semibold text-gray-800 dark:text-slate-200">{item.user?.name || 'Unknown'}</span>
+                    <span className="text-gray-600 dark:text-slate-400"> {getActivityText(item)}</span>
                   </div>
                   <div className="text-xs text-gray-400 mt-1">
                     {formatTimeAgo(item.createdAt)}
@@ -818,7 +818,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
             {formData.dueDate && (
               <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-lg text-sm">
                 <Calendar className="w-4 h-4 text-gray-500" />
-                <span className="text-gray-600 dark:text-gray-300">{formatDate(formData.dueDate)}</span>
+                <span className="text-gray-600 dark:text-slate-300">{formatDate(formData.dueDate)}</span>
               </div>
             )}
           </div>
@@ -841,7 +841,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Project</label>
             <div className="mt-2 flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: project?.color || '#6366f1' }} />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{project?.name}</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">{project?.name}</span>
             </div>
           </div>
         </div>
@@ -915,7 +915,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
               onChange={(e) => setNewLabel(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddLabel()}
               placeholder="Add label..."
-              className="px-3 py-1 text-xs border border-dashed border-gray-300 dark:border-gray-600 rounded-full bg-transparent focus:outline-none w-24 text-gray-600 dark:text-gray-300"
+              className="px-3 py-1 text-xs border border-dashed border-gray-300 dark:border-gray-600 rounded-full bg-transparent focus:outline-none w-24 text-gray-600 dark:text-slate-300"
             />
           </div>
         </div>
@@ -941,7 +941,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
         </div>
 
         <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Attachments</h4>
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-slate-200 mb-3">Attachments</h4>
           <AttachmentsSection
             attachments={updatedTask?.attachments}
             onUpload={(files) => uploadMutation.mutate({ id: task._id, files })}
@@ -949,9 +949,9 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
           />
         </div>
 
-        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4 text-sm text-gray-500 dark:text-slate-400">
           <div className="flex items-center gap-4">
-            <span>Created by <span className="font-medium text-gray-700 dark:text-gray-300">{updatedTask?.createdBy?.name}</span></span>
+            <span>Created by <span className="font-medium text-gray-700 dark:text-slate-300">{updatedTask?.createdBy?.name}</span></span>
             <span>·</span>
             <span>{formatDate(updatedTask?.createdAt)}</span>
           </div>

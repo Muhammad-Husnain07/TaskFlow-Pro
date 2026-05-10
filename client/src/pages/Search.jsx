@@ -20,7 +20,7 @@ const SearchPage = () => {
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Search Results</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-gray-500 dark:text-slate-400 mt-1">
           {query ? `Showing results for "${query}"` : 'Enter a search term above'}
         </p>
       </div>
@@ -30,7 +30,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'all' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+              type === 'all' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
             }`}
           >
             All
@@ -38,7 +38,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('project')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'project' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+              type === 'project' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
             }`}
           >
             Projects
@@ -46,7 +46,7 @@ const SearchPage = () => {
           <button
             onClick={() => handleFilterChange('task')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              type === 'task' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+              type === 'task' ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
             }`}
           >
             Tasks
@@ -82,7 +82,7 @@ const SearchPage = () => {
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900 dark:text-white">{project.name}</h3>
                       {project.description && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{project.description}</p>
+                        <p className="text-sm text-gray-500 dark:text-slate-400 line-clamp-1">{project.description}</p>
                       )}
                     </div>
                     <div className="text-sm text-gray-500">{project.memberCount} members</div>
@@ -107,9 +107,9 @@ const SearchPage = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900 dark:text-white">{task.title}</h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{task.projectName}</p>
+                      <p className="text-sm text-gray-500 dark:text-slate-400">{task.projectName}</p>
                     </div>
-                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300">
+                    <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300">
                       {TASK_STATUS_LABELS[task.status]}
                     </span>
                   </a>

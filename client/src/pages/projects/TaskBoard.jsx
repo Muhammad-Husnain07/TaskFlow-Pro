@@ -58,7 +58,7 @@ const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) 
       <button
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all min-w-[140px] ${
-          value ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-gray-400'
+          value ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-slate-300 hover:border-gray-400'
         }`}
       >
         {Icon && <Icon className="w-4 h-4" />}
@@ -71,8 +71,8 @@ const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) 
             <button
               key={opt.value}
               onClick={() => { onChange(opt.value); setOpen(false); }}
-              className={`w-full text-left px-3 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center gap-2 ${
-                value === opt.value ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'
+              className={`w-full text-left px-3 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-slate-600 flex items-center gap-2 ${
+                value === opt.value ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'text-gray-700 dark:text-slate-300'
               }`}
             >
               {opt.label}

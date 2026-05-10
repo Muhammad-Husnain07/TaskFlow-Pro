@@ -22,7 +22,7 @@ const Checkbox = ({ checked, onChange, label, className = '', disabled = false }
         </div>
       </div>
       {label && (
-        <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+        <span className="text-sm text-gray-700 dark:text-slate-300">{label}</span>
       )}
     </label>
   );

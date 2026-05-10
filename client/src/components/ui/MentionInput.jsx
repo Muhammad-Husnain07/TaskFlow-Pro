@@ -59,7 +59,7 @@ const MentionInput = ({ value, onChange, placeholder, rows = 3, className = '', 
         onChange={handleChange}
         placeholder={placeholder}
         rows={rows}
-        className={`w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all ${className}`}
+        className={`w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all ${className}`}
       />
       {showMentions && filteredSuggestions.length > 0 && (
         <div className="absolute z-20 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl max-h-56 overflow-y-auto">
@@ -75,10 +75,10 @@ const MentionInput = ({ value, onChange, placeholder, rows = 3, className = '', 
             >
               <Avatar user={user} size="sm" />
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                <div className="text-sm font-medium text-gray-800 dark:text-slate-200 truncate">
                   {user.name}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                <div className="text-xs text-gray-500 dark:text-slate-400 truncate">
                   {user.email}
                 </div>
               </div>

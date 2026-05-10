@@ -12,7 +12,7 @@ const Input = forwardRef(({
   return (
     <div className={`space-y-1 ${containerClassName}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
           {label}
         </label>
       )}

@@ -43,7 +43,7 @@ export const DropdownItem = ({ children, onClick, className = '', danger = false
     className={`w-full px-4 py-2 text-left text-sm transition-colors flex items-center gap-2 ${
       danger
         ? 'text-danger-600 hover:bg-danger-50 dark:hover:bg-danger-900/20'
-        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+        : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700'
     } ${className}`}
   >
     {children}

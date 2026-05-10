@@ -18,7 +18,7 @@ const EmptyState = ({
         </h3>
       )}
       {description && (
-        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-sm">
+        <p className="text-gray-500 dark:text-slate-400 mb-6 max-w-sm">
           {description}
         </p>
       )}

@@ -55,7 +55,7 @@ const Sidebar = () => {
         ))}
 
         {recentProjects.length > 0 && (
-          <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 mt-4 border-t border-gray-200 dark:border-slate-700">
             <div className="flex items-center gap-2 px-3 mb-2 text-xs font-medium text-gray-500 uppercase">
               <Clock className="w-3 h-3" />
               Recent
@@ -79,7 +79,7 @@ const Sidebar = () => {
         )}
       </nav>
 
-      <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+      <div className="p-3 border-t border-gray-200 dark:border-slate-700">
         <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors cursor-pointer">
           <Avatar src={user?.avatar} alt={user?.name} size="sm" />
           <div className="flex-1 min-w-0">

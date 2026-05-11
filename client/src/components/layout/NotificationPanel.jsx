@@ -180,7 +180,7 @@ const NotificationPanel = ({ onClose }) => {
                 {notification.sender?.avatar ? (
                   <Avatar user={notification.sender} size="sm" />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-600 flex items-center justify-center">
                     {NOTIFICATION_ICONS[notification.type] || <Bell className="w-4 h-4" />}
                   </div>
                 )}

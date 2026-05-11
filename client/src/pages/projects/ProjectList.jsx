@@ -327,7 +327,7 @@ const ProjectList = () => {
             {newProject.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {newProject.tags.map(tag => (
-                  <span key={tag} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs">
+                  <span key={tag} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-xs">
                     {tag}
                     <button type="button" onClick={() => handleRemoveTag(tag)}>
                       <X className="w-3 h-3" />

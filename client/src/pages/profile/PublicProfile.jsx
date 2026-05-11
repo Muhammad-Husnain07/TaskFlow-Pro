@@ -123,7 +123,7 @@ const PublicProfile = () => {
                   className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-primary-300 transition-colors"
                 >
                   <span className="font-medium text-gray-900 dark:text-white">{task.title}</span>
-                  <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-slate-300">
+                  <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300">
                     {TASK_STATUS_LABELS[task.status]}
                   </span>
                 </a>

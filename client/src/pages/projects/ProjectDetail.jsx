@@ -301,7 +301,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg dark:bg-slate-700"
           />
         </div>
 
@@ -325,7 +325,7 @@ const SettingsTab = ({ project, onUpdate, onDelete, onArchive, navigate }) => {
             <select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg dark:bg-slate-700"
             >
               <option value="active">Active</option>
               <option value="archived">Archived</option>

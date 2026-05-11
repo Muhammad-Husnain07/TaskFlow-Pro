@@ -31,7 +31,7 @@ const UIDemo = () => {
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-12">
-      <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+      <div className="border-b border-gray-200 dark:border-slate-700 pb-4">
         <h1 className="text-3xl font-heading font-bold">UI Components Demo</h1>
         <p className="text-gray-500 mt-2">Storybook-style showcase of all UI components</p>
       </div>

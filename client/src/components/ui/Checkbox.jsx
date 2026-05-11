@@ -12,7 +12,7 @@ const Checkbox = ({ checked, onChange, label, className = '', disabled = false }
         <div className={`w-5 h-5 border-2 rounded-md transition-all duration-200 ${
           checked 
             ? 'bg-primary-500 border-primary-500' 
-            : 'border-gray-300 dark:border-gray-600'
+            : 'border-gray-300 dark:border-slate-600'
         } peer-focus:ring-2 peer-focus:ring-primary-500/50`}>
           {checked && (
             <svg className="w-full h-full text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

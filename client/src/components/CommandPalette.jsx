@@ -117,7 +117,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
             placeholder="Search projects, tasks..."
             className="flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400"
           />
-          <div className="flex items-center gap-1 text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+          <div className="flex items-center gap-1 text-xs text-gray-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded">
             <span>ESC</span>
           </div>
         </div>
@@ -167,7 +167,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
 
                   {item.type === 'task' && (
                     <>
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-slate-700">
                         <CheckSquare className="w-4 h-4 text-gray-500" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -201,11 +201,11 @@ const CommandPalette = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-slate-700 text-xs text-gray-500">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
-              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↑↓</span>
+              <span className="w-4 h-4 bg-gray-200 dark:bg-slate-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↑↓</span>
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-4 h-4 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↵</span>
+              <span className="w-4 h-4 bg-gray-200 dark:bg-slate-600 rounded text-gray-600 dark:text-slate-300 flex items-center justify-center">↵</span>
               Select
             </span>
           </div>

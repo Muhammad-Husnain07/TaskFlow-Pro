@@ -59,11 +59,11 @@ const MentionInput = ({ value, onChange, placeholder, rows = 3, className = '', 
         onChange={handleChange}
         placeholder={placeholder}
         rows={rows}
-        className={`w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all ${className}`}
+        className={`w-full px-4 py-3 border border-gray-200 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-800 text-gray-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all ${className}`}
       />
       {showMentions && filteredSuggestions.length > 0 && (
-        <div className="absolute z-20 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl max-h-56 overflow-y-auto">
-          <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
+        <div className="absolute z-20 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl shadow-xl max-h-56 overflow-y-auto">
+          <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-slate-700">
             Mention someone
           </div>
           {filteredSuggestions.map((user) => (

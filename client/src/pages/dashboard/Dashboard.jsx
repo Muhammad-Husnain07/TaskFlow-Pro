@@ -23,7 +23,7 @@ const StatCard = ({ label, value, icon: Icon, color }) => (
 const ProjectCard = ({ project, onClick }) => (
   <div
     onClick={onClick}
-    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer transition-colors"
+    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer transition-colors"
   >
     <div
       className="w-10 h-10 rounded-lg flex-shrink-0"
@@ -53,7 +53,7 @@ const TaskItem = ({ task, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer transition-colors"
+      className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer transition-colors"
     >
       <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
         task.status === TASK_STATUS.DONE ? 'bg-green-500' :

@@ -177,7 +177,7 @@ const PriorityDropdown = ({ value, onChange }) => {
         <ChevronDown className="w-3.5 h-3.5" />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 z-10 overflow-hidden">
+        <div className="absolute top-full left-0 mt-1 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 z-10 overflow-hidden">
           {priorities.map((p) => (
             <button
               key={p.id}
@@ -227,15 +227,15 @@ const AssigneesSelect = ({ value, onChange, projectMembers, label }) => {
         ) : (
           <button
             onClick={() => setOpen(!open)}
-            className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
+            className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-slate-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
           >
             <Plus className="w-4 h-4" /> {label || 'Add'}
           </button>
         )}
       </div>
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-20 max-h-60 overflow-y-auto">
-          <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
+        <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 z-20 max-h-60 overflow-y-auto">
+          <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-slate-700">
             Select Member
           </div>
           {projectMembers?.map((m) => {
@@ -281,7 +281,7 @@ const AvatarGroup = ({ users, size = 'md' }) => {
         <Avatar key={i} user={u} size={size} className="border-2 border-white dark:border-gray-800" />
       ))}
       {extra > 0 && (
-        <div className={`${sizes[size]} rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-xs text-gray-600 dark:text-slate-300 border-2 border-white dark:border-gray-800`}>
+        <div className={`${sizes[size]} rounded-full bg-gray-200 dark:bg-slate-600 flex items-center justify-center text-xs text-gray-600 dark:text-slate-300 border-2 border-white dark:border-gray-800`}>
           +{extra}
         </div>
       )}
@@ -313,7 +313,7 @@ const DescriptionEditor = ({ value, onChange }) => {
   return (
     <div className="space-y-2">
       {(focused || value) && (
-        <div className="flex gap-1 border-b border-gray-200 dark:border-gray-600 pb-2">
+        <div className="flex gap-1 border-b border-gray-200 dark:border-slate-600 pb-2">
           <button type="button" onClick={() => insertMarkdown('**', true)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded">
             <Bold className="w-4 h-4" />
           </button>
@@ -333,7 +333,7 @@ const DescriptionEditor = ({ value, onChange }) => {
         </div>
       )}
       {preview ? (
-        <div className="min-h-[100px] p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
+        <div className="min-h-[100px] p-3 border border-gray-200 dark:border-slate-600 rounded-lg">
           <MarkdownWithMentions content={value || '*No description*'} />
         </div>
       ) : (
@@ -344,7 +344,7 @@ const DescriptionEditor = ({ value, onChange }) => {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="Add a description... (markdown supported, @mention to notify)"
-          className="w-full min-h-[100px] p-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full min-h-[100px] p-3 border border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       )}
     </div>
@@ -382,7 +382,7 @@ const SubtasksSection = ({ subtasks, onChange }) => {
         )}
       </div>
       {subtasks.length > 0 && (
-        <div className="h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
           <div
             className="h-full bg-green-500 transition-all"
             style={{ width: `${subtasks.length ? (completed / subtasks.length) * 100 : 0}%` }}
@@ -416,7 +416,7 @@ const SubtasksSection = ({ subtasks, onChange }) => {
           onChange={(e) => setNewSubtask(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addSubtask()}
           placeholder="Add a subtask..."
-          className="flex-1 px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-2.5 py-1.5 text-sm border border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Button size="sm" onClick={addSubtask} disabled={!newSubtask.trim()}>
           <Plus className="w-4 h-4" />
@@ -530,7 +530,7 @@ const AttachmentsSection = ({ attachments, onUpload, onDelete }) => {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${
-          dragOver ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'
+          dragOver ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-slate-600'
         }`}
       >
         <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(e) => onUpload(e.target.files)} />
@@ -539,7 +539,7 @@ const AttachmentsSection = ({ attachments, onUpload, onDelete }) => {
       </div>
       <div className="space-y-2">
         {attachments?.map((file, i) => (
-          <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
             {getFileIcon(file.filename)}
             <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-700 dark:text-slate-300 truncate">{file.filename}</p>
@@ -833,7 +833,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
                 value={formData.dueDate}
                 onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                 onBlur={handleSave}
-                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800"
+                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800"
               />
             </div>
           </div>
@@ -915,7 +915,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, projectId }) => {
               onChange={(e) => setNewLabel(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddLabel()}
               placeholder="Add label..."
-              className="px-3 py-1 text-xs border border-dashed border-gray-300 dark:border-gray-600 rounded-full bg-transparent focus:outline-none w-24 text-gray-600 dark:text-slate-300"
+              className="px-3 py-1 text-xs border border-dashed border-gray-300 dark:border-slate-600 rounded-full bg-transparent focus:outline-none w-24 text-gray-600 dark:text-slate-300"
             />
           </div>
         </div>

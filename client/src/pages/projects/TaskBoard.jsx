@@ -58,7 +58,7 @@ const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) 
       <button
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all min-w-[140px] ${
-          value ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-slate-300 hover:border-gray-400'
+          value ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-300' : 'border-gray-300 dark:border-slate-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-slate-300 hover:border-gray-400'
         }`}
       >
         {Icon && <Icon className="w-4 h-4" />}
@@ -66,7 +66,7 @@ const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) 
         <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-20 max-h-60 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-slate-700 rounded-lg shadow-lg border border-gray-200 dark:border-slate-600 z-20 max-h-60 overflow-y-auto">
           {options.map((opt) => (
             <button
               key={opt.value}
@@ -142,7 +142,7 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
 
   return (
     <div className="space-y-3 mb-4">
-      <div className="flex flex-wrap items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+      <div className="flex flex-wrap items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-slate-700">
         <div className="relative flex-1 min-w-[180px] max-w-[280px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -150,7 +150,7 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
             placeholder="Search tasks by title or description..."
             value={filters.search}
             onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
-            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
 

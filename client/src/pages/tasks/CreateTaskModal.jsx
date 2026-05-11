@@ -101,7 +101,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       
       <div className="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-700">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Create New Task</h2>
           <button
             onClick={onClose}
@@ -130,7 +130,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
               <select
                 value={formData.status}
                 onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
                 {Object.entries(TASK_STATUS).map(([key, value]) => (
                   <option key={value} value={value}>{TASK_STATUS_LABELS[value]}</option>
@@ -145,7 +145,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value }))}
-                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
                 {Object.entries(TASK_PRIORITY).map(([key, value]) => (
                   <option key={value} value={value}>{TASK_PRIORITY_LABELS[value]}</option>
@@ -177,7 +177,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
                 type="date"
                 value={formData.dueDate}
                 onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))}
-                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
@@ -189,7 +189,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
               <button
                 type="button"
                 onClick={() => setShowAssigneeDropdown(!showAssigneeDropdown)}
-                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-left flex items-center justify-between"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-left flex items-center justify-between"
               >
                 <span>{formData.assignees.length > 0 ? `${formData.assignees.length} selected` : 'Select team members'}</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +198,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
               </button>
               
               {showAssigneeDropdown && (
-                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                   {availableAssignees.length === 0 ? (
                     <p className="px-3 py-2 text-sm text-gray-500">No other members</p>
                   ) : (
@@ -252,7 +252,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddLabel())}
                   onBlur={handleAddLabel}
                   placeholder="Add label..."
-                  className="px-2 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-gray-700"
+                  className="px-2 py-1 text-sm border border-gray-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700"
                   autoFocus
                 />
               ) : (
@@ -268,7 +268,7 @@ const CreateTaskModal = ({ isOpen, onClose, projectId, initialStatus }) => {
           </div>
         </form>
 
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800/50">
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>

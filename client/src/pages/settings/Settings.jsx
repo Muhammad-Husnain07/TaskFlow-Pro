@@ -126,7 +126,7 @@ const ProfileTab = ({ user, onUpdate }) => {
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="Tell us about yourself..."
             />
           </div>
@@ -288,7 +288,7 @@ const NotificationsTab = () => {
               <button
                 onClick={() => handleToggle('email', item.key)}
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  preferences.email[item.key] ? 'bg-primary-500' : 'bg-gray-300 dark:bg-gray-600'
+                  preferences.email[item.key] ? 'bg-primary-500' : 'bg-gray-300 dark:bg-slate-600'
                 }`}
               >
                 <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
@@ -314,7 +314,7 @@ const NotificationsTab = () => {
               <button
                 onClick={() => handleToggle('inApp', item.key)}
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  preferences.inApp[item.key] ? 'bg-primary-500' : 'bg-gray-300 dark:bg-gray-600'
+                  preferences.inApp[item.key] ? 'bg-primary-500' : 'bg-gray-300 dark:bg-slate-600'
                 }`}
               >
                 <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${

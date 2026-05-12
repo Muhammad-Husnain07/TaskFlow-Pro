@@ -17,10 +17,10 @@ export default function Avatar({ src, alt, size = 'md', className = '', user }) 
     <img
       src={imageSrc}
       alt={name}
-      className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-gray-800 ${className}`}
+      className={`${sizes[size]} rounded-full object-cover ring-2 ring-white dark:ring-slate-800 ${className}`}
     />
   ) : (
-    <div className={`${sizes[size]} rounded-full bg-primary-500 flex items-center justify-center text-white font-medium ring-2 ring-white dark:ring-gray-800 ${className}`}>
+    <div className={`${sizes[size]} rounded-full bg-primary-500 flex items-center justify-center text-white font-medium ring-2 ring-white dark:ring-slate-800 ${className}`}>
       {initials}
     </div>
   );
@@ -39,7 +39,7 @@ export const AvatarGroup = ({ children, max = 4, size = 'md' }) => {
         </div>
       ))}
       {remainingCount > 0 && (
-        <div className={`relative flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-medium ring-2 ring-white dark:ring-gray-800 ${
+        <div className={`relative flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-medium ring-2 ring-white dark:ring-slate-800 ${
           size === 'sm' ? 'w-8 h-8 text-xs' :
           size === 'lg' ? 'w-12 h-12 text-base' :
           'w-10 h-10 text-sm'

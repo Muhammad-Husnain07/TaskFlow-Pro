@@ -388,7 +388,7 @@ const hexToRgb = (hex) => {
               key={color.value}
               onClick={() => setAccentColor(color.value)}
               className={`w-10 h-10 rounded-full transition-transform hover:scale-110 ${
-                accentColor === color.value ? 'ring-2 ring-offset-2 dark:ring-offset-gray-800 ring-white dark:ring-gray-300' : ''
+                accentColor === color.value ? 'ring-2 ring-offset-2 dark:ring-offset-gray-800 ring-white dark:ring-slate-300' : ''
               }`}
               style={{ backgroundColor: color.value }}
               title={color.name}

@@ -142,7 +142,7 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
 
   return (
     <div className="space-y-3 mb-4">
-      <div className="flex flex-wrap items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-slate-700">
+      <div className="flex flex-wrap items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
         <div className="relative flex-1 min-w-[180px] max-w-[280px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -150,7 +150,7 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
             placeholder="Search tasks by title or description..."
             value={filters.search}
             onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
-            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
 

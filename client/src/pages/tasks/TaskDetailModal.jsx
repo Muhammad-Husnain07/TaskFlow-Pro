@@ -227,7 +227,7 @@ const AssigneesSelect = ({ value, onChange, projectMembers, label }) => {
         ) : (
           <button
             onClick={() => setOpen(!open)}
-            className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-gray-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-slate-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
+            className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200 flex items-center gap-1.5 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-slate-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
           >
             <Plus className="w-4 h-4" /> {label || 'Add'}
           </button>
@@ -327,7 +327,7 @@ const DescriptionEditor = ({ value, onChange }) => {
             <Link2 className="w-4 h-4" />
           </button>
           <div className="flex-1" />
-          <button type="button" onClick={() => setPreview(!preview)} className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+          <button type="button" onClick={() => setPreview(!preview)} className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-slate-300">
             {preview ? 'Edit' : 'Preview'}
           </button>
         </div>
@@ -623,7 +623,7 @@ const ActivityLog = ({ activities }) => {
   if (!activities || activities.length === 0) {
     return (
       <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
-        <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+        <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-slate-300">
           {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           <Clock className="w-4 h-4" />
           Activity
@@ -639,7 +639,7 @@ const ActivityLog = ({ activities }) => {
 
   return (
     <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
-      <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+      <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-slate-300">
         {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         <Clock className="w-4 h-4" />
         Activity

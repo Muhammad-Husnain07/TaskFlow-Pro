@@ -39,7 +39,7 @@ const PRIORITY_OPTIONS = [
   { value: TASK_PRIORITY.LOW, label: 'Low' },
 ];
 
-const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) => {
+const Dropdown = memo(({ label, value, onChange, options, icon: Icon, placeholder }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -82,16 +82,16 @@ const Dropdown = ({ label, value, onChange, options, icon: Icon, placeholder }) 
       )}
     </div>
   );
-};
+});
 
-const ActiveFilterBadge = ({ label, onRemove }) => (
+const ActiveFilterBadge = memo(({ label, onRemove }) => (
   <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-300 text-xs rounded-lg">
     {label}
     <button onClick={onRemove} className="hover:text-primary-800">
       <X className="w-3 h-3" />
     </button>
   </span>
-);
+));
 
 const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
   const { user } = useAuthStore();
@@ -199,7 +199,7 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
   );
 };
 
-const TaskColumn = ({ column, tasks, onTaskClick }) => {
+const TaskColumn = memo(({ column, tasks, onTaskClick }) => {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
 
   return (

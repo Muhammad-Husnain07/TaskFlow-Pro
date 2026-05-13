@@ -6,7 +6,7 @@ import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
   static getDerivedStateFromError(error) {
@@ -15,7 +15,12 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('ErrorBoundary caught:', error, errorInfo);
+    this.setState({ errorInfo });
   }
+
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null });
+  };
 
   handleReload = () => {
     window.location.reload();
@@ -45,12 +50,15 @@ class ErrorBoundary extends Component {
               </div>
             )}
             <div className="flex gap-3 justify-center">
-              <Button onClick={this.handleReload} className="flex items-center gap-2">
+              <Button onClick={this.handleRetry} className="flex items-center gap-2">
                 <RefreshCw className="w-4 h-4" />
+                Try Again
+              </Button>
+              <Button onClick={this.handleReload} variant="secondary" className="flex items-center gap-2">
                 Reload Page
               </Button>
               <Link to="/dashboard">
-                <Button variant="secondary" className="flex items-center gap-2">
+                <Button variant="outline" className="flex items-center gap-2">
                   <Home className="w-4 h-4" />
                   Go Home
                 </Button>

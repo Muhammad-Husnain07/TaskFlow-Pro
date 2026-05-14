@@ -3,7 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { Input, Button, Checkbox } from '../../components/ui';
 import { Toaster, toast } from 'react-hot-toast';
-import { CheckSquare, Mail, Lock, User, ArrowRight, Users, Shield, Zap } from 'lucide-react';
+import { CheckSquare, Mail, Lock, User, ArrowRight, Users, Shield, Zap, Eye, EyeOff } from 'lucide-react';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const Register = () => {
     agreeTerms: false
   });
   const [validationErrors, setValidationErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const from = location.state?.from?.pathname || '/dashboard';
 
@@ -173,12 +175,21 @@ const Register = () => {
               <div>
                 <Input
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   error={validationErrors.password}
                   prefix={<Lock className="w-4 h-4 text-gray-400" />}
+                  suffix={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  }
                 />
                 {formData.password && (
                   <div className="mt-2">
@@ -208,12 +219,21 @@ const Register = () => {
 
               <Input
                 label="Confirm Password"
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 error={validationErrors.confirmPassword}
                 prefix={<Lock className="w-4 h-4 text-gray-400" />}
+                suffix={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                }
               />
 
               <Checkbox

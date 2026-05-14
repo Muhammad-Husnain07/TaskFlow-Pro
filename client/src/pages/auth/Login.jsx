@@ -3,7 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { Input, Button, Checkbox } from '../../components/ui';
 import { Toaster, toast } from 'react-hot-toast';
-import { CheckSquare, Mail, Lock, ArrowRight, Users, FolderKanban, Clock } from 'lucide-react';
+import { CheckSquare, Mail, Lock, ArrowRight, Users, FolderKanban, Clock, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ const Login = () => {
   
   const [formData, setFormData] = useState({ email: '', password: '', rememberMe: false });
   const [validationErrors, setValidationErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const from = location.state?.from?.pathname || '/dashboard';
 
@@ -126,12 +127,21 @@ const Login = () => {
 
               <Input
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 error={validationErrors.password}
                 prefix={<Lock className="w-4 h-4 text-gray-400" />}
+                suffix={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                }
               />
 
               <div className="flex items-center justify-between">

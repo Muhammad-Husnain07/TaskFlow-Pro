@@ -150,8 +150,19 @@ const FilterBar = ({ projectMembers, onFilterChange, filters }) => {
             placeholder="Search tasks by title or description..."
             value={filters.search}
             onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') onFilterChange({ ...filters, search: '' });
+            }}
             className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
+          {filters.search && (
+            <button
+              onClick={() => onFilterChange({ ...filters, search: '' })}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-slate-600 rounded"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          )}
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">

@@ -247,7 +247,7 @@ const TaskColumn = memo(({ column, tasks, onTaskClick }) => {
       </div>
     </div>
   );
-};
+});
 
 const TaskBoard = ({ projectId, onTaskClick, projectMembers }) => {
   const { data, isLoading } = useTasks(projectId);

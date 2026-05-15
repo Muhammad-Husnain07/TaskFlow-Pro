@@ -29,7 +29,12 @@ export const useDebouncedSearch = (delay = 200) => {
     return debounce(value);
   };
 
-  return { query, debouncedQuery, handleChange, setDebouncedQuery };
+  const reset = () => {
+    setQuery('');
+    setDebouncedQuery('');
+  };
+
+  return { query, debouncedQuery, handleChange, setDebouncedQuery, reset };
 };
 
 export const useRecentSearches = () => {

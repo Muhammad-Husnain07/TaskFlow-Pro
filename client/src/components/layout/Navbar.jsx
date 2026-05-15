@@ -51,18 +51,20 @@ const Navbar = ({ title, breadcrumbs, rightContent }) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-64 pl-10 pr-12 py-2 bg-gray-100 dark:bg-slate-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-slate-600 transition-all"
-          />
+        <button
+          className="relative hidden md:flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-slate-700 border-0 rounded-lg text-sm text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600 transition-all group"
+          onClick={() => {
+            const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true });
+            document.dispatchEvent(event);
+          }}
+        >
+          <Search className="w-4 h-4 text-gray-400 group-hover:text-gray-500" />
+          <span className="text-gray-500">Search...</span>
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-gray-400 bg-gray-200 dark:bg-slate-600 px-1.5 py-0.5 rounded">
             <Command className="w-3 h-3" />
             <span>K</span>
           </div>
-        </div>
+        </button>
 
         <ThemeToggle />
 

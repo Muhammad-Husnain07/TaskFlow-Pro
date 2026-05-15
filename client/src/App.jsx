@@ -22,9 +22,10 @@ const SearchPage = lazy(() => import('./pages/Search'));
 const PublicProfile = lazy(() => import('./pages/profile/PublicProfile'));
 const UIDemo = lazy(() => import('./pages/dev/UIDemo'));
 
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950">
+const PageLoader = ({ message = 'Loading...' }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-slate-950">
     <Spinner size="xl" />
+    <p className="mt-4 text-gray-500">{message}</p>
   </div>
 );
 
@@ -71,8 +72,12 @@ function App() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  if (appLoading || authLoading) {
-    return <PageLoader />;
+  if (appLoading) {
+    return <PageLoader message="Starting application..." />;
+  }
+  
+  if (authLoading) {
+    return <PageLoader message="Authenticating..." />;
   }
 
   return (

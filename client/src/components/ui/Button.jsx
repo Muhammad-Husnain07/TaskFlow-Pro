@@ -9,6 +9,7 @@ const Button = forwardRef(({
   leftIcon,
   rightIcon,
   className = '',
+  iconOnly = false,
   ...props
 }, ref) => {
   const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2';
@@ -17,8 +18,25 @@ const Button = forwardRef(({
     primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500',
     secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 focus:ring-gray-400',
     danger: 'bg-danger-500 text-white hover:bg-danger-600 focus:ring-danger-500',
-    ghost: 'text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-gray-700 focus:ring-gray-400',
+    ghost: 'text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700 focus:ring-gray-400',
     outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 focus:ring-gray-400',
+    link: 'text-primary-500 hover:text-primary-600 hover:underline focus:ring-0',
+  };
+
+  const sizes = iconOnly ? {
+    sm: 'p-1.5',
+    md: 'p-2',
+    lg: 'p-3',
+  } : {
+    sm: 'px-3 py-1.5 text-sm gap-1.5',
+    md: 'px-4 py-2 text-sm gap-2',
+    lg: 'px-6 py-3 text-base gap-2',
+  };
+
+  const iconSizes = {
+    sm: 'w-3.5 h-3.5',
+    md: 'w-4 h-4',
+    lg: 'w-5 h-5',
   };
 
   const sizes = {
